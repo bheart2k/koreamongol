@@ -1,0 +1,8 @@
+packages:
+  - .
+
+approvedBuilds: puppeteer
+
+ignoredBuiltDependencies:
+  - sharp
+  - unrs-resolver

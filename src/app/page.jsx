@@ -1,0 +1,189 @@
+'use client';
+
+import Link from 'next/link';
+import { motion } from 'motion/react';
+import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+const guides = [
+  {
+    id: 'visa',
+    href: '/guides/visa',
+    icon: FileText,
+    title: 'Визний гарын авлага',
+    desc: 'E-9, D-2, D-4 визний мэдээлэл',
+    available: false,
+  },
+  {
+    id: 'arrival',
+    href: '/guides/arrival',
+    icon: MapPin,
+    title: 'Ирсний дараа',
+    desc: 'Бүртгэл, банк, утас нээлгэх',
+    available: false,
+  },
+  {
+    id: 'hospital',
+    href: '/guides/hospital',
+    icon: Heart,
+    title: 'Эмнэлэг / Яаралтай',
+    desc: 'Эмнэлэгт хандах, яаралтай дуудлага',
+    available: false,
+  },
+  {
+    id: 'money',
+    href: '/guides/money',
+    icon: Banknote,
+    title: 'Мөнгө шилжүүлэг',
+    desc: 'Ханш, шилжүүлгийн арга',
+    available: false,
+  },
+  {
+    id: 'korean',
+    href: '/guides/korean',
+    icon: BookOpen,
+    title: 'Бодит Солонгос хэл',
+    desc: 'Сурах бичигт байдаггүй чухал зүйлс',
+    available: false,
+  },
+  {
+    id: 'community',
+    href: '/community/blog',
+    icon: Users,
+    title: 'Нутгийнхан',
+    desc: 'Хамт олны мэдээ, асуулт хариулт',
+    available: true,
+  },
+];
+
+export default function HomePage() {
+  return (
+    <main className="min-h-content bg-background">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-b from-sky to-background">
+        <div className="relative z-10 max-w-4xl mx-auto text-center px-6 py-20 md:py-28">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <p className="text-4xl mb-4">🇰🇷 🇲🇳</p>
+            <h1 className="text-display text-navy dark:text-sky mb-4">
+              Солонгост тавтай морил!
+            </h1>
+            <p className="text-body-lg text-muted-foreground mb-8">
+              Таны Солонгос амьдралын хөтөч
+            </p>
+            <Button asChild variant="terracotta" size="lg">
+              <Link href="/community/blog">
+                Гарын авлага үзэх
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Emergency Banner */}
+      <section className="bg-terracotta text-white py-4 px-6">
+        <div className="max-w-4xl mx-auto flex justify-center gap-8 flex-wrap text-sm font-semibold font-heading">
+          <span>🚑 Яаралтай: 119</span>
+          <span>🚔 Цагдаа: 112</span>
+          <span>📞 Гадаадын иргэн: 1345</span>
+        </div>
+      </section>
+
+      {/* Guide Cards */}
+      <section className="py-16 md:py-24 px-6">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-headline text-navy dark:text-sky mb-4">
+              Гарын авлага
+            </h2>
+            <p className="text-body text-muted-foreground">
+              Солонгост амьдрахад хэрэгтэй бүх мэдээлэл
+            </p>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {guides.map((guide, index) => {
+              const Icon = guide.icon;
+              return (
+                <motion.div
+                  key={guide.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.08 }}
+                >
+                  {guide.available ? (
+                    <Link
+                      href={guide.href}
+                      className="group block h-full bg-card border border-border rounded-2xl p-6 hover:shadow-lg hover:border-gold/40 transition-all duration-300"
+                    >
+                      <div className="w-11 h-11 rounded-lg bg-sky dark:bg-navy-light flex items-center justify-center mb-4 group-hover:bg-gold/10 transition-colors">
+                        <Icon className="w-5 h-5 text-navy dark:text-gold" />
+                      </div>
+                      <h3 className="text-title text-navy dark:text-sky mb-1 text-base font-semibold">
+                        {guide.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{guide.desc}</p>
+                    </Link>
+                  ) : (
+                    <div className="h-full bg-card border border-border rounded-2xl p-6 opacity-60">
+                      <div className="w-11 h-11 rounded-lg bg-sky dark:bg-navy-light flex items-center justify-center mb-4">
+                        <Icon className="w-5 h-5 text-navy dark:text-gold" />
+                      </div>
+                      <h3 className="text-base font-semibold text-navy dark:text-sky mb-1">
+                        {guide.title}
+                      </h3>
+                      <p className="text-sm text-muted-foreground">{guide.desc}</p>
+                      <span className="inline-block mt-3 text-xs text-muted-foreground">
+                        Удахгүй нээгдэнэ
+                      </span>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section className="py-16 md:py-24 px-6 bg-warm dark:bg-navy/30">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-headline text-navy dark:text-sky mb-6">
+              KoreaMongol
+            </h2>
+            <p className="text-body text-muted-foreground mb-4">
+              Солонгост амьдарч буй Монгол иргэдэд зориулсан платформ. Визний мэдээлэл, банк нээх, эмнэлэг хандах зэрэг бодит амьдралын гарын авлагыг нэг дороос олоорой.
+            </p>
+            <p className="text-body text-muted-foreground">
+              Нутаг — таны Солонгос амьдралын найдвартай хөтөч.
+            </p>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 text-terracotta font-medium mt-6 hover:gap-3 transition-all"
+            >
+              Дэлгэрэнгүй
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+    </main>
+  );
+}
