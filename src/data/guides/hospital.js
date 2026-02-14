@@ -6,7 +6,9 @@ export const hospitalMeta = {
 export const hospitalSections = [
   { id: 'hospital-emergency', title: 'Яаралтай тусламж' },
   { id: 'hospital-steps', title: 'Эмнэлэгт хандах' },
+  { id: 'hospital-pharmacy', title: 'Эмийн сан (약국)' },
   { id: 'hospital-insurance', title: 'Даатгалын мэдээлэл' },
+  { id: 'hospital-undocumented', title: 'Бүртгэлгүй иргэдэд' },
   { id: 'hospital-interpreter', title: 'Орчуулга / Тусламж' },
   { id: 'hospital-situations', title: 'Тохиолдлоор' },
   { id: 'hospital-tips', title: 'Зөвлөгөө' },
@@ -39,6 +41,48 @@ export const insuranceComparison = {
     ['CT', { text: '₩30,000~190,000', highlight: true }, '₩70,000~280,000'],
     ['MRI', { text: '₩80,000~250,000', highlight: true }, '₩400,000~1,000,000+'],
   ],
+};
+
+// Pharmacy guide
+export const pharmacyGuide = {
+  title: 'Эмийн сан (약국) хэрэглэх',
+  steps: [
+    'Эмнэлгийн жор (처방전) авч ойрын 약국-д очих',
+    '"처방전이요" (Чхобанджониё) гэж хэлж жорыг өгөх',
+    'Эмийн тайлбарыг сонсох (хэрэв ойлгохгүй бол Papago ашиглах)',
+    'Төлбөр: даатгалтай бол ₩2,000~₩5,000, даатгалгүй бол ₩10,000+',
+  ],
+  otc: {
+    title: 'Жоргүй эм (처방전 없이)',
+    items: [
+      { name: '타이레놀 (Тайренол)', use: 'Толгой өвдөх, халуун' },
+      { name: '게보린 (Геборин)', use: 'Толгой өвдөх' },
+      { name: '지사제 (Чисадже)', use: 'Суулгалт' },
+      { name: '소화제 (Сохваджэ)', use: 'Хоол боловсруулах' },
+      { name: '밴드 (Бэндү)', use: 'Жижиг шарх, зүслэг' },
+    ],
+  },
+  tip: '약국 нь ногоон загалмайн тэмдэгтэй. 편의점-д эм зардаггүй (зөвхөн 약국-д).',
+};
+
+// Undocumented worker medical access
+export const undocumentedAccess = {
+  title: 'Бүртгэлгүй иргэд эмнэлэгт хандах',
+  items: [
+    {
+      label: 'Яаралтай тусламж (응급)',
+      description: '119 дуудлага бүгдэд нээлттэй. Оршин суух статусаас үл хамааран яаралтай тусламж үзүүлнэ.',
+    },
+    {
+      label: 'Үнэгүй эмнэлэг',
+      description: 'Бүртгэлгүй иргэдэд зориулсан үнэгүй эмнэлгүүд бий. 1577-0071 (외국인력 상담센터)-д утасдаж лавлана.',
+    },
+    {
+      label: 'Хүмүүнлэгийн эмнэлгийн зардлын дэмжлэг',
+      description: 'Яаралтай тохиолдолд хот/дүүргээс эмнэлгийн зардлын тусламж авах боломж бий.',
+    },
+  ],
+  warning: 'Эмнэлэгт хандахад хууль бус оршин суудаг гэдэг шалтгаанаар татгалзаж болохгүй. Эрүүл мэнд нь эрх!',
 };
 
 export const interpreterServices = [

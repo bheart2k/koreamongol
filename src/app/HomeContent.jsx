@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users } from 'lucide-react';
+import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const guides = [
@@ -181,6 +181,33 @@ export default function HomeContent() {
               Дэлгэрэнгүй
               <ArrowRight className="w-4 h-4" />
             </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Donate Section */}
+      <section className="py-10 px-6">
+        <div className="max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="rounded-xl border border-gold/40 bg-gold/5 px-6 py-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <Coffee className="w-6 h-6 text-gold shrink-0" />
+              <p className="text-sm text-muted-foreground text-center sm:text-left flex-1">
+                <span className="font-medium text-foreground">Нэг аяга кофегоор дэмжээрэй.</span>{' '}
+                Сайтын тогтвортой үйл ажиллагаанд тусална.
+              </p>
+              <Link
+                href="/donate"
+                className="shrink-0 inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-gold text-navy font-semibold hover:bg-gold/90 transition-colors text-sm"
+              >
+                <Heart className="w-3.5 h-3.5" />
+                Дэмжих
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>

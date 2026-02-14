@@ -33,6 +33,7 @@ export const survivalKorean = {
     { korean: '먼저 가보겠습니다', pronunciation: 'Монджо кабогессымнида', meaning: 'Би түрүүлж явъя', situation: 'Ажлаас эрт гарахад', description: 'Ажлаас бусдаас түрүүлж гарахад хэлдэг. Монголоор "баяртай" гэж хэлэхийн оронд энийг хэлэх нь зөв.' },
     { korean: '잠시만요', pronunciation: 'Чамсиманё', meaning: 'Түр хүлээгээрэй', situation: 'Хүн хүлээлгэхэд' },
     { korean: '다시 한번 말씀해 주세요', pronunciation: 'Таси ханбон мальссымхэ чусеё', meaning: 'Дахин нэг удаа хэлж өгөөч', situation: 'Ойлгохгүй байхад' },
+    { korean: '못 알아듣겠어요', pronunciation: 'Мот арадыткессоё', meaning: 'Ойлгохгүй байна', situation: 'Огт ойлгохгүй байхад', description: 'Маш чухал хэллэг! Солонгос хэл ойлгохгүй байгаагаа мэдэгдэхэд хэрэглэнэ.' },
     { korean: '아파서 못 갑니다', pronunciation: 'Апхасо мот камнида', meaning: 'Өвчтэй учир очиж чадахгүй', situation: 'Өвчтэй чөлөө авахад' },
     { korean: '야근이에요', pronunciation: 'Ягыниеё', meaning: 'Илүү цагаар ажиллана', situation: 'Илүү цаг ажиллах үед' },
     { korean: '월급날이 언제예요?', pronunciation: 'Вольгымнари онджеёё?', meaning: 'Цалин өгөх өдөр хэзээ вэ?', situation: 'Цалингийн талаар асуухад' },
@@ -135,5 +136,10 @@ export const learningResources = [
     href: 'https://www.topik.go.kr',
     title: 'TOPIK шалгалт',
     description: 'Солонгос хэлний мэргэжлийн шалгалт',
+  },
+  {
+    href: 'https://eps.hrdkorea.or.kr',
+    title: 'EPS-TOPIK шалгалт',
+    description: 'E-9 ажлын визийн Солонгос хэлний шалгалт (고용허가제 한국어능력시험)',
   },
 ];

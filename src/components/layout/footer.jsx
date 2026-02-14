@@ -10,6 +10,7 @@ const footerLinks = {
     { href: '/about', label: 'Танилцуулга' },
     { href: '/faq', label: 'Түгээмэл асуулт' },
     { href: '/contact', label: 'Холбоо барих' },
+    { href: '/donate', label: 'Дэмжлэг' },
   ],
   legal: [
     { href: '/privacy', label: 'Нууцлалын бодлого' },

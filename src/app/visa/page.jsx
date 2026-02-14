@@ -1,7 +1,7 @@
 import { FileText, Clock, AlertTriangle, ArrowRightLeft } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList,
-  WarningBox, TipBox, LinkCard, ReportBanner,
+  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -200,6 +200,7 @@ export default function VisaPage() {
         </section>
 
         <ReportBanner pageUrl="/visa" />
+        <DonateBanner />
         <GuideNav currentGuideId="visa" />
       </div>
     </main>

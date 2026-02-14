@@ -203,9 +203,17 @@ export default function AboutContent() {
             <p className="text-body text-muted-foreground mb-8">
               Асуулт, санал байвал хүссэн үедээ холбогдоно уу.
             </p>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/contact">Холбоо барих</Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button asChild variant="outline" size="lg">
+                <Link href="/contact">Холбоо барих</Link>
+              </Button>
+              <Button asChild size="lg" className="bg-gold hover:bg-gold/90 text-navy">
+                <Link href="/donate">
+                  <Heart className="w-4 h-4 mr-2" />
+                  Дэмжлэг үзүүлэх
+                </Link>
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>

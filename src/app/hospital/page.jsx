@@ -2,13 +2,13 @@ import { Heart } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   GuideHero, GuideTOC, GuideNav, EmergencyBanner, StepList,
-  InfoTable, LinkCard, WarningBox, TipBox, ReportBanner,
+  InfoTable, LinkCard, WarningBox, TipBox, ReportBanner, DonateBanner,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
   hospitalMeta, hospitalSections, emergencyContacts,
   hospitalSteps, insuranceComparison, interpreterServices,
-  situationGuides,
+  situationGuides, pharmacyGuide, undocumentedAccess,
 } from '@/data/guides/hospital';
 
 const BASE_URL = 'https://koreamongol.com';
@@ -68,6 +68,28 @@ export default function HospitalPage() {
           <StepList steps={hospitalSteps} />
         </section>
 
+        {/* Pharmacy Guide */}
+        <section id="hospital-pharmacy">
+          <h2 className="text-title text-navy dark:text-sky mb-6">{pharmacyGuide.title}</h2>
+          <StepList steps={pharmacyGuide.steps.map((s, i) => ({ title: `${i + 1}`, description: s }))} />
+
+          <div className="mt-4 p-4 rounded-lg border border-border bg-card">
+            <h3 className="text-sm font-semibold text-foreground mb-3">{pharmacyGuide.otc.title}</h3>
+            <div className="grid sm:grid-cols-2 gap-2">
+              {pharmacyGuide.otc.items.map((item) => (
+                <div key={item.name} className="flex justify-between text-sm p-2 rounded-md bg-muted/50">
+                  <span className="font-medium text-foreground">{item.name}</span>
+                  <span className="text-muted-foreground">{item.use}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <TipBox className="mt-4" title="Анхаар">
+            <p>{pharmacyGuide.tip}</p>
+          </TipBox>
+        </section>
+
         {/* Insurance Comparison */}
         <section id="hospital-insurance">
           <h2 className="text-title text-navy dark:text-sky mb-6">Даатгалын мэдээлэл</h2>
@@ -77,6 +99,22 @@ export default function HospitalPage() {
           />
           <TipBox className="mt-4" title="Даатгалын зөвлөгөө">
             <p>Гадаадын иргэн 6 сар дээш оршин суувал Үндэсний эрүүл мэндийн даатгал (국민건강보험) заавал (E-9, D-2 визтэй бол ирсэн даруй). Сар бүр ~₩159,000 төлнө (2026 он).</p>
+          </TipBox>
+        </section>
+
+        {/* Undocumented Access */}
+        <section id="hospital-undocumented">
+          <h2 className="text-title text-navy dark:text-sky mb-6">{undocumentedAccess.title}</h2>
+          <div className="space-y-3 mb-4">
+            {undocumentedAccess.items.map((item) => (
+              <div key={item.label} className="p-4 rounded-lg border border-border bg-card">
+                <p className="text-sm font-semibold text-foreground mb-1">{item.label}</p>
+                <p className="text-sm text-muted-foreground">{item.description}</p>
+              </div>
+            ))}
+          </div>
+          <TipBox title="Мэдэх зүйл">
+            <p>{undocumentedAccess.warning}</p>
           </TipBox>
         </section>
 
@@ -129,6 +167,7 @@ export default function HospitalPage() {
         </section>
 
         <ReportBanner pageUrl="/hospital" />
+        <DonateBanner />
         <GuideNav currentGuideId="hospital" />
       </div>
     </main>

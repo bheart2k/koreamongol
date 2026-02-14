@@ -1,7 +1,7 @@
 import { MapPin, Smartphone, Building2, Phone, FileCheck, ExternalLink } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList,
-  TipBox, WarningBox, InfoTable, ReportBanner,
+  TipBox, WarningBox, InfoTable, ReportBanner, DonateBanner,
 } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -208,6 +208,7 @@ export default function ArrivalPage() {
         </section>
 
         <ReportBanner pageUrl="/arrival" />
+        <DonateBanner />
         <GuideNav currentGuideId="arrival" />
       </div>
     </main>

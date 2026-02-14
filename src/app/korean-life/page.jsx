@@ -2,7 +2,7 @@ import { BookOpen } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   GuideHero, GuideTOC, GuideNav,
-  CultureCard, TipBox, LinkCard, ReportBanner,
+  CultureCard, TipBox, LinkCard, ReportBanner, DonateBanner,
 } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -94,6 +94,7 @@ export default function KoreanLifePage() {
         </section>
 
         <ReportBanner pageUrl="/korean-life" />
+        <DonateBanner />
         <GuideNav currentGuideId="korean-life" />
       </div>
     </main>
