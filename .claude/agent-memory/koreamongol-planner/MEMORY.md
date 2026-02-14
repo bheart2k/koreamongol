@@ -28,6 +28,13 @@
 - 대안: 제휴 마케팅(송금업체 등), 직접 광고, 다른 광고 네트워크(Adsterra 등)
 - 상세 분석: `monetization-research-2026-02-14.md` 참조
 
+## 3차 개발 분석 (2026-02-15)
+- 현재 가이드 8개 + 환율계산기 + 커뮤니티(expression) 완료
+- 주요 갭: 교통, 생활앱, 귀국가이드, 긴급상황/법률, 음식/쇼핑
+- P1 도구: 퇴직금 계산기, 급여 계산기, 긴급연락처 페이지, 공유 버튼
+- 상세: `phase3-analysis-2026-02-15.md` 참조
+
 ## 파일 참조
 - `docs/koreamongol-mvp-plan.md` - MVP 기획서
 - `docs/koreamongol-design-guide.html` - 디자인 가이드
+- `phase3-analysis-2026-02-15.md` - 3차 개발 방향 분석
