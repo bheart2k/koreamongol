@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee, Briefcase, Home, GraduationCap, Calculator } from 'lucide-react';
+import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee, Briefcase, Home, GraduationCap, Calculator, Train, Phone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const guides = [
@@ -68,6 +68,22 @@ const guides = [
     icon: GraduationCap,
     title: 'TOPIK / EPS-TOPIK',
     desc: 'Шалгалтын бүтэц, бүртгэл, бэлтгэл',
+    available: true,
+  },
+  {
+    id: 'transport',
+    href: '/transport',
+    icon: Train,
+    title: 'Тээврийн гарын авлага',
+    desc: 'Метро, автобус, такси, KTX',
+    available: true,
+  },
+  {
+    id: 'emergency',
+    href: '/emergency',
+    icon: Phone,
+    title: 'Яаралтай утасны дугаарууд',
+    desc: '119, 112, 1345 — бүх дугаар',
     available: true,
   },
   {

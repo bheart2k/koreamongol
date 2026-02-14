@@ -172,11 +172,17 @@ src/
 ├── app/
 │   ├── layout.js            # 루트 레이아웃 (Inter + Noto Sans, lang="mn")
 │   ├── page.js              # 메인 페이지
-│   ├── visa/                # [MVP] 비자 가이드
-│   ├── arrival/             # [MVP] 도착 후 가이드
-│   ├── hospital/            # [MVP] 병원/응급 가이드
-│   ├── money/               # [MVP] 송금/환율 가이드
-│   ├── korean-life/         # [MVP] 실전 한국어 & 문화 가이드
+│   ├── opengraph-image.jsx  # 루트 OG 이미지 (동적 생성)
+│   ├── visa/                # 비자 가이드
+│   ├── arrival/             # 도착 후 가이드
+│   ├── hospital/            # 병원/응급 가이드
+│   ├── money/               # 송금/환율 가이드
+│   ├── korean-life/         # 실전 한국어 & 문화 가이드
+│   ├── jobs/                # 일자리/노동 가이드
+│   ├── housing/             # 주거/임대 가이드
+│   ├── topik/               # TOPIK/EPS-TOPIK 시험 가이드
+│   ├── exchange/            # 환율 계산기 (KRW↔MNT)
+│   ├── donate/              # 후원 페이지 (Buy Me a Coffee)
 │   ├── community/           # 커뮤니티 게시판
 │   ├── admin/               # 관리자
 │   ├── about/               # 소개
@@ -186,14 +192,15 @@ src/
 │   ├── mypage/              # 마이페이지
 │   ├── privacy/             # 개인정보처리방침
 │   ├── terms/               # 이용약관
-│   └── api/                 # API 라우트
+│   └── api/
+│       └── exchange-rate/   # 환율 API (CDN → 폴백, 1시간 캐싱)
 ├── components/
 │   ├── ui/                  # shadcn/ui 컴포넌트
 │   ├── layout/              # navbar, footer, mobile-menu
 │   ├── editor/              # Lexical 리치 텍스트 에디터
 │   ├── community/           # 커뮤니티 컴포넌트
 │   ├── admin/               # 관리자 컴포넌트
-│   ├── guide/               # [MVP] 가이드 전용 컴포넌트
+│   ├── guide/               # 가이드 전용 컴포넌트
 │   │   ├── GuideCard        # 메인 가이드 카드
 │   │   ├── StepList         # 단계별 안내
 │   │   ├── CheckList        # 체크리스트
@@ -201,29 +208,35 @@ src/
 │   │   ├── TipBox           # 꿀팁 (gold)
 │   │   ├── EmergencyBanner  # 긴급연락처
 │   │   ├── InfoTable        # 비교표
-│   │   └── LinkCard         # 외부 링크 카드
-│   ├── seo/                 # JsonLd 등
+│   │   ├── LinkCard         # 외부 링크 카드
+│   │   └── DonateBanner     # 후원 배너
+│   ├── seo/                 # JsonLd (Breadcrumb, HowTo, Article)
 │   └── faq/                 # FAQ 컴포넌트
 ├── lib/
 │   ├── db/                  # Neon PostgreSQL + Drizzle ORM
 │   ├── auth.js              # NextAuth (Google OAuth)
+│   ├── og-image.js          # 페이지별 OG 이미지 생성 공통 함수
 │   └── utils.js             # 유틸리티
 ├── hooks/                   # 커스텀 훅
 ├── store/                   # Zustand 스토어
-└── data/                    # 정적 데이터
+└── data/
+    └── guides/              # 가이드 데이터 (정적)
+        ├── common.js        # GUIDE_ORDER, 긴급연락처
+        ├── visa.js
+        ├── arrival.js
+        ├── hospital.js
+        ├── money.js
+        ├── korean-life.js
+        ├── jobs.js
+        ├── housing.js
+        └── topik.js
 ```
 
 ---
 
-## MVP 가이드 페이지 (Phase 1 우선순위)
+## 가이드/페이지 현황
 
-1. `/visa` — 비자 가이드 (E-9, D-2, D-4 등)
-2. `/arrival` — 도착 후 필수 가이드 (외국인등록, 은행, 폰)
-3. `/hospital` — 병원/응급 가이드
-4. `/money` — 송금/환율 가이드
-5. `/korean-life` — 실전 한국어 & 문화 (킬러 콘텐츠)
-
-상세 기획: `docs/koreamongol-mvp-plan.md` 참조
+`docs/phase2-summary.md` 참조
 
 ---
 

@@ -1,4 +1,4 @@
-import { Users, Info, Mail, FileText, Shield, PenLine, MapPin, Heart, Banknote, BookOpen, MessageCircleQuestion, Briefcase, Home, GraduationCap, Calculator } from 'lucide-react';
+import { Users, Info, Mail, FileText, Shield, PenLine, MapPin, Heart, Banknote, BookOpen, MessageCircleQuestion, Briefcase, Home, GraduationCap, Calculator, Train, Phone } from 'lucide-react';
 
 /**
  * KoreaMongol 네비게이션 메뉴 아이템
@@ -65,6 +65,12 @@ export const navItems = [
         desc: 'Барьцаа, түрээс, гэрээ, амьдрал',
         icon: Home,
       },
+      {
+        href: '/transport',
+        label: 'Тээвэр',
+        desc: 'Метро, автобус, такси, KTX',
+        icon: Train,
+      },
     ],
   },
   {
@@ -78,6 +84,12 @@ export const navItems = [
     href: '/community/expression',
     label: 'Хэллэг',
     icon: MessageCircleQuestion,
+  },
+  {
+    type: 'link',
+    href: '/emergency',
+    label: 'Яаралтай утас',
+    icon: Phone,
   },
 ];
 

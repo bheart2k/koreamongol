@@ -1,4 +1,4 @@
-import { FileText, MapPin, Heart, Banknote, BookOpen, Briefcase, Home, GraduationCap } from 'lucide-react';
+import { FileText, MapPin, Heart, Banknote, BookOpen, Briefcase, Home, GraduationCap, Train, Phone } from 'lucide-react';
 
 export const GUIDE_ORDER = [
   { id: 'visa', href: '/visa', title: 'Визний гарын авлага', icon: FileText },
@@ -9,6 +9,8 @@ export const GUIDE_ORDER = [
   { id: 'jobs', href: '/jobs', title: 'Ажил ба хөдөлмөр', icon: Briefcase },
   { id: 'housing', href: '/housing', title: 'Байр ба орон сууц', icon: Home },
   { id: 'topik', href: '/topik', title: 'TOPIK / EPS-TOPIK', icon: GraduationCap },
+  { id: 'transport', href: '/transport', title: 'Тээврийн гарын авлага', icon: Train },
+  { id: 'emergency', href: '/emergency', title: 'Яаралтай утасны дугаарууд', icon: Phone },
 ];
 
 export const defaultEmergencyItems = [
