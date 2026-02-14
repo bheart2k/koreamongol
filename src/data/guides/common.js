@@ -4,7 +4,7 @@ export const GUIDE_ORDER = [
   { id: 'visa', href: '/visa', title: 'Визний гарын авлага', icon: FileText },
   { id: 'arrival', href: '/arrival', title: 'Ирсний дараа', icon: MapPin },
   { id: 'hospital', href: '/hospital', title: 'Эмнэлэг / Яаралтай', icon: Heart },
-  { id: 'money', href: '/money', title: 'Мөнгө шилжүүлэг', icon: Banknote },
+  { id: 'money', href: '/money', title: 'Мөнгө ба санхүү', icon: Banknote },
   { id: 'korean-life', href: '/korean-life', title: 'Бодит Солонгос хэл', icon: BookOpen },
 ];
 

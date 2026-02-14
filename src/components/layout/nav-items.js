@@ -29,8 +29,8 @@ export const navItems = [
       },
       {
         href: '/money',
-        label: 'Мөнгө шилжүүлэг',
-        desc: 'Ханш, шилжүүлгийн арга',
+        label: 'Мөнгө ба санхүү',
+        desc: 'Шилжүүлэг, банк, карт, даатгал',
         icon: Banknote,
       },
       {

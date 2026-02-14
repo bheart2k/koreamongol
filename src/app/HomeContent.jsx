@@ -34,8 +34,8 @@ const guides = [
     id: 'money',
     href: '/money',
     icon: Banknote,
-    title: 'Мөнгө шилжүүлэг',
-    desc: 'Ханш, шилжүүлгийн арга',
+    title: 'Мөнгө ба санхүү',
+    desc: 'Шилжүүлэг, банк, карт, даатгал',
     available: true,
   },
   {
