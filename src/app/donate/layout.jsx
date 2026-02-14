@@ -9,6 +9,7 @@ export function generateMetadata() {
       title: 'Дэмжлэг | KoreaMongol',
       description: 'KoreaMongol сайтыг дэмжих.',
       url: `${BASE_URL}/donate`,
+      images: ['/opengraph-image'],
     },
     twitter: {
       card: 'summary_large_image',

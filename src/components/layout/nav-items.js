@@ -1,12 +1,13 @@
-import { Users, Info, Mail, FileText, Shield, PenLine, MapPin, Heart, Banknote, BookOpen, MessageCircleQuestion } from 'lucide-react';
+import { Users, Info, Mail, FileText, Shield, PenLine, MapPin, Heart, Banknote, BookOpen, MessageCircleQuestion, Briefcase, Home, GraduationCap, Calculator } from 'lucide-react';
 
 /**
  * KoreaMongol 네비게이션 메뉴 아이템
+ * - 드롭다운 2개 + 직접 링크 2개로 분산 배치
  */
 export const navItems = [
   {
     type: 'dropdown',
-    label: 'Гарын авлага',
+    label: 'Виз & Бүртгэл',
     align: 'left',
     children: [
       {
@@ -22,6 +23,19 @@ export const navItems = [
         icon: MapPin,
       },
       {
+        href: '/topik',
+        label: 'TOPIK / EPS-TOPIK',
+        desc: 'Шалгалтын бүтэц, бүртгэл, бэлтгэл',
+        icon: GraduationCap,
+      },
+    ],
+  },
+  {
+    type: 'dropdown',
+    label: 'Амьдрал',
+    align: 'left',
+    children: [
+      {
         href: '/hospital',
         label: 'Эмнэлэг / Яаралтай',
         desc: 'Эмнэлэгт хандах, яаралтай дуудлага',
@@ -34,18 +48,36 @@ export const navItems = [
         icon: Banknote,
       },
       {
-        href: '/korean-life',
-        label: 'Бодит Солонгос хэл',
-        desc: 'Сурах бичигт байдаггүй чухал зүйлс',
-        icon: BookOpen,
+        href: '/exchange',
+        label: 'Ханш тооцоолуур',
+        desc: 'KRW ↔ MNT ханш хөрвүүлэг',
+        icon: Calculator,
       },
       {
-        href: '/community/expression',
-        label: 'Хэллэгийн асуулт',
-        desc: 'Солонгос хэллэгийн талаар асуулт, хариулт',
-        icon: MessageCircleQuestion,
+        href: '/jobs',
+        label: 'Ажил ба хөдөлмөр',
+        desc: 'Цалин, гэрээ, эрхийн хамгаалалт',
+        icon: Briefcase,
+      },
+      {
+        href: '/housing',
+        label: 'Байр ба орон сууц',
+        desc: 'Барьцаа, түрээс, гэрээ, амьдрал',
+        icon: Home,
       },
     ],
+  },
+  {
+    type: 'link',
+    href: '/korean-life',
+    label: 'Солонгос хэл',
+    icon: BookOpen,
+  },
+  {
+    type: 'link',
+    href: '/community/expression',
+    label: 'Хэллэг',
+    icon: MessageCircleQuestion,
   },
 ];
 

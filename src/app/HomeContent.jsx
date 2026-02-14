@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee } from 'lucide-react';
+import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee, Briefcase, Home, GraduationCap, Calculator } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const guides = [
@@ -44,6 +44,38 @@ const guides = [
     icon: BookOpen,
     title: 'Бодит Солонгос хэл',
     desc: 'Сурах бичигт байдаггүй чухал зүйлс',
+    available: true,
+  },
+  {
+    id: 'jobs',
+    href: '/jobs',
+    icon: Briefcase,
+    title: 'Ажил ба хөдөлмөр',
+    desc: 'Цалин, гэрээ, эрхийн хамгаалалт',
+    available: true,
+  },
+  {
+    id: 'housing',
+    href: '/housing',
+    icon: Home,
+    title: 'Байр ба орон сууц',
+    desc: 'Барьцаа, түрээс, гэрээ, амьдрал',
+    available: true,
+  },
+  {
+    id: 'topik',
+    href: '/topik',
+    icon: GraduationCap,
+    title: 'TOPIK / EPS-TOPIK',
+    desc: 'Шалгалтын бүтэц, бүртгэл, бэлтгэл',
+    available: true,
+  },
+  {
+    id: 'exchange',
+    href: '/exchange',
+    icon: Calculator,
+    title: 'Ханш тооцоолуур',
+    desc: 'KRW ↔ MNT ханш хөрвүүлэг',
     available: true,
   },
   {
