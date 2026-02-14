@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { db, contactMessages, feedback } from '@/lib/db';
-import { eq, inArray, count } from 'drizzle-orm';
+import { db, inbox } from '@/lib/db';
+import { eq, inArray, count, and } from 'drizzle-orm';
 
-// 관리자 알림 카운트 조회 (문의/피드백 대기 건수)
+// 관리자 알림 카운트 조회 (inbox 대기 건수)
 export async function GET() {
   try {
     const session = await auth();
@@ -11,21 +11,14 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // 문의 대기 건수 (pending)
-    const [{ count: contactsPending }] = await db
+    // inbox pending + reviewing 건수
+    const [{ count: inboxPending }] = await db
       .select({ count: count() })
-      .from(contactMessages)
-      .where(eq(contactMessages.status, 'pending'));
-
-    // 피드백 대기 건수 (pending + reviewing)
-    const [{ count: feedbackPending }] = await db
-      .select({ count: count() })
-      .from(feedback)
-      .where(inArray(feedback.status, ['pending', 'reviewing']));
+      .from(inbox)
+      .where(inArray(inbox.status, ['pending', 'reviewing']));
 
     return NextResponse.json({
-      contacts: contactsPending,
-      feedback: feedbackPending,
+      inbox: inboxPending,
     });
   } catch (error) {
     console.error('Admin Notifications Error:', error);

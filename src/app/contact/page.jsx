@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-
+import { useState, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion } from 'motion/react';
-import { Mail, Send, CheckCircle, AlertCircle, HelpCircle } from 'lucide-react';
+import { Mail, Send, CheckCircle, AlertCircle, HelpCircle, Lightbulb, Bug, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -12,6 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { toast } from 'sonner';
 
 const faqs = [
   {
@@ -20,11 +21,11 @@ const faqs = [
   },
   {
     question: 'Хамтын ажиллагааны талаар хэрхэн холбогдох вэ?',
-    answer: 'Хамтын ажиллагаа, контент ашиглалт зэрэг бизнесийн асуудлаар hello@koreamongol.com руу имэйл илгээнэ үү. Гарчигт [Хамтын ажиллагаа] гэж бичвэл хурдан хариу авна.',
+    answer: 'Хамтын ажиллагаа, контент ашиглалт зэрэг бизнесийн асуудлаар koreamongol@googlegroups.com руу имэйл илгээнэ үү. Гарчигт [Хамтын ажиллагаа] гэж бичвэл хурдан хариу авна.',
   },
   {
     question: 'Алдаа олсон бол хаана мэдэгдэх вэ?',
-    answer: 'Алдаа мэдэгдсэнд баярлалаа! Доорх формоор эсвэл hello@koreamongol.com руу мэдэгдэнэ үү. Аль хуудсанд, ямар нөхцөлд асуудал гарсныг дэлгэрэнгүй бичвэл хурдан засна.',
+    answer: 'Гарын авлага хуудас бүрийн доод хэсэгт "Мэдээлэл засах" товч байна. Мөн доорх формоор эсвэл koreamongol@googlegroups.com руу мэдэгдэж болно. Аль хуудсанд, ямар нөхцөлд асуудал гарсныг дэлгэрэнгүй бичвэл хурдан засна.',
   },
   {
     question: 'KoreaMongol үнэгүй юу?',
@@ -32,12 +33,42 @@ const faqs = [
   },
 ];
 
+const CATEGORIES = [
+  { value: 'general', label: 'Ерөнхий асуулт', icon: MessageCircle, color: 'text-blue-600 bg-blue-100' },
+  { value: 'improvement', label: 'Сайжруулалт', icon: Lightbulb, color: 'text-yellow-600 bg-yellow-100' },
+  { value: 'bug', label: 'Алдаа мэдэгдэх', icon: Bug, color: 'text-red-600 bg-red-100' },
+  { value: 'other', label: 'Бусад', icon: HelpCircle, color: 'text-gray-600 bg-gray-100' },
+];
+
+function getClientMeta() {
+  if (typeof window === 'undefined') return {};
+  return {
+    currentUrl: window.location.href,
+    referrer: document.referrer || '',
+    screenSize: `${window.screen.width}x${window.screen.height}`,
+    viewportSize: `${window.innerWidth}x${window.innerHeight}`,
+    language: navigator.language || '',
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+  };
+}
+
 export default function ContactPage() {
+  return (
+    <Suspense>
+      <ContactPageContent />
+    </Suspense>
+  );
+}
+
+function ContactPageContent() {
+  const searchParams = useSearchParams();
+  const defaultCategory = searchParams.get('category') || 'general';
+
+  const [selectedCategory, setSelectedCategory] = useState(defaultCategory);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
     subject: '',
-    message: '',
+    content: '',
+    email: '',
   });
   const [status, setStatus] = useState('idle');
   const [errorMessage, setErrorMessage] = useState('');
@@ -53,20 +84,29 @@ export default function ContactPage() {
     setErrorMessage('');
 
     try {
-      const response = await fetch('/api/contact', {
+      const response = await fetch('/api/inbox', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          type: 'inquiry',
+          category: selectedCategory,
+          subject: formData.subject,
+          content: formData.content,
+          email: formData.email,
+          ...getClientMeta(),
+        }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to send message');
+        throw new Error(data.error || 'Илгээхэд алдаа гарлаа.');
       }
 
       setStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
+      toast.success('Мессеж амжилттай илгээгдлээ!');
+      setFormData({ subject: '', content: '', email: '' });
+      setSelectedCategory('general');
     } catch (error) {
       setStatus('error');
       setErrorMessage(error.message);
@@ -74,7 +114,7 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-content bg-background">
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 px-6">
         <div className="absolute inset-0 pointer-events-none">
@@ -116,10 +156,10 @@ export default function ContactPage() {
                   <div>
                     <h3 className="font-medium mb-1">Имэйл</h3>
                     <a
-                      href="mailto:hello@koreamongol.com"
+                      href="mailto:koreamongol@googlegroups.com"
                       className="text-sm text-muted-foreground hover:text-accent transition-colors"
                     >
-                      hello@koreamongol.com
+                      koreamongol@googlegroups.com
                     </a>
                   </div>
                 </div>
@@ -157,30 +197,45 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* 카테고리 선택 */}
                     <div>
-                      <label htmlFor="name" className="block text-sm font-medium mb-2">
-                        Нэр{' '}
-                        <span className="text-muted-foreground font-normal">(Сонголттой)</span>
-                      </label>
-                      <Input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Таны нэр"
-                      />
+                      <label className="block text-sm font-medium mb-3">Төрөл</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {CATEGORIES.map((cat) => {
+                          const Icon = cat.icon;
+                          const isSelected = selectedCategory === cat.value;
+                          return (
+                            <button
+                              key={cat.value}
+                              type="button"
+                              onClick={() => setSelectedCategory(cat.value)}
+                              className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all text-left ${
+                                isSelected
+                                  ? 'border-primary bg-primary/5'
+                                  : 'border-border hover:border-primary/50'
+                              }`}
+                            >
+                              <div className={`w-8 h-8 rounded-lg ${cat.color} flex items-center justify-center flex-shrink-0`}>
+                                <Icon className="w-4 h-4" />
+                              </div>
+                              <span className="text-sm font-medium">{cat.label}</span>
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
 
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium mb-2">
-                        Имэйл *
+                        Имэйл{' '}
+                        <span className="text-muted-foreground font-normal">
+                          (Хариу авахыг хүсвэл)
+                        </span>
                       </label>
                       <Input
                         id="email"
                         name="email"
                         type="email"
-                        required
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="you@example.com"
@@ -203,19 +258,23 @@ export default function ContactPage() {
                     </div>
 
                     <div>
-                      <label htmlFor="message" className="block text-sm font-medium mb-2">
+                      <label htmlFor="content" className="block text-sm font-medium mb-2">
                         Агуулга *
                       </label>
                       <textarea
-                        id="message"
-                        name="message"
+                        id="content"
+                        name="content"
                         required
                         rows={5}
-                        value={formData.message}
+                        maxLength={5000}
+                        value={formData.content}
                         onChange={handleChange}
                         placeholder="Асуултаа дэлгэрэнгүй бичнэ үү"
                         className="flex w-full rounded-lg border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
                       />
+                      <div className="text-xs text-muted-foreground mt-1 text-right">
+                        {formData.content.length}/5000
+                      </div>
                     </div>
 
                     {status === 'error' && (

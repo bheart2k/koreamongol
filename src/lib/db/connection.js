@@ -8,11 +8,11 @@ import * as postsSchema from './schema/posts.js';
 import * as commentsSchema from './schema/comments.js';
 import * as badgesSchema from './schema/badges.js';
 import * as pointsSchema from './schema/points.js';
-import * as feedbackSchema from './schema/feedback.js';
-import * as contactMessagesSchema from './schema/contactMessages.js';
+import * as inboxSchema from './schema/inbox.js';
 import * as analyticsEventsSchema from './schema/analyticsEvents.js';
 import * as dailyStatsSchema from './schema/dailyStats.js';
 import * as countersSchema from './schema/counters.js';
+import * as likesSchema from './schema/likes.js';
 import * as relationsSchema from './schema/relations.js';
 
 const DATABASE_URL = process.env.DATABASE_URL;
@@ -30,11 +30,11 @@ export const db = drizzle(sql, {
     ...commentsSchema,
     ...badgesSchema,
     ...pointsSchema,
-    ...feedbackSchema,
-    ...contactMessagesSchema,
+    ...inboxSchema,
     ...analyticsEventsSchema,
     ...dailyStatsSchema,
     ...countersSchema,
+    ...likesSchema,
     ...relationsSchema,
   },
 });

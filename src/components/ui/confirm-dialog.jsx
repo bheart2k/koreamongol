@@ -97,7 +97,7 @@ function ConfirmDialog({
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
-      <AlertDialogContent className="max-w-[400px] rounded-2xl p-7 bg-white">
+      <AlertDialogContent className="max-w-[400px] rounded-2xl p-7 bg-background">
         <AlertDialogHeader className="flex-row items-start gap-3 space-y-0">
           <div className={cn(iconWrapperVariants({ variant }))}>
             {icon}
@@ -116,7 +116,7 @@ function ConfirmDialog({
           <AlertDialogCancel
             onClick={onCancel}
             disabled={loading}
-            className="bg-hanji-200 text-ink-700 hover:bg-hanji-300 px-5 py-2.5 rounded-lg text-[14px] font-semibold tracking-wide font-sans"
+            className="bg-muted text-muted-foreground hover:bg-muted/80 px-5 py-2.5 rounded-lg text-[14px] font-semibold tracking-wide font-sans"
           >
             {cancelText}
           </AlertDialogCancel>
@@ -168,7 +168,7 @@ function SimpleAlertDialog({
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       {trigger && <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>}
-      <AlertDialogContent className="max-w-[400px] rounded-2xl p-7 bg-white">
+      <AlertDialogContent className="max-w-[400px] rounded-2xl p-7 bg-background">
         <AlertDialogHeader className="flex-row items-start gap-3 space-y-0">
           <div className={cn(iconWrapperVariants({ variant }))}>
             {icon}

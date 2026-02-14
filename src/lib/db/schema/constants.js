@@ -53,26 +53,31 @@ export const DEFAULT_BADGES = [
   { code: 'level_10', name: '세종대왕', description: '레벨 10 달성', icon: '👑', category: 'level', condition: { type: 'level', count: 10 }, rarity: 'legendary' },
 ];
 
-// 피드백 카테고리
-export const FEEDBACK_CATEGORIES = {
-  feature_request: { label: '기능 요청', labelEn: 'Feature Request' },
-  improvement: { label: '개선 제안', labelEn: 'Improvement' },
-  bug_report: { label: '버그 신고', labelEn: 'Bug Report' },
-  other: { label: '기타', labelEn: 'Other' },
+// Inbox 타입
+export const INBOX_TYPES = {
+  inquiry: { label: '문의', labelMn: 'Асуулт' },
+  report: { label: '제보', labelMn: 'Мэдэгдэл' },
 };
 
-// 피드백 우선순위
-export const FEEDBACK_PRIORITIES = {
+// Inbox 카테고리 (inquiry 하위)
+export const INBOX_CATEGORIES = {
+  general: { label: '일반 문의', labelMn: 'Ерөнхий асуулт' },
+  improvement: { label: '개선 제안', labelMn: 'Сайжруулалт' },
+  bug: { label: '버그 신고', labelMn: 'Алдаа мэдэгдэх' },
+  other: { label: '기타', labelMn: 'Бусад' },
+};
+
+// Inbox 상태
+export const INBOX_STATUSES = {
+  pending: { label: '대기', color: 'text-gray-600 bg-gray-100' },
+  reviewing: { label: '검토 중', color: 'text-blue-600 bg-blue-100' },
+  resolved: { label: '해결', color: 'text-green-600 bg-green-100' },
+  deleted: { label: '휴지통', color: 'text-red-600 bg-red-100' },
+};
+
+// Inbox 우선순위
+export const INBOX_PRIORITIES = {
   low: { label: '낮음', color: 'text-gray-600 bg-gray-100' },
   medium: { label: '보통', color: 'text-yellow-600 bg-yellow-100' },
   high: { label: '높음', color: 'text-red-600 bg-red-100' },
-};
-
-// 피드백 상태
-export const FEEDBACK_STATUSES = {
-  pending: { label: '대기', labelEn: 'Pending', color: 'text-gray-600 bg-gray-100' },
-  reviewing: { label: '검토 중', labelEn: 'Reviewing', color: 'text-blue-600 bg-blue-100' },
-  planned: { label: '예정', labelEn: 'Planned', color: 'text-purple-600 bg-purple-100' },
-  completed: { label: '완료', labelEn: 'Completed', color: 'text-green-600 bg-green-100' },
-  deleted: { label: '휴지통', labelEn: 'Trash', color: 'text-red-600 bg-red-100' },
 };

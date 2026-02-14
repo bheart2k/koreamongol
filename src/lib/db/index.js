@@ -14,20 +14,21 @@ export { posts } from './schema/posts.js';
 export { comments } from './schema/comments.js';
 export { badges } from './schema/badges.js';
 export { points } from './schema/points.js';
-export { feedback } from './schema/feedback.js';
-export { contactMessages } from './schema/contactMessages.js';
+export { inbox } from './schema/inbox.js';
 export { analyticsEvents } from './schema/analyticsEvents.js';
 export { dailyStats } from './schema/dailyStats.js';
 export { counters } from './schema/counters.js';
+export { commentLikes, postLikes } from './schema/likes.js';
 
 // 상수
 export {
   POINT_CONFIG,
   LEVEL_CONFIG,
   DEFAULT_BADGES,
-  FEEDBACK_CATEGORIES,
-  FEEDBACK_PRIORITIES,
-  FEEDBACK_STATUSES,
+  INBOX_TYPES,
+  INBOX_CATEGORIES,
+  INBOX_STATUSES,
+  INBOX_PRIORITIES,
 } from './schema/constants.js';
 
 // 헬퍼

@@ -100,6 +100,32 @@ export function FAQPageJsonLd({ faqs }) {
   );
 }
 
+export function HowToJsonLd({ name, description, steps }) {
+  if (!steps || steps.length === 0) return null;
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name,
+    description,
+    step: steps.map((step, index) => ({
+      '@type': 'HowToStep',
+      position: index + 1,
+      name: step.title,
+      text: step.description || step.title,
+    })),
+    inLanguage: 'mn',
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      suppressHydrationWarning
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export function BreadcrumbJsonLd({ items }) {
   if (!items || items.length === 0) return null;
 

@@ -76,8 +76,7 @@ function getBreadcrumbs(pathname) {
     characters: '캐릭터',
     general: '일반',
     settings: '설정',
-    contacts: '문의 관리',
-    feedback: '피드백 관리',
+    inbox: '받은편지함',
   };
 
   let path = '';
@@ -117,17 +116,18 @@ export function AdminShell({ session, children }) {
   const [openMenus, setOpenMenus] = React.useState({});
 
   // 알림 카운트 (전역 store)
-  const { contacts, feedback, fetchNotifications } = useAdminNotifications();
+  const { inbox: inboxCount, fetchNotifications } = useAdminNotifications();
 
-  // 초기 로드 및 페이지 이동 시 갱신
+  // 초기 로드 + 3분마다 폴링
   React.useEffect(() => {
-    fetchNotifications();
-  }, [pathname]);
+    fetchNotifications(true);
+    const interval = setInterval(() => fetchNotifications(true), 3 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // URL → 알림 카운트 매핑
   const getNotificationCount = (url) => {
-    if (url === '/admin/contacts') return contacts;
-    if (url === '/admin/feedback') return feedback;
+    if (url === '/admin/inbox') return inboxCount;
     return 0;
   };
 
@@ -167,7 +167,7 @@ export function AdminShell({ session, children }) {
   };
 
   return (
-    <SidebarProvider>
+    <SidebarProvider className="text-base [&_.text-xs]:text-sm [&_.text-sm]:text-base">
       <Sidebar collapsible="icon">
         <SidebarHeader>
           <SidebarMenu>
@@ -367,7 +367,7 @@ export function AdminShell({ session, children }) {
             </Breadcrumb>
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0 [&_h1]:text-3xl [&_h3]:text-lg [&_.text-2xl]:text-3xl">
           {children}
         </div>
       </SidebarInset>

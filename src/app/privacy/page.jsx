@@ -71,7 +71,7 @@ export default function PrivacyPage() {
           <section className="space-y-4">
             <h2 className="text-title">7. Холбоо барих</h2>
             <p className="text-body text-muted-foreground">
-              Нууцлалтай холбоотой асуулт: hello@koreamongol.com
+              Нууцлалтай холбоотой асуулт: koreamongol@googlegroups.com
             </p>
           </section>
 

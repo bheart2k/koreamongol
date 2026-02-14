@@ -39,13 +39,13 @@ const Toaster = ({ ...props }) => {
       toastOptions={{
         classNames: {
           toast:
-            "group toast group-[.toaster]:bg-white group-[.toaster]:text-foreground group-[.toaster]:border group-[.toaster]:border-border group-[.toaster]:shadow-lg group-[.toaster]:rounded-xl group-[.toaster]:px-4 group-[.toaster]:py-3",
+            "group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border group-[.toaster]:border-border group-[.toaster]:shadow-lg group-[.toaster]:rounded-xl group-[.toaster]:px-4 group-[.toaster]:py-3",
           title: "group-[.toast]:font-semibold group-[.toast]:text-sm",
           description: "group-[.toast]:text-muted-foreground group-[.toast]:text-sm",
           actionButton:
             "group-[.toast]:bg-accent group-[.toast]:text-white group-[.toast]:rounded-lg group-[.toast]:px-3 group-[.toast]:py-1.5 group-[.toast]:text-sm group-[.toast]:font-medium",
           cancelButton:
-            "group-[.toast]:bg-hanji-200 group-[.toast]:text-ink-700 group-[.toast]:rounded-lg group-[.toast]:px-3 group-[.toast]:py-1.5 group-[.toast]:text-sm group-[.toast]:font-medium",
+            "group-[.toast]:bg-muted group-[.toast]:text-muted-foreground group-[.toast]:rounded-lg group-[.toast]:px-3 group-[.toast]:py-1.5 group-[.toast]:text-sm group-[.toast]:font-medium",
           success: "group-[.toaster]:border-status-success/30",
           error: "group-[.toaster]:border-status-error/30",
           warning: "group-[.toaster]:border-status-warning/30",

@@ -84,8 +84,9 @@ export default async function PostDetailPage({ params }) {
     notFound();
   }
 
-  // Lexical JSON → HTML 변환 (서버에서 처리)
-  const contentHtml = lexicalToHtml(post.content);
+  // Lexical JSON → HTML 변환 (서버에서 처리) — expression은 plain text
+  const isExpression = boardType === 'expression';
+  const contentHtml = isExpression ? null : lexicalToHtml(post.content);
 
   return (
     <main className="min-h-content bg-background">
@@ -97,7 +98,7 @@ export default async function PostDetailPage({ params }) {
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            {isKo ? '목록으로' : 'Back to List'}
+            목록으로
           </Link>
         </div>
       </section>
@@ -170,11 +171,17 @@ export default async function PostDetailPage({ params }) {
             </div>
           )}
 
-          {/* Content - SSR로 렌더링된 HTML */}
-          <div
-            className="prose prose-sm max-w-none"
-            dangerouslySetInnerHTML={{ __html: contentHtml }}
-          />
+          {/* Content */}
+          {isExpression ? (
+            <div className="text-sm whitespace-pre-wrap leading-relaxed">
+              {post.content}
+            </div>
+          ) : (
+            <div
+              className="prose prose-sm max-w-none"
+              dangerouslySetInnerHTML={{ __html: contentHtml }}
+            />
+          )}
 
           {/* 광고 */}
           <div className="mt-12 pt-8 border-t border-border">
@@ -186,6 +193,7 @@ export default async function PostDetailPage({ params }) {
             postId={String(post.id)}
             initialCount={post.commentCount}
             locale={locale}
+            boardType={boardType}
           />
         </div>
       </article>

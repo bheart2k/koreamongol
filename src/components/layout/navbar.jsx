@@ -148,7 +148,7 @@ export function Navbar() {
 
           <div className="flex items-center gap-1 lg:gap-1">
             <ThemeToggle />
-            <div className="flex items-center gap-1 lg:w-[108px] lg:justify-end">
+            <div className="flex items-center gap-1">
               <AdminButton />
               <UserMenu />
             </div>

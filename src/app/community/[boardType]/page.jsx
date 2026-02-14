@@ -11,6 +11,7 @@ import {
   BookOpen,
   MessageCircle,
   Megaphone,
+  MessageCircleQuestion,
   Plus,
   Eye,
   Heart,
@@ -52,6 +53,13 @@ const boardConfig = {
     desc: 'KoreaMongol-ын мэдэгдэл болон түгээмэл асуултууд',
     color: 'text-amber-500',
     bgColor: 'bg-amber-500/10',
+  },
+  expression: {
+    icon: MessageCircleQuestion,
+    title: 'Хэллэгийн асуулт',
+    desc: 'Солонгос хэллэгийн талаар асуулт асуух, хариулт өгөх',
+    color: 'text-purple-500',
+    bgColor: 'bg-purple-500/10',
   },
 };
 

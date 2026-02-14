@@ -13,7 +13,7 @@ import { NextResponse } from 'next/server';
 const rateLimitMap = new Map();
 const RATE_LIMIT_WINDOW = 60 * 1000; // 1분
 const RATE_LIMIT_MAX_API = 60; // API: 분당 60회
-const RATE_LIMIT_MAX_AUTH = 10; // 인증: 분당 10회
+const RATE_LIMIT_MAX_AUTH = 60; // 인증: 분당 60회 (ClientFetchError 방지를 위해 완화)
 const RATE_LIMIT_MAX_WRITE = 10; // 쓰기(POST/PUT/DELETE): 분당 10회
 
 // 주기적으로 만료된 항목 정리

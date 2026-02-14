@@ -2,12 +2,12 @@ import Script from 'next/script';
 import { Inter, Noto_Sans } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { Toaster } from '@/components/ui/sonner';
-import { Navbar } from '@/components/layout/navbar';
-import { Footer } from '@/components/layout/footer';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { AuthProvider } from '@/components/providers/auth-provider';
+import { auth } from '@/lib/auth';
 import SWRProvider from '@/components/providers/SWRProvider';
 import { OrganizationJsonLd } from '@/components/seo/JsonLd';
+import { LayoutShell } from '@/components/layout/layout-shell';
 import './globals.css';
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
@@ -37,13 +37,12 @@ export const metadata = {
   authors: [{ name: 'KoreaMongol' }],
   creator: 'KoreaMongol',
   publisher: 'KoreaMongol',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  openGraph: {
-    type: 'website',
+      formatDetection: {
+      email: false,
+      address: false,
+      telephone: false,
+    },
+    openGraph: {    type: 'website',
     locale: 'mn_MN',
     url: BASE_URL,
     siteName: 'KoreaMongol',
@@ -68,7 +67,8 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const session = await auth();
   const fontVariables = [
     inter.variable,
     notoSans.variable,
@@ -80,14 +80,10 @@ export default function RootLayout({ children }) {
         <OrganizationJsonLd />
       </head>
       <body className={`${fontVariables} font-sans antialiased`}>
-        <AuthProvider>
+        <AuthProvider session={session}>
           <SWRProvider>
             <ThemeProvider>
-              <div className="flex flex-col min-h-screen">
-                <Navbar />
-                <main className="flex-1">{children}</main>
-                <Footer />
-              </div>
+              <LayoutShell>{children}</LayoutShell>
               <Toaster position="top-right" richColors />
             </ThemeProvider>
           </SWRProvider>

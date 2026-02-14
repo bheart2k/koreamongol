@@ -41,9 +41,14 @@ const ProfileButton = memo(function ProfileButton({ user, isOpen, onClick }) {
 export function UserMenu() {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const menuRef = useRef(null);
 
   const { user: cachedUser, setUser } = useUserCache();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (session?.user) {
@@ -63,12 +68,19 @@ export function UserMenu() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // SSR과 클라이언트 초기 렌더를 일치시켜 hydration error 방지
+  if (!mounted) {
+    return (
+      <div className="w-9 h-9 rounded-full" />
+    );
+  }
+
   const showProfile = !!displayUser;
   const isFirstLoading = status === 'loading' && !displayUser;
 
   if (isFirstLoading) {
     return (
-      <div className="w-9 h-9 lg:w-[68px] rounded-full bg-navy-light animate-pulse" />
+      <div className="w-9 h-9 rounded-full bg-navy-light animate-pulse" />
     );
   }
 

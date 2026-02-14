@@ -8,43 +8,43 @@ import { Button } from '@/components/ui/button';
 const guides = [
   {
     id: 'visa',
-    href: '/guides/visa',
+    href: '/visa',
     icon: FileText,
     title: 'Визний гарын авлага',
     desc: 'E-9, D-2, D-4 визний мэдээлэл',
-    available: false,
+    available: true,
   },
   {
     id: 'arrival',
-    href: '/guides/arrival',
+    href: '/arrival',
     icon: MapPin,
     title: 'Ирсний дараа',
     desc: 'Бүртгэл, банк, утас нээлгэх',
-    available: false,
+    available: true,
   },
   {
     id: 'hospital',
-    href: '/guides/hospital',
+    href: '/hospital',
     icon: Heart,
     title: 'Эмнэлэг / Яаралтай',
     desc: 'Эмнэлэгт хандах, яаралтай дуудлага',
-    available: false,
+    available: true,
   },
   {
     id: 'money',
-    href: '/guides/money',
+    href: '/money',
     icon: Banknote,
     title: 'Мөнгө шилжүүлэг',
     desc: 'Ханш, шилжүүлгийн арга',
-    available: false,
+    available: true,
   },
   {
     id: 'korean',
-    href: '/guides/korean',
+    href: '/korean-life',
     icon: BookOpen,
     title: 'Бодит Солонгос хэл',
     desc: 'Сурах бичигт байдаггүй чухал зүйлс',
-    available: false,
+    available: true,
   },
   {
     id: 'community',
@@ -75,7 +75,7 @@ export default function HomePage() {
               Таны Солонгос амьдралын хөтөч
             </p>
             <Button asChild variant="terracotta" size="lg">
-              <Link href="/community/blog">
+              <Link href="/visa">
                 Гарын авлага үзэх
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>

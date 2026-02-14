@@ -8,6 +8,11 @@ export default async function sitemap() {
 
   const staticPages = [
     { path: '', priority: 1.0, changeFrequency: 'daily' },
+    { path: '/visa', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/arrival', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/hospital', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/money', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/korean-life', priority: 0.9, changeFrequency: 'monthly' },
     { path: '/community', priority: 0.7, changeFrequency: 'daily' },
     { path: '/community/blog', priority: 0.8, changeFrequency: 'daily' },
     { path: '/faq', priority: 0.7, changeFrequency: 'monthly' },

@@ -75,7 +75,7 @@ export default function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-title">8. Холбоо барих</h2>
             <p className="text-body text-muted-foreground">
-              Үйлчилгээтэй холбоотой асуулт: hello@koreamongol.com
+              Үйлчилгээтэй холбоотой асуулт: koreamongol@googlegroups.com
             </p>
           </section>
         </div>

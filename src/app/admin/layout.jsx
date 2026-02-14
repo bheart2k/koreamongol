@@ -11,18 +11,16 @@ export const metadata = {
 };
 
 export default async function AdminLayout({ children }) {
-  // TODO: 임시 인증 우회 — Google OAuth 설정 완료 후 원복 필요
-  // const session = await auth();
-  // if (!session?.user) {
-  //   redirect('/api/auth/signin?callbackUrl=/admin');
-  // }
-  // if (!isAdmin(session)) {
-  //   redirect('/');
-  // }
-  const session = { user: { name: 'Dev', nickname: 'Dev', grade: 1, image: null } };
+  const session = await auth();
+  if (!session?.user) {
+    redirect('/api/auth/signin?callbackUrl=/admin');
+  }
+  if (!isAdmin(session)) {
+    redirect('/');
+  }
 
   return (
-    <AuthProvider>
+    <AuthProvider session={session}>
       <ThemeProvider>
         <AdminShell session={session}>{children}</AdminShell>
         <Toaster position="top-right" richColors />

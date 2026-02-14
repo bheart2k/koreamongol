@@ -3,14 +3,17 @@ import { users } from './users.js';
 import { posts } from './posts.js';
 import { comments } from './comments.js';
 import { points } from './points.js';
-import { feedback } from './feedback.js';
+import { inbox } from './inbox.js';
+import { commentLikes, postLikes } from './likes.js';
 
 // Users relations
 export const usersRelations = relations(users, ({ many }) => ({
   posts: many(posts),
   comments: many(comments),
   points: many(points),
-  feedback: many(feedback),
+  inbox: many(inbox),
+  commentLikes: many(commentLikes),
+  postLikes: many(postLikes),
 }));
 
 // Posts relations
@@ -50,10 +53,34 @@ export const pointsRelations = relations(points, ({ one }) => ({
   }),
 }));
 
-// Feedback relations
-export const feedbackRelations = relations(feedback, ({ one }) => ({
-  author: one(users, {
-    fields: [feedback.authorId],
+// Inbox relations
+export const inboxRelations = relations(inbox, ({ one }) => ({
+  user: one(users, {
+    fields: [inbox.userId],
     references: [users.id],
+  }),
+}));
+
+// CommentLikes relations
+export const commentLikesRelations = relations(commentLikes, ({ one }) => ({
+  user: one(users, {
+    fields: [commentLikes.userId],
+    references: [users.id],
+  }),
+  comment: one(comments, {
+    fields: [commentLikes.commentId],
+    references: [comments.id],
+  }),
+}));
+
+// PostLikes relations
+export const postLikesRelations = relations(postLikes, ({ one }) => ({
+  user: one(users, {
+    fields: [postLikes.userId],
+    references: [users.id],
+  }),
+  post: one(posts, {
+    fields: [postLikes.postId],
+    references: [posts.id],
   }),
 }));

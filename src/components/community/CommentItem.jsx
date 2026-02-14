@@ -10,6 +10,7 @@ import {
   ChevronDown,
   ChevronUp,
   Edit2,
+  Heart,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
@@ -68,8 +69,10 @@ export default function CommentItem({
   onReplySubmit,
   onDelete,
   onUpdate,
+  onLikeToggle,
   locale = 'ko',
   isReply = false,
+  boardType,
 }) {
   const { data: session } = useSession();
   const isKo = locale === 'ko';
@@ -79,6 +82,9 @@ export default function CommentItem({
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [liked, setLiked] = useState(comment.liked || false);
+  const [likeCount, setLikeCount] = useState(comment.likeCount || 0);
+  const [liking, setLiking] = useState(false);
 
   const isAuthor = session?.user?.id === comment.author?.id;
   const isAdmin = session?.user?.role === 'admin' || session?.user?.role === 'dev';
@@ -114,6 +120,34 @@ export default function CommentItem({
   const handleReplySubmit = (newComment, pointResult) => {
     setShowReplyForm(false);
     onReplySubmit?.(newComment, comment.id, pointResult);
+  };
+
+  const handleLike = async () => {
+    if (!session?.user || liking) return;
+    setLiking(true);
+    // 낙관적 업데이트
+    const prevLiked = liked;
+    const prevCount = likeCount;
+    setLiked(!liked);
+    setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+
+    try {
+      const res = await fetch(`/api/comments/${comment.id}/like`, { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        setLiked(data.data.liked);
+        setLikeCount(data.data.likeCount);
+        onLikeToggle?.(comment.id, data.data);
+      } else {
+        setLiked(prevLiked);
+        setLikeCount(prevCount);
+      }
+    } catch {
+      setLiked(prevLiked);
+      setLikeCount(prevCount);
+    } finally {
+      setLiking(false);
+    }
   };
 
   const handleUpdateSubmit = (updatedData) => {
@@ -191,6 +225,29 @@ export default function CommentItem({
           {/* 액션 버튼 */}
           {!isEditing && (
             <div className="flex items-center gap-3 mt-2">
+              {/* 좋아요 버튼 */}
+              {session?.user && (
+                <button
+                  type="button"
+                  onClick={handleLike}
+                  disabled={liking}
+                  className={`text-xs transition-colors flex items-center gap-1 ${
+                    liked
+                      ? 'text-red-500 hover:text-red-600'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  <Heart className={`w-3.5 h-3.5 ${liked ? 'fill-current' : ''}`} />
+                  {likeCount > 0 && likeCount}
+                </button>
+              )}
+              {!session?.user && likeCount > 0 && (
+                <span className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Heart className="w-3.5 h-3.5" />
+                  {likeCount}
+                </span>
+              )}
+
               {/* 답글 버튼 (부모 댓글만) */}
               {!isReply && session?.user && (
                 <button
@@ -280,8 +337,10 @@ export default function CommentItem({
                 postId={postId}
                 onDelete={onDelete}
                 onUpdate={onUpdate}
+                onLikeToggle={onLikeToggle}
                 locale={locale}
                 isReply
+                boardType={boardType}
               />
             ))}
           </motion.div>

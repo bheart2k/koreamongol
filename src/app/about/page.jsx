@@ -117,8 +117,8 @@ export default function AboutPage() {
               <div className="mt-8 pt-6 border-t border-border">
                 <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <Mail className="w-4 h-4" />
-                  <a href="mailto:hello@koreamongol.com" className="hover:text-accent transition-colors">
-                    hello@koreamongol.com
+                  <a href="mailto:koreamongol@googlegroups.com" className="hover:text-accent transition-colors">
+                    koreamongol@googlegroups.com
                   </a>
                 </div>
               </div>
@@ -161,6 +161,33 @@ export default function AboutPage() {
               );
             })}
           </div>
+        </div>
+      </section>
+
+      {/* Хамтдаа бүтээе Section */}
+      <section className="py-16 md:py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-headline mb-8 text-center">Хамтдаа бүтээе</h2>
+            <div className="bg-card border-2 border-gold/30 rounded-2xl p-8 md:p-10">
+              <div className="space-y-4 text-body text-muted-foreground">
+                <p>
+                  Бид мэдээлэл бүрийг нягтлан шалгаж бичсэн. Гэхдээ хууль, журам, үнэ ханш байнга өөрчлөгддөг тул алдаа байж болно.
+                </p>
+                <p>
+                  Хэрвээ буруу мэдээлэл олвол гарын авлага хуудасны доод хэсэгт байрлах <strong className="text-foreground">&quot;Мэдээлэл засах&quot;</strong> товч дээр дарж бидэнд мэдэгдэнэ үү.
+                </p>
+                <p className="text-foreground font-medium">
+                  Та бүхний тусламжтайгаар илүү найдвартай мэдээллийн платформ болно.
+                </p>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 

@@ -15,13 +15,13 @@ import { useComments } from '@/lib/swr/hooks';
  * @param {string} [props.locale] - 로케일
  * @param {Function} [props.onCountChange] - 댓글 수 변경 콜백
  */
-export default function CommentSection({ postId, initialCount = 0, locale = 'ko', onCountChange }) {
+export default function CommentSection({ postId, initialCount = 0, locale = 'ko', onCountChange, boardType }) {
   const isKo = locale === 'ko';
 
   const [commentCount, setCommentCount] = useState(initialCount);
 
   // SWR로 댓글 목록 조회
-  const { comments, isLoading, error, mutate } = useComments(postId);
+  const { comments, isLoading, error, mutate } = useComments(postId, boardType);
 
   // 댓글 수 변경 시 부모에게 알림
   const updateCount = (newCount) => {
@@ -193,6 +193,7 @@ export default function CommentSection({ postId, initialCount = 0, locale = 'ko'
                 onDelete={handleDelete}
                 onUpdate={handleUpdate}
                 locale={locale}
+                boardType={boardType}
               />
             ))}
           </AnimatePresence>

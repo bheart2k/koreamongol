@@ -168,6 +168,69 @@ src/
 
 ---
 
+## DB 작업
+
+### CLI 도구
+`scripts/db.mjs` — .env.local 자동 로딩. `node scripts/db.mjs tables|describe|count|query|push`
+
+### Claude용 DB 스크립트 작성 샘플
+
+DB 조회/수정/테이블 생성 등 일회성 스크립트가 필요할 때 아래 패턴을 복사해서 쓸 것. **매번 env 로딩이나 neon API 사용법으로 삽질하지 말 것.**
+
+```js
+// ===== 일회성 DB 스크립트 템플릿 =====
+// 실행: cd /c/workspace/koreamongol && node scripts/tmp.mjs
+
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+import { neon } from '@neondatabase/serverless';
+
+// .env.local 로딩
+const envContent = readFileSync(resolve(process.cwd(), '.env.local'), 'utf-8');
+for (const line of envContent.split('\n')) {
+  const t = line.trim();
+  if (!t || t.startsWith('#')) continue;
+  const i = t.indexOf('=');
+  if (i === -1) continue;
+  const k = t.slice(0, i).trim();
+  let v = t.slice(i + 1).trim();
+  if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'")))
+    v = v.slice(1, -1);
+  process.env[k] ??= v;
+}
+
+const sql = neon(process.env.DATABASE_URL);
+
+// --- neon 사용법 ---
+// Tagged template (값 바인딩 자동):
+//   const rows = await sql`SELECT * FROM users WHERE id = ${userId}`;
+//
+// 동적 쿼리 (테이블명 등 변수 포함):
+//   const rows = await sql.query(`SELECT * FROM ${tableName} WHERE id = $1`, [id]);
+//
+// DDL (CREATE TABLE 등):
+//   await sql`CREATE TABLE IF NOT EXISTS foo (id SERIAL PRIMARY KEY, name TEXT)`;
+//
+// INSERT:
+//   await sql`INSERT INTO inbox (type, subject, content) VALUES (${type}, ${subj}, ${body})`;
+
+// --- 여기에 실제 작업 작성 ---
+async function main() {
+  const rows = await sql`SELECT COUNT(*) as cnt FROM users`;
+  console.log('users:', rows[0].cnt);
+}
+
+main().catch(e => { console.error(e); process.exit(1); });
+```
+
+**핵심 규칙:**
+- `sql\`...\`` = tagged template. 값 바인딩은 `${변수}`로 자동 처리
+- `sql.query("...", [args])` = 동적 테이블명 등 conventional 호출
+- `sql("...")` ← **이거 안 됨!** 반드시 위 두 가지 중 하나 사용
+- drizzle-kit push는 인터랙티브 프롬프트가 있어서 자동화 불가 → DDL은 위 방식으로 직접 실행
+
+---
+
 ## 참고 문서
 
 - **MVP 기획서**: `docs/koreamongol-mvp-plan.md`

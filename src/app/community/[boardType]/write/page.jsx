@@ -18,12 +18,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import LexicalEditor from '@/components/editor/LexicalEditor';
+import { Textarea } from '@/components/ui/textarea';
 import { v4 as uuidv4 } from 'uuid';
 
 const boardTitles = {
   blog: { ko: '한글 블로그', en: 'Hangul Blog' },
   free: { ko: '자유게시판', en: 'Free Board' },
   notice: { ko: '공지 & FAQ', en: 'Notice & FAQ' },
+  expression: { ko: '표현 질문', en: 'Expression Q&A' },
 };
 
 export default function WritePostPage({ params }) {
@@ -164,7 +166,12 @@ export default function WritePostPage({ params }) {
       return;
     }
 
-    if (!content || content === '{}' || content === '{"root":{"children":[],"direction":null,"format":"","indent":0,"type":"root","version":1}}') {
+    if (boardType === 'expression') {
+      if (!content || content.trim().length === 0) {
+        setError(isKo ? '내용을 입력해주세요.' : 'Please enter content.');
+        return;
+      }
+    } else if (!content || content === '{}' || content === '{"root":{"children":[],"direction":null,"format":"","indent":0,"type":"root","version":1}}') {
       setError(isKo ? '내용을 입력해주세요.' : 'Please enter content.');
       return;
     }
@@ -290,17 +297,33 @@ export default function WritePostPage({ params }) {
               <Label>
                 {isKo ? '내용' : 'Content'} <span className="text-destructive">*</span>
               </Label>
-              <LexicalEditor
-                value={content}
-                onChange={setContent}
-                placeholder={isKo ? '내용을 입력하세요' : 'Enter content'}
-                minHeight={500}
-                maxHeight={670}
-                onError={handleEditorError}
-                maxImages={10}
-                boardType={boardType}
-                sessionId={sessionId}
-              />
+              {boardType === 'expression' ? (
+                <div>
+                  <Textarea
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    placeholder="Жишээ: Ажлын газар хоцорсон үедээ яаж уучлал гуйх вэ?"
+                    rows={6}
+                    maxLength={500}
+                    className="resize-none"
+                  />
+                  <p className="text-xs text-muted-foreground text-right mt-1">
+                    {content.length}/500
+                  </p>
+                </div>
+              ) : (
+                <LexicalEditor
+                  value={content}
+                  onChange={setContent}
+                  placeholder={isKo ? '내용을 입력하세요' : 'Enter content'}
+                  minHeight={500}
+                  maxHeight={670}
+                  onError={handleEditorError}
+                  maxImages={10}
+                  boardType={boardType}
+                  sessionId={sessionId}
+                />
+              )}
             </div>
 
             {/* Tags */}

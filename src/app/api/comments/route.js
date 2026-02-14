@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { db, comments, posts, users } from '@/lib/db';
-import { eq, and, asc, count, sql, isNull } from 'drizzle-orm';
+import { db, comments, posts, users, commentLikes } from '@/lib/db';
+import { eq, and, asc, desc, count, sql, isNull } from 'drizzle-orm';
 import { givePoints } from '@/lib/services/pointService';
 
 /**
@@ -10,7 +10,9 @@ import { givePoints } from '@/lib/services/pointService';
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
+    const session = await auth();
     const postId = searchParams.get('postId');
+    const boardType = searchParams.get('boardType');
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '50');
 
@@ -47,7 +49,11 @@ export async function GET(request) {
           eq(comments.depth, 0),
           eq(comments.state, 'Y'),
         ))
-        .orderBy(asc(comments.createdAt))
+        .orderBy(
+          ...(boardType === 'expression'
+            ? [desc(comments.likeCount), asc(comments.createdAt)]
+            : [asc(comments.createdAt)])
+        )
         .offset(skip)
         .limit(limit),
       db.select({ total: count() })
@@ -119,7 +125,22 @@ export async function GET(request) {
       }
     }
 
-    // 4. 부모 댓글 + 대댓글 조합
+    // 4. 로그인 유저의 좋아요 상태 조회
+    let likedSet = new Set();
+    if (session?.user?.id && parentIds.length > 0) {
+      const allCommentIds = [...parentIds];
+      Object.values(repliesMap).flat().forEach((r) => allCommentIds.push(r.id));
+
+      const userLikes = await db.select({ commentId: commentLikes.commentId })
+        .from(commentLikes)
+        .where(and(
+          eq(commentLikes.userId, parseInt(session.user.id)),
+          sql`${commentLikes.commentId} IN (${sql.join(allCommentIds.map(id => sql`${id}`), sql`, `)})`,
+        ));
+      likedSet = new Set(userLikes.map((l) => l.commentId));
+    }
+
+    // 5. 부모 댓글 + 대댓글 조합
     const result = parentComments.map((c) => ({
       id: c.id,
       postId: c.postId,
@@ -133,13 +154,14 @@ export async function GET(request) {
       state: c.state,
       createdAt: c.createdAt,
       updatedAt: c.updatedAt,
+      liked: likedSet.has(c.id),
       author: {
         id: c.authorId,
         nickname: c.authorNickname,
         image: c.authorImage,
         level: c.authorLevel,
       },
-      replies: repliesMap[c.id] || [],
+      replies: (repliesMap[c.id] || []).map((r) => ({ ...r, liked: likedSet.has(r.id) })),
     }));
 
     return NextResponse.json({

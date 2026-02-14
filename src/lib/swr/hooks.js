@@ -66,8 +66,11 @@ export function usePost(postId, { countView = true } = {}) {
  * 댓글 목록 조회
  * @param {string} postId - 게시글 ID
  */
-export function useComments(postId) {
-  const key = postId ? `/api/comments?postId=${postId}` : null;
+export function useComments(postId, boardType) {
+  const params = new URLSearchParams();
+  if (postId) params.set('postId', postId);
+  if (boardType) params.set('boardType', boardType);
+  const key = postId ? `/api/comments?${params}` : null;
 
   const { data, error, isLoading, mutate } = useSWR(key, fetcher, {
     dedupingInterval: CACHE_TIME.COMMENTS,

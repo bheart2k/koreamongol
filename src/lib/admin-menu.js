@@ -3,8 +3,7 @@ import {
   Users,
   Image,
   Settings,
-  MessageCircle,
-  MessageSquarePlus,
+  Inbox,
   BarChart3,
 } from 'lucide-react';
 
@@ -26,14 +25,9 @@ export const ADMIN_MENU = {
       icon: Users,
     },
     {
-      title: '문의 관리',
-      url: '/admin/contacts',
-      icon: MessageCircle,
-    },
-    {
-      title: '피드백 관리',
-      url: '/admin/feedback',
-      icon: MessageSquarePlus,
+      title: '받은편지함',
+      url: '/admin/inbox',
+      icon: Inbox,
     },
     {
       title: '이미지 관리',
