@@ -74,6 +74,57 @@ Warm (#FAF6F0)       — 커뮤니티 배경
 
 ## 개발 원칙
 
+### 렌더링 전략 (SSG/SSR 우선 — 절대 규칙)
+
+**page.jsx에 `'use client'`를 직접 쓰지 않는다.** 인터랙션이 필요하면 서버 page.jsx + 클라이언트 래퍼로 분리한다.
+
+| 페이지 유형 | 렌더링 | 이유 |
+|------------|--------|------|
+| 가이드 (visa, arrival 등) | **SSG** | 정적 콘텐츠, SEO 핵심 |
+| about, faq, contact | **SSG** | 정적 콘텐츠 |
+| 메인 | **SSG** or **ISR(태그)** | 커뮤니티 미리보기 추가 시 태그 방식 ISR |
+| 커뮤니티 목록/상세 | **ISR(태그)** | 글 작성/수정/삭제 시 on-demand revalidate |
+| 관리자 (admin/*) | CSR 허용 | SEO 불필요, robots.txt 차단 |
+| mypage, 글쓰기 | CSR 허용 | 인증 필수, SEO 불필요 |
+
+**ISR은 태그 기반(on-demand) 우선 사용.** 시간 기반(`revalidate = N`)은 지양한다.
+```js
+// 서버 컴포넌트에서 fetch 시 태그 지정
+fetch(url, { next: { tags: ['posts', `board-${boardType}`] } });
+
+// 또는 unstable_cache + revalidateTag 조합
+import { unstable_cache } from 'next/cache';
+import { revalidateTag } from 'next/cache';
+
+// 데이터 조회 (태그 지정)
+const getPosts = unstable_cache(async (boardType) => { ... }, ['posts'], {
+  tags: ['posts', `board-${boardType}`],
+});
+
+// 글 작성/수정/삭제 API에서 캐시 무효화
+revalidateTag('posts');
+revalidateTag(`board-${boardType}`);
+```
+
+**서버/클라이언트 분리 패턴:**
+```
+// page.jsx (서버 컴포넌트) — metadata export 가능
+export const metadata = { ... };
+export default function Page() {
+  return <ClientWrapper />;  // 또는 서버에서 데이터 fetch 후 전달
+}
+
+// ClientWrapper.jsx ('use client') — 인터랙션 담당
+```
+
+**SEO 필수 요소 (새 페이지 생성 시 반드시 포함):**
+- layout.js 또는 page.jsx에 `metadata` (title, description, openGraph, twitter)
+- `alternates.canonical` URL
+- `openGraph.images`
+- `BreadcrumbJsonLd` (가이드/커뮤니티 페이지)
+- 가이드 페이지에 절차가 있으면 `HowToJsonLd`
+- 커뮤니티 게시글에 `generateMetadata` + `ArticleJsonLd`
+
 ### 높이 설정
 - `min-h-screen`, `h-screen` 대신 `min-h-content`, `h-content` 사용 (네비바 높이 제외)
 

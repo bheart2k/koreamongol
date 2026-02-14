@@ -1,23 +1,26 @@
-'use client';
-
-import { useState } from 'react';
 import { BookOpen } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
-  GuideHero, GuideTOC, GuideNav, LanguageCard,
+  GuideHero, GuideTOC, GuideNav,
   CultureCard, TipBox, LinkCard, ReportBanner,
 } from '@/components/guide';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
-  koreanLifeMeta, koreanLifeSections, survivalKorean,
+  koreanLifeMeta, koreanLifeSections,
   koreanMisunderstandings, culturalPoints,
   commonMistakes, learningResources,
 } from '@/data/guides/korean-life';
+import KoreanLifeTabs from './KoreanLifeTabs';
+
+const BASE_URL = 'https://koreamongol.com';
 
 export default function KoreanLifePage() {
-  const [langTab, setLangTab] = useState('daily');
-
   return (
+    <>
+      <BreadcrumbJsonLd items={[
+        { name: 'KoreaMongol', url: BASE_URL },
+        { name: 'Солонгос хэл & Соёл', url: `${BASE_URL}/korean-life` },
+      ]} />
     <main className="min-h-content bg-background">
       <GuideHero
         title={koreanLifeMeta.title}
@@ -36,28 +39,7 @@ export default function KoreanLifePage() {
         {/* Daily Korean */}
         <section id="kl-daily">
           <h2 className="text-title text-navy dark:text-sky mb-6">Өдөр тутмын хэллэг</h2>
-          <Tabs value={langTab} onValueChange={setLangTab}>
-            <TabsList>
-              <TabsTrigger value="daily">Өдөр тутам</TabsTrigger>
-              <TabsTrigger value="work">Ажлын газар</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="daily" className="mt-6">
-              <div className="grid sm:grid-cols-2 gap-3">
-                {survivalKorean.daily.map((item) => (
-                  <LanguageCard key={item.korean} {...item} />
-                ))}
-              </div>
-            </TabsContent>
-
-            <TabsContent value="work" className="mt-6" id="kl-work">
-              <div className="grid sm:grid-cols-2 gap-3">
-                {survivalKorean.work.map((item) => (
-                  <LanguageCard key={item.korean} {...item} />
-                ))}
-              </div>
-            </TabsContent>
-          </Tabs>
+          <KoreanLifeTabs />
         </section>
 
         {/* Misunderstandings */}
@@ -115,5 +97,6 @@ export default function KoreanLifePage() {
         <GuideNav currentGuideId="korean-life" />
       </div>
     </main>
+    </>
   );
 }

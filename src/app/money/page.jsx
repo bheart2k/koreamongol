@@ -1,17 +1,23 @@
-'use client';
-
 import { Banknote, ThumbsUp, ThumbsDown, ExternalLink } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, InfoTable,
   WarningBox, TipBox, LinkCard, ReportBanner,
 } from '@/components/guide';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
   moneyMeta, moneySections, remittanceComparison,
   remittanceMethods, exchangeTips, financeWarnings, moneyLinks,
 } from '@/data/guides/money';
 
+const BASE_URL = 'https://koreamongol.com';
+
 export default function MoneyPage() {
   return (
+    <>
+      <BreadcrumbJsonLd items={[
+        { name: 'KoreaMongol', url: BASE_URL },
+        { name: 'Мөнгө шилжүүлэг', url: `${BASE_URL}/money` },
+      ]} />
     <main className="min-h-content bg-background">
       <GuideHero
         title={moneyMeta.title}
@@ -127,5 +133,6 @@ export default function MoneyPage() {
         <GuideNav currentGuideId="money" />
       </div>
     </main>
+    </>
   );
 }

@@ -1,22 +1,30 @@
-'use client';
-
-import { useState } from 'react';
 import { FileText } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  GuideHero, GuideTOC, GuideNav, StepList, CheckList,
+  GuideHero, GuideTOC, GuideNav, CheckList,
   WarningBox, TipBox, LinkCard, ReportBanner,
 } from '@/components/guide';
+import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
-  visaMeta, visaSections, visaTypes, mongoliaPrep,
+  visaMeta, visaSections, mongoliaPrep,
   rejectionReasons, illegalStayWarnings, usefulLinks,
 } from '@/data/guides/visa';
+import { visaTypes } from '@/data/guides/visa';
+import VisaTabs from './VisaTabs';
+
+const BASE_URL = 'https://koreamongol.com';
 
 export default function VisaPage() {
-  const [activeTab, setActiveTab] = useState('e9');
-  const currentVisa = visaTypes[activeTab];
-
   return (
+    <>
+      <BreadcrumbJsonLd items={[
+        { name: 'KoreaMongol', url: BASE_URL },
+        { name: 'Визний гарын авлага', url: `${BASE_URL}/visa` },
+      ]} />
+      <HowToJsonLd
+        name="E-9 ажлын виз авах"
+        description="Солонгост ажиллах E-9 виз авах үе шат"
+        steps={visaTypes.e9.steps}
+      />
     <main className="min-h-content bg-background">
       <GuideHero
         title={visaMeta.title}
@@ -31,49 +39,7 @@ export default function VisaPage() {
         {/* Visa Types */}
         <section id="visa-types">
           <h2 className="text-title text-navy dark:text-sky mb-6">Визний төрлүүд</h2>
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="w-full justify-start">
-              <TabsTrigger value="e9">E-9</TabsTrigger>
-              <TabsTrigger value="d2">D-2</TabsTrigger>
-              <TabsTrigger value="d4">D-4</TabsTrigger>
-            </TabsList>
-
-            {Object.entries(visaTypes).map(([key, visa]) => (
-              <TabsContent key={key} value={key} className="mt-6 space-y-8">
-                <div>
-                  <h3 className="text-lg font-semibold font-heading text-foreground mb-2">
-                    {visa.label}
-                  </h3>
-                  <p className="text-sm text-muted-foreground">{visa.description}</p>
-                </div>
-
-                {/* Documents Checklist */}
-                <div id={`visa-${key}`}>
-                  <h4 className="text-base font-semibold font-heading text-foreground mb-4">
-                    Шаардлагатай бичиг баримт
-                  </h4>
-                  <CheckList items={visa.documents} storageKey={`visa-${key}-docs`} />
-                </div>
-
-                {/* Steps */}
-                <div>
-                  <h4 className="text-base font-semibold font-heading text-foreground mb-4">
-                    Визний үе шат
-                  </h4>
-                  <StepList steps={visa.steps} />
-                </div>
-
-                {/* Warnings */}
-                <WarningBox>
-                  <ul className="space-y-1">
-                    {visa.warnings.map((w, i) => (
-                      <li key={i}>• {w}</li>
-                    ))}
-                  </ul>
-                </WarningBox>
-              </TabsContent>
-            ))}
-          </Tabs>
+          <VisaTabs />
         </section>
 
         {/* Mongolia Preparation */}
@@ -132,5 +98,6 @@ export default function VisaPage() {
         <GuideNav currentGuideId="visa" />
       </div>
     </main>
+    </>
   );
 }

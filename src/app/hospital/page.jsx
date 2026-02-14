@@ -1,19 +1,30 @@
-'use client';
-
 import { Heart } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   GuideHero, GuideTOC, GuideNav, EmergencyBanner, StepList,
   InfoTable, LinkCard, WarningBox, TipBox, ReportBanner,
 } from '@/components/guide';
+import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
   hospitalMeta, hospitalSections, emergencyContacts,
   hospitalSteps, insuranceComparison, interpreterServices,
   situationGuides,
 } from '@/data/guides/hospital';
 
+const BASE_URL = 'https://koreamongol.com';
+
 export default function HospitalPage() {
   return (
+    <>
+      <BreadcrumbJsonLd items={[
+        { name: 'KoreaMongol', url: BASE_URL },
+        { name: 'Эмнэлэг', url: `${BASE_URL}/hospital` },
+      ]} />
+      <HowToJsonLd
+        name="Солонгост эмнэлэгт хандах"
+        description="Солонгост эмнэлэгт хандах үе шат"
+        steps={hospitalSteps}
+      />
     <main className="min-h-content bg-background">
       <EmergencyBanner
         sticky
@@ -121,5 +132,6 @@ export default function HospitalPage() {
         <GuideNav currentGuideId="hospital" />
       </div>
     </main>
+    </>
   );
 }

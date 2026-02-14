@@ -6,8 +6,56 @@ import { eq } from 'drizzle-orm';
 import { lexicalToHtml } from '@/lib/lexical-to-html';
 import { Button } from '@/components/ui/button';
 import { ViewCounter, PostActionButtons, PostStats } from '@/components/community/PostActions';
+import { ArticleJsonLd } from '@/components/seo/JsonLd';
 import AdBanner from '@/components/ui/ad-banner';
 import CommentSection from '@/components/community/CommentSection';
+
+const BASE_URL = 'https://koreamongol.com';
+
+export async function generateMetadata({ params }) {
+  const { boardType, postId } = await params;
+
+  try {
+    const [row] = await db.select({
+      title: posts.title,
+      content: posts.content,
+      summary: posts.summary,
+      state: posts.state,
+    }).from(posts)
+      .where(eq(posts.id, parseInt(postId)))
+      .limit(1);
+
+    if (!row || row.state === 'D') {
+      return { title: 'Нийтлэл олдсонгүй' };
+    }
+
+    const description = row.summary
+      || (typeof row.content === 'string'
+        ? row.content.replace(/<[^>]*>/g, '').slice(0, 160)
+        : '');
+
+    return {
+      title: row.title,
+      description,
+      openGraph: {
+        title: `${row.title} | KoreaMongol`,
+        description,
+        url: `${BASE_URL}/community/${boardType}/${postId}`,
+        images: ['/opengraph-image'],
+      },
+      twitter: {
+        card: 'summary',
+        title: `${row.title} | KoreaMongol`,
+        description,
+      },
+      alternates: {
+        canonical: `${BASE_URL}/community/${boardType}/${postId}`,
+      },
+    };
+  } catch {
+    return { title: 'Нийтлэл' };
+  }
+}
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -89,6 +137,8 @@ export default async function PostDetailPage({ params }) {
   const contentHtml = isExpression ? null : lexicalToHtml(post.content);
 
   return (
+    <>
+      <ArticleJsonLd post={post} boardType={boardType} />
     <main className="min-h-content bg-background">
       {/* Header */}
       <section className="py-4 px-6 border-b border-border">
@@ -198,5 +248,6 @@ export default async function PostDetailPage({ params }) {
         </div>
       </article>
     </main>
+    </>
   );
 }

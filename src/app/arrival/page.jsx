@@ -1,17 +1,23 @@
-'use client';
-
 import { MapPin, Smartphone } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList,
   TipBox, InfoTable, ReportBanner,
 } from '@/components/guide';
+import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
   arrivalMeta, arrivalSections, arrivalTimeline,
   arrivalTips, essentialApps,
 } from '@/data/guides/arrival';
 
+const BASE_URL = 'https://koreamongol.com';
+
 export default function ArrivalPage() {
   return (
+    <>
+      <BreadcrumbJsonLd items={[
+        { name: 'KoreaMongol', url: BASE_URL },
+        { name: 'Ирсний дараа', url: `${BASE_URL}/arrival` },
+      ]} />
     <main className="min-h-content bg-background">
       <GuideHero
         title={arrivalMeta.title}
@@ -62,5 +68,6 @@ export default function ArrivalPage() {
         <GuideNav currentGuideId="arrival" />
       </div>
     </main>
+    </>
   );
 }

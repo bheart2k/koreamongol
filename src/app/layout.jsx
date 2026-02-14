@@ -28,6 +28,14 @@ const BASE_URL = 'https://koreamongol.com';
 
 export const metadata = {
   metadataBase: new URL(BASE_URL),
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+    other: {
+      ...(process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION && {
+        'naver-site-verification': process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION,
+      }),
+    },
+  },
   title: {
     template: '%s | KoreaMongol',
     default: 'KoreaMongol — Солонгост амьдрах гарын авлага',
@@ -48,6 +56,7 @@ export const metadata = {
     siteName: 'KoreaMongol',
     title: 'KoreaMongol — Солонгост амьдрах гарын авлага',
     description: 'Монгол иргэдэд зориулсан Солонгос амьдралын бүрэн гарын авлага.',
+    images: ['/opengraph-image'],
   },
   twitter: {
     card: 'summary_large_image',
