@@ -8,6 +8,7 @@ const boardConfig = {
   blog: { title: 'Блог' },
   free: { title: 'Чөлөөт самбар' },
   notice: { title: 'Мэдэгдэл & FAQ' },
+  expression: { title: 'Илэрхийлэл асуулт' },
 };
 
 export async function generateMetadata({ params }) {

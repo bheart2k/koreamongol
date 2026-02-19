@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -21,7 +20,7 @@ import AdBanner from '@/components/ui/ad-banner';
 
 export default function MyPage() {
   const { data: session, status, update: updateSession } = useSession();
-  const { locale } = useParams();
+  const locale = 'ko';
   const fileInputRef = useRef(null);
 
   // 프로필 이미지 크롭

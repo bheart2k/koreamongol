@@ -15,6 +15,10 @@ const boardConfig = {
     title: 'Мэдэгдэл & FAQ',
     desc: 'KoreaMongol-ын мэдэгдэл болон түгээмэл асуултууд.',
   },
+  expression: {
+    title: 'Илэрхийлэл асуулт',
+    desc: 'Солонгос хэлний илэрхийлэл, хэлц үгийн тухай асуулт хариулт.',
+  },
 };
 
 export async function generateMetadata({ params }) {

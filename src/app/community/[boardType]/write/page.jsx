@@ -30,8 +30,7 @@ const boardTitles = {
 
 export default function WritePostPage({ params }) {
   const { boardType } = use(params);
-  const locale = 'ko';
-  const isKo = locale === 'ko';
+  const isKo = true;
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get('edit');
@@ -100,7 +99,7 @@ export default function WritePostPage({ params }) {
               : 'Please log in to write a post.'}
           </p>
           <Button asChild>
-            <Link href={`/${locale}/community/${boardType}`}>
+            <Link href={`/community/${boardType}`}>
               <ChevronLeft className="w-4 h-4 mr-2" />
               {isKo ? '돌아가기' : 'Go Back'}
             </Link>
@@ -128,7 +127,7 @@ export default function WritePostPage({ params }) {
               : 'Only administrators can write announcements.'}
           </p>
           <Button asChild>
-            <Link href={`/${locale}/community/${boardType}`}>
+            <Link href={`/community/${boardType}`}>
               <ChevronLeft className="w-4 h-4 mr-2" />
               {isKo ? '돌아가기' : 'Go Back'}
             </Link>
@@ -148,7 +147,7 @@ export default function WritePostPage({ params }) {
             {isKo ? '존재하지 않는 게시판입니다.' : 'Board not found.'}
           </p>
           <Button asChild>
-            <Link href={`/${locale}/community`}>
+            <Link href="/community">
               {isKo ? '커뮤니티로 돌아가기' : 'Back to Community'}
             </Link>
           </Button>
@@ -205,7 +204,7 @@ export default function WritePostPage({ params }) {
 
       if (data.success) {
         const postId = isEdit ? editId : data.data.id;
-        router.push(`/${locale}/community/${boardType}/${postId}`);
+        router.push(`/community/${boardType}/${postId}`);
       } else {
         setError(data.error || (isKo ? '저장에 실패했습니다.' : 'Failed to save.'));
       }
@@ -236,7 +235,7 @@ export default function WritePostPage({ params }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link
-                href={`/${locale}/community/${boardType}`}
+                href={`/community/${boardType}`}
                 className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <ChevronLeft className="w-5 h-5" />

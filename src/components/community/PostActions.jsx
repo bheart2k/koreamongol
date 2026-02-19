@@ -103,7 +103,7 @@ export function PostActionButtons({
 
       if (data.success) {
         toast.error(isKo ? '게시글이 삭제되었습니다.' : 'Post deleted.');
-        router.push(`/${locale}/community/${boardType}`);
+        router.push(`/community/${boardType}`);
       } else {
         toast.error(data.error || (isKo ? '삭제에 실패했습니다.' : 'Failed to delete.'));
       }
@@ -150,7 +150,7 @@ export function PostActionButtons({
         </Button>
         {canEdit && (
           <Button variant="outline" size="sm" asChild>
-            <Link href={`/${locale}/community/${boardType}/write?edit=${postId}`}>
+            <Link href={`/community/${boardType}/write?edit=${postId}`}>
               <Edit className="w-4 h-4 mr-1.5" />
               {isKo ? '수정' : 'Edit'}
             </Link>
