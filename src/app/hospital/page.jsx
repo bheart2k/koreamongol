@@ -2,7 +2,7 @@ import { Heart } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   GuideHero, GuideTOC, GuideNav, EmergencyBanner, StepList,
-  InfoTable, LinkCard, WarningBox, TipBox, ReportBanner, DonateBanner,
+  InfoTable, LinkCard, WarningBox, TipBox, ReportBanner, DonateBanner, ShareButtons,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -168,6 +168,7 @@ export default function HospitalPage() {
 
         <ReportBanner pageUrl="/hospital" />
         <DonateBanner />
+        <ShareButtons />
         <GuideNav currentGuideId="hospital" />
       </div>
     </main>

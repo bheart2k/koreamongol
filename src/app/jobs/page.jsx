@@ -1,7 +1,7 @@
 import { Briefcase, ExternalLink } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList, StepList,
-  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner,
+  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -217,6 +217,7 @@ export default function JobsPage() {
 
         <ReportBanner pageUrl="/jobs" />
         <DonateBanner />
+        <ShareButtons />
         <GuideNav currentGuideId="jobs" />
       </div>
     </main>

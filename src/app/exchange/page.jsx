@@ -1,5 +1,5 @@
 import { Calculator } from 'lucide-react';
-import { GuideHero, ReportBanner, DonateBanner } from '@/components/guide';
+import { GuideHero, ReportBanner, DonateBanner, ShareButtons } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import ExchangeCalculator from './ExchangeCalculator';
 
@@ -33,6 +33,7 @@ export default function ExchangePage() {
 
         <ReportBanner pageUrl="/exchange" />
         <DonateBanner />
+        <ShareButtons />
       </div>
     </main>
     </>

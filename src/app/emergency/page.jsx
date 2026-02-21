@@ -1,6 +1,6 @@
 import { Phone, Siren, Globe, Briefcase, Languages, Building2, Flag, Clock, CheckCircle2, ExternalLink } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner,
+  GuideHero, GuideTOC, GuideNav, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons,
 } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -165,6 +165,7 @@ export default function EmergencyPage() {
 
         <ReportBanner pageUrl="/emergency" />
         <DonateBanner />
+        <ShareButtons />
         <GuideNav currentGuideId="emergency" />
       </div>
     </main>

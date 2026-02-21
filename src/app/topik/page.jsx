@@ -1,7 +1,7 @@
 import { GraduationCap } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, StepList,
-  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner,
+  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -210,6 +210,7 @@ export default function TopikPage() {
 
         <ReportBanner pageUrl="/topik" />
         <DonateBanner />
+        <ShareButtons />
         <GuideNav currentGuideId="topik" />
       </div>
     </main>

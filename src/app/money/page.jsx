@@ -1,7 +1,7 @@
 import { Banknote, ThumbsUp, ThumbsDown, ExternalLink, Building2, CreditCard, Landmark, ShieldCheck, AlertTriangle, CircleDollarSign } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, InfoTable,
-  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner,
+  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons,
 } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -269,6 +269,7 @@ export default function MoneyPage() {
 
         <ReportBanner pageUrl="/money" />
         <DonateBanner />
+        <ShareButtons />
         <GuideNav currentGuideId="money" />
       </div>
     </main>
