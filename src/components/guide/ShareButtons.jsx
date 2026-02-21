@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Share2, Facebook, Link2, Check } from 'lucide-react';
 import { toast } from 'sonner';
+import { analytics } from '@/lib/analytics-events';
 
 export function ShareButtons() {
   const [copied, setCopied] = useState(false);
@@ -14,6 +15,7 @@ export function ShareButtons() {
 
   const shareToFacebook = useCallback(() => {
     if (!url) return;
+    analytics.shareFacebook(new URL(url).pathname);
     const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
     window.open(fbUrl, '_blank', 'width=600,height=400,scrollbars=yes');
   }, [url]);
@@ -22,6 +24,7 @@ export function ShareButtons() {
     if (!url) return;
     try {
       await navigator.clipboard.writeText(url);
+      analytics.shareCopyLink(new URL(url).pathname);
       setCopied(true);
       toast.success('Линк хуулагдлаа');
       setTimeout(() => setCopied(false), 2000);

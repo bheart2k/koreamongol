@@ -7,7 +7,7 @@ import {
   AlertTriangle, Target, Shield,
   FileText, Plane, Hospital, Banknote, MessageCircle,
   Briefcase, Home, GraduationCap, Calculator, Train, Phone,
-  Wrench, BookOpen, Compass,
+  Wrench, BookOpen, Compass, Smartphone,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -40,10 +40,12 @@ const guides = [
   { icon: GraduationCap, title: 'TOPIK / EPS-TOPIK', desc: 'Шалгалтын бэлтгэл, бүртгэл, зөвлөгөө', href: '/topik' },
   { icon: Train, title: 'Тээвэр', desc: 'Метро, автобус, такси, KTX мэдээлэл', href: '/transport' },
   { icon: Phone, title: 'Яаралтай утас', desc: 'Бүх чухал утасны дугаар нэг хуудсанд', href: '/emergency' },
+  { icon: Smartphone, title: 'Хэрэгтэй апп', desc: 'KakaoTalk, Coupang, тооцоолуурууд', href: '/apps' },
 ];
 
 const tools = [
   { icon: Calculator, title: 'Ханш тооцоолуур', desc: 'KRW-MNT ханш шууд тооцоолох', href: '/exchange' },
+  { icon: Calculator, title: 'Тэтгэмж тооцоолуур', desc: 'Ажлаас гарах тэтгэмж тооцоолох', href: '/severance' },
 ];
 
 const targetUsers = [

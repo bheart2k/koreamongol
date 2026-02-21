@@ -19,6 +19,8 @@ export default async function sitemap() {
     { path: '/transport', priority: 0.9, changeFrequency: 'monthly' },
     { path: '/emergency', priority: 0.9, changeFrequency: 'monthly' },
     { path: '/exchange', priority: 0.8, changeFrequency: 'daily' },
+    { path: '/severance', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/apps', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/donate', priority: 0.4, changeFrequency: 'monthly' },
     { path: '/community', priority: 0.7, changeFrequency: 'daily' },
     { path: '/community/blog', priority: 0.8, changeFrequency: 'daily' },

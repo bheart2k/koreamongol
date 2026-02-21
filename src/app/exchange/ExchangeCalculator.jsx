@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { ArrowUpDown, RefreshCw } from 'lucide-react';
+import { analytics } from '@/lib/analytics-events';
 
 export default function ExchangeCalculator() {
   const [rate, setRate] = useState(null);
@@ -11,6 +12,7 @@ export default function ExchangeCalculator() {
   const [krw, setKrw] = useState('100000');
   const [mnt, setMnt] = useState('');
   const [direction, setDirection] = useState('krw-to-mnt'); // or 'mnt-to-krw'
+  const tracked = useRef(false);
 
   const fetchRate = useCallback(async () => {
     setLoading(true);
@@ -74,6 +76,7 @@ export default function ExchangeCalculator() {
     setKrw(formatNumber(num));
     if (rate) setMnt(formatNumber(Math.round(num * rate)));
     setDirection('krw-to-mnt');
+    if (!tracked.current) { analytics.exchangeCalculate('krw_to_mnt'); tracked.current = true; }
   }
 
   function handleMntChange(e) {
@@ -87,6 +90,7 @@ export default function ExchangeCalculator() {
     setMnt(formatNumber(num));
     if (rate) setKrw(formatNumber(Math.round(num / rate)));
     setDirection('mnt-to-krw');
+    if (!tracked.current) { analytics.exchangeCalculate('mnt_to_krw'); tracked.current = true; }
   }
 
   function handleSwap() {

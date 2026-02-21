@@ -4,22 +4,16 @@ import { useAnalytics } from './AnalyticsContext';
 import { AnalyticsLoading, AnalyticsError, AnalyticsEmpty } from './AnalyticsState';
 import { StatCard } from './StatCard';
 import {
-  Sparkles,
-  Copy,
-  Download,
-  Share2,
-  RotateCcw,
-  Music,
-  Play,
   BookOpen,
+  Share2,
+  Calculator,
+  Heart,
   TrendingUp,
+  MessageSquare,
+  Phone,
+  ExternalLink,
 } from 'lucide-react';
 
-/**
- * InternalOverviewTab - 자체 DB 통계 전체 개요
- *
- * @description MongoDB에 저장된 커스텀 이벤트 통계 표시
- */
 export function InternalOverviewTab() {
   const { internalData, internalError, internalLoading, refreshCurrentTab } = useAnalytics();
 
@@ -37,12 +31,10 @@ export function InternalOverviewTab() {
 
   const { summary, eventSummary, hourlyDistribution, dailyTrend, recentEvents, dateRange } = internalData;
 
-  // 시간대별 분포 최대값 (차트 비율 계산용)
   const maxHourly = Math.max(...(hourlyDistribution || [1]));
 
   return (
     <div className="space-y-8">
-      {/* 날짜 범위 */}
       <div className="text-sm text-muted-foreground">
         {dateRange?.start} ~ {dateRange?.end}
       </div>
@@ -55,86 +47,55 @@ export function InternalOverviewTab() {
           icon={TrendingUp}
         />
         <StatCard
-          title="이름 생성"
-          value={summary?.toolUsage?.generateName?.toLocaleString() || 0}
-          icon={Sparkles}
-        />
-        <StatCard
-          title="퀴즈 완료"
-          value={summary?.learning?.quizCompleted?.toLocaleString() || 0}
+          title="가이드 조회"
+          value={summary?.learning?.guideViews?.toLocaleString() || 0}
           icon={BookOpen}
         />
         <StatCard
-          title="평균 퀴즈 점수"
-          value={summary?.learning?.avgQuizScore || 0}
-          icon={TrendingUp}
+          title="공유"
+          value={summary?.learning?.shares?.toLocaleString() || 0}
+          icon={Share2}
+        />
+        <StatCard
+          title="후원 클릭"
+          value={summary?.learning?.donateClicks?.toLocaleString() || 0}
+          icon={Heart}
         />
       </div>
 
-      {/* 도구별 사용량 */}
+      {/* 카테고리별 사용량 */}
       <div className="bg-card border rounded-xl p-6">
-        <h3 className="text-lg font-semibold mb-4">도구별 사용량</h3>
+        <h3 className="text-lg font-semibold mb-4">카테고리별 이벤트</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <ToolStat
-            icon={Sparkles}
-            label="이름 생성"
-            value={summary?.toolUsage?.generateName || 0}
-          />
-          <ToolStat
-            icon={Copy}
-            label="문구 복사"
-            value={summary?.toolUsage?.copyPhrase || 0}
-          />
-          <ToolStat
-            icon={Download}
-            label="문구 다운로드"
-            value={summary?.toolUsage?.downloadPhrase || 0}
-          />
-          <ToolStat
-            icon={RotateCcw}
-            label="카드 뒤집기"
-            value={summary?.toolUsage?.flipCard || 0}
+            icon={BookOpen}
+            label="가이드"
+            value={summary?.toolUsage?.guide || 0}
           />
           <ToolStat
             icon={Share2}
-            label="카드 공유"
-            value={summary?.toolUsage?.shareCard || 0}
+            label="공유"
+            value={summary?.toolUsage?.social || 0}
           />
           <ToolStat
-            icon={Download}
-            label="폰트 다운로드"
-            value={summary?.toolUsage?.downloadFont || 0}
-          />
-        </div>
-      </div>
-
-      {/* 학습 통계 */}
-      <div className="bg-card border rounded-xl p-6">
-        <h3 className="text-lg font-semibold mb-4">학습 통계</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <ToolStat
-            icon={Play}
-            label="퀴즈 시작"
-            value={summary?.learning?.quizStarted || 0}
+            icon={Calculator}
+            label="도구 (환율)"
+            value={summary?.toolUsage?.tools || 0}
           />
           <ToolStat
-            icon={BookOpen}
-            label="퀴즈 완료"
-            value={summary?.learning?.quizCompleted || 0}
+            icon={MessageSquare}
+            label="커뮤니티"
+            value={summary?.toolUsage?.community || 0}
           />
           <ToolStat
-            icon={Music}
-            label="오디오 재생"
-            value={summary?.learning?.audioPlayed || 0}
+            icon={Heart}
+            label="후원"
+            value={summary?.learning?.donateClicks || 0}
           />
           <ToolStat
-            icon={TrendingUp}
-            label="완료율"
-            value={
-              summary?.learning?.quizStarted > 0
-                ? `${Math.round((summary.learning.quizCompleted / summary.learning.quizStarted) * 100)}%`
-                : '0%'
-            }
+            icon={Calculator}
+            label="환율 계산"
+            value={summary?.learning?.exchangeCalc || 0}
           />
         </div>
       </div>
@@ -149,7 +110,6 @@ export function InternalOverviewTab() {
               className="flex-1 bg-primary/20 hover:bg-primary/40 transition-colors rounded-t relative group"
               style={{ height: `${maxHourly > 0 ? (count / maxHourly) * 100 : 0}%`, minHeight: '2px' }}
             >
-              {/* 툴팁 */}
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-foreground text-background text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
                 {hour}시: {count}건
               </div>
@@ -191,8 +151,8 @@ export function InternalOverviewTab() {
                 <tr className="border-b">
                   <th className="text-left py-2 px-2">날짜</th>
                   <th className="text-right py-2 px-2">총 이벤트</th>
-                  <th className="text-right py-2 px-2">도구</th>
-                  <th className="text-right py-2 px-2">학습</th>
+                  <th className="text-right py-2 px-2">가이드</th>
+                  <th className="text-right py-2 px-2">공유</th>
                 </tr>
               </thead>
               <tbody>
@@ -221,7 +181,7 @@ export function InternalOverviewTab() {
                   {formatEventName(event.event)}
                 </span>
                 {event.label && (
-                  <span className="text-muted-foreground">{event.label}</span>
+                  <span className="text-muted-foreground truncate max-w-[200px]">{event.label}</span>
                 )}
               </div>
               <span className="text-xs text-muted-foreground">
@@ -243,7 +203,6 @@ export function InternalOverviewTab() {
   );
 }
 
-// 도구 통계 아이템
 function ToolStat({ icon: Icon, label, value }) {
   return (
     <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
@@ -258,18 +217,17 @@ function ToolStat({ icon: Icon, label, value }) {
   );
 }
 
-// 이벤트 이름 포맷팅
 function formatEventName(event) {
   const names = {
-    generate_name: '이름 생성',
-    copy_phrase: '문구 복사',
-    download_phrase: '문구 다운로드',
-    share_card: '카드 공유',
-    flip_card: '카드 뒤집기',
-    download_font: '폰트 다운로드',
-    complete_quiz: '퀴즈 완료',
-    start_quiz: '퀴즈 시작',
-    play_audio: '오디오 재생',
+    guide_view: '가이드 조회',
+    emergency_call: '긴급전화 클릭',
+    external_link: '외부 링크',
+    share_facebook: 'Facebook 공유',
+    share_copy_link: '링크 복사',
+    exchange_calculate: '환율 계산',
+    community_post: '글 작성',
+    community_comment: '댓글 작성',
+    donate_click: '후원 클릭',
     page_view: '페이지 조회',
   };
   return names[event] || event;

@@ -5,22 +5,20 @@ export const dailyStats = pgTable('daily_stats', {
 
   date: varchar('date', { length: 10 }).notNull().unique(), // 'YYYY-MM-DD'
 
-  // 도구별 사용 횟수
+  // 카테고리별 이벤트 수
   toolUsage: jsonb('tool_usage').notNull().default({
-    generateName: 0,
-    copyPhrase: 0,
-    downloadPhrase: 0,
-    shareCard: 0,
-    flipCard: 0,
-    downloadFont: 0,
+    guide: 0,
+    social: 0,
+    tools: 0,
+    community: 0,
   }),
 
-  // 학습 관련
+  // 주요 지표
   learning: jsonb('learning').notNull().default({
-    quizStarted: 0,
-    quizCompleted: 0,
-    totalQuizScore: 0,
-    audioPlayed: 0,
+    guideViews: 0,
+    shares: 0,
+    exchangeCalc: 0,
+    donateClicks: 0,
   }),
 
   totalEvents: integer('total_events').notNull().default(0),
@@ -30,10 +28,11 @@ export const dailyStats = pgTable('daily_stats', {
 
   // 카테고리별 분포
   categoryDistribution: jsonb('category_distribution').notNull().default({
-    tools: 0,
-    learning: 0,
-    engagement: 0,
+    guide: 0,
     social: 0,
+    tools: 0,
+    community: 0,
+    engagement: 0,
   }),
 
   year: integer('year').notNull(),

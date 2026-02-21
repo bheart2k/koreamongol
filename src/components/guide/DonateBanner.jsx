@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import { Heart, Coffee } from 'lucide-react';
+import { analytics } from '@/lib/analytics-events';
 
 export function DonateBanner() {
   return (
@@ -18,6 +21,7 @@ export function DonateBanner() {
         </div>
         <Link
           href="/donate"
+          onClick={() => analytics.donateClick('banner')}
           className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-md text-sm font-medium bg-terracotta text-white hover:bg-terracotta/90 transition-colors"
         >
           <Heart className="w-3.5 h-3.5" />

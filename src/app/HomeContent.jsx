@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee, Briefcase, Home, GraduationCap, Calculator, Train, Phone } from 'lucide-react';
+import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee, Briefcase, Home, GraduationCap, Calculator, Train, Phone, Smartphone } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const guides = [
@@ -92,6 +92,22 @@ const guides = [
     icon: Calculator,
     title: 'Ханш тооцоолуур',
     desc: 'KRW ↔ MNT ханш хөрвүүлэг',
+    available: true,
+  },
+  {
+    id: 'severance',
+    href: '/severance',
+    icon: Calculator,
+    title: 'Тэтгэмж тооцоолуур',
+    desc: 'Ажлаас гарах тэтгэмж тооцоолох',
+    available: true,
+  },
+  {
+    id: 'apps',
+    href: '/apps',
+    icon: Smartphone,
+    title: 'Хэрэгтэй апп',
+    desc: 'KakaoTalk, Coupang, тооцоолуурууд',
     available: true,
   },
   {

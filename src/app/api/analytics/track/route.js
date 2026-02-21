@@ -1,71 +1,46 @@
 import { NextResponse } from 'next/server';
 import { db, analyticsEvents, dailyStats } from '@/lib/db';
-import { eq, sql } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 
-/**
- * POST /api/analytics/track
- *
- * @description 커스텀 이벤트를 자체 DB에 기록
- * GA4와 별도로 저장하여 상세 분석 가능
- *
- * @body {
- *   event: string (필수) - 이벤트 이름
- *   category?: string - 카테고리 (tools/learning/engagement/social)
- *   label?: string - 라벨
- *   value?: number - 값
- *   metadata?: object - 추가 데이터
- *   sessionId?: string - 세션 ID
- * }
- */
+const ALLOWED_EVENTS = [
+  'guide_view',
+  'emergency_call',
+  'external_link',
+  'share_facebook',
+  'share_copy_link',
+  'exchange_calculate',
+  'severance_calculate',
+  'community_post',
+  'community_comment',
+  'donate_click',
+  'page_view',
+];
+
 export async function POST(request) {
   try {
     const body = await request.json();
     const { event, category, label, value, metadata, sessionId } = body;
 
-    // 필수 필드 검증
     if (!event) {
-      return NextResponse.json(
-        { error: 'event 필드는 필수입니다' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'event is required' }, { status: 400 });
     }
 
-    // 허용된 이벤트인지 확인
-    const allowedEvents = [
-      'generate_name',
-      'copy_phrase',
-      'download_phrase',
-      'share_card',
-      'flip_card',
-      'download_font',
-      'complete_quiz',
-      'start_quiz',
-      'play_audio',
-      'page_view',
-    ];
-
-    if (!allowedEvents.includes(event)) {
-      return NextResponse.json(
-        { error: '허용되지 않은 이벤트입니다' },
-        { status: 400 }
-      );
+    if (!ALLOWED_EVENTS.includes(event)) {
+      return NextResponse.json({ error: 'invalid event' }, { status: 400 });
     }
 
-    // 시간 정보 생성 (KST 기준)
+    // KST 시간
     const now = new Date();
-    const kstOffset = 9 * 60 * 60 * 1000;
-    const kstDate = new Date(now.getTime() + kstOffset);
-
-    const year = kstDate.getUTCFullYear();
-    const month = kstDate.getUTCMonth() + 1;
-    const day = kstDate.getUTCDate();
-    const hour = kstDate.getUTCHours();
-    const dayOfWeek = kstDate.getUTCDay();
+    const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+    const year = kst.getUTCFullYear();
+    const month = kst.getUTCMonth() + 1;
+    const day = kst.getUTCDate();
+    const hour = kst.getUTCHours();
+    const dayOfWeek = kst.getUTCDay();
     const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-    // User-Agent 추출
     const userAgent = request.headers.get('user-agent') || '';
-    const locale = request.headers.get('accept-language')?.split(',')[0] || 'ko';
+    const locale = request.headers.get('accept-language')?.split(',')[0] || 'mn';
 
     // 이벤트 저장
     await db.insert(analyticsEvents).values({
@@ -85,44 +60,20 @@ export async function POST(request) {
       locale,
     });
 
-    // DailyStats 업데이트 (upsert)
-    // 이벤트별 필드 매핑
-    const eventFieldMap = {
-      generate_name: 'generateName',
-      copy_phrase: 'copyPhrase',
-      download_phrase: 'downloadPhrase',
-      share_card: 'shareCard',
-      flip_card: 'flipCard',
-      download_font: 'downloadFont',
-      start_quiz: 'quizStarted',
-      complete_quiz: 'quizCompleted',
-      play_audio: 'audioPlayed',
-    };
-
+    // DailyStats upsert
     const catKey = category || 'engagement';
 
-    // 기본 toolUsage/learning 증가 SQL 빌드
-    let toolUsageUpdate = sql`${dailyStats.toolUsage}`;
-    let learningUpdate = sql`${dailyStats.learning}`;
+    // 카테고리별 필드 매핑
+    const guideEvents = ['guide_view', 'emergency_call', 'external_link'];
+    const socialEvents = ['share_facebook', 'share_copy_link'];
+    const toolEvents = ['exchange_calculate'];
+    const communityEvents = ['community_post', 'community_comment'];
 
-    const toolFields = ['generateName', 'copyPhrase', 'downloadPhrase', 'shareCard', 'flipCard', 'downloadFont'];
-    const learningFields = ['quizStarted', 'quizCompleted', 'audioPlayed'];
-
-    const fieldKey = eventFieldMap[event];
-    if (fieldKey && toolFields.includes(fieldKey)) {
-      toolUsageUpdate = sql`jsonb_set(${dailyStats.toolUsage}, ${`{${fieldKey}}`}, (COALESCE((${dailyStats.toolUsage}->>${fieldKey})::int, 0) + 1)::text::jsonb)`;
-    }
-    if (fieldKey && learningFields.includes(fieldKey)) {
-      learningUpdate = sql`jsonb_set(${dailyStats.learning}, ${`{${fieldKey}}`}, (COALESCE((${dailyStats.learning}->>${fieldKey})::int, 0) + 1)::text::jsonb)`;
-    }
-
-    // 퀴즈 완료 시 점수 합산
-    if (event === 'complete_quiz' && metadata?.score) {
-      learningUpdate = sql`jsonb_set(
-        jsonb_set(${dailyStats.learning}, ${'{quizCompleted}'}, (COALESCE((${dailyStats.learning}->>${'quizCompleted'})::int, 0) + 1)::text::jsonb),
-        ${'{totalQuizScore}'}, (COALESCE((${dailyStats.learning}->>${'totalQuizScore'})::int, 0) + ${metadata.score})::text::jsonb
-      )`;
-    }
+    const guideInc = guideEvents.includes(event) ? 1 : 0;
+    const socialInc = socialEvents.includes(event) ? 1 : 0;
+    const toolsInc = toolEvents.includes(event) ? 1 : 0;
+    const communityInc = communityEvents.includes(event) ? 1 : 0;
+    const engagementInc = event === 'donate_click' || event === 'page_view' ? 1 : 0;
 
     await db
       .insert(dailyStats)
@@ -133,33 +84,46 @@ export async function POST(request) {
         dayOfWeek,
         totalEvents: 1,
         toolUsage: {
-          generateName: toolFields.includes(fieldKey) && fieldKey === 'generateName' ? 1 : 0,
-          copyPhrase: toolFields.includes(fieldKey) && fieldKey === 'copyPhrase' ? 1 : 0,
-          downloadPhrase: toolFields.includes(fieldKey) && fieldKey === 'downloadPhrase' ? 1 : 0,
-          shareCard: toolFields.includes(fieldKey) && fieldKey === 'shareCard' ? 1 : 0,
-          flipCard: toolFields.includes(fieldKey) && fieldKey === 'flipCard' ? 1 : 0,
-          downloadFont: toolFields.includes(fieldKey) && fieldKey === 'downloadFont' ? 1 : 0,
+          guide: guideInc,
+          social: socialInc,
+          tools: toolsInc,
+          community: communityInc,
         },
         learning: {
-          quizStarted: learningFields.includes(fieldKey) && fieldKey === 'quizStarted' ? 1 : 0,
-          quizCompleted: (learningFields.includes(fieldKey) && fieldKey === 'quizCompleted' ? 1 : 0),
-          totalQuizScore: (event === 'complete_quiz' && metadata?.score) ? metadata.score : 0,
-          audioPlayed: learningFields.includes(fieldKey) && fieldKey === 'audioPlayed' ? 1 : 0,
+          guideViews: event === 'guide_view' ? 1 : 0,
+          shares: socialInc,
+          exchangeCalc: toolsInc,
+          donateClicks: event === 'donate_click' ? 1 : 0,
         },
         hourlyDistribution: Array.from({ length: 24 }, (_, i) => i === hour ? 1 : 0),
         categoryDistribution: {
-          tools: catKey === 'tools' ? 1 : 0,
-          learning: catKey === 'learning' ? 1 : 0,
-          engagement: catKey === 'engagement' ? 1 : 0,
-          social: catKey === 'social' ? 1 : 0,
+          guide: guideInc,
+          social: socialInc,
+          tools: toolsInc,
+          community: communityInc,
+          engagement: engagementInc,
         },
       })
       .onConflictDoUpdate({
         target: dailyStats.date,
         set: {
           totalEvents: sql`${dailyStats.totalEvents} + 1`,
-          toolUsage: toolUsageUpdate,
-          learning: learningUpdate,
+          toolUsage: sql`jsonb_set(
+            jsonb_set(
+              jsonb_set(
+                jsonb_set(${dailyStats.toolUsage},
+                  '{guide}', (COALESCE((${dailyStats.toolUsage}->>'guide')::int, 0) + ${guideInc})::text::jsonb),
+                '{social}', (COALESCE((${dailyStats.toolUsage}->>'social')::int, 0) + ${socialInc})::text::jsonb),
+              '{tools}', (COALESCE((${dailyStats.toolUsage}->>'tools')::int, 0) + ${toolsInc})::text::jsonb),
+            '{community}', (COALESCE((${dailyStats.toolUsage}->>'community')::int, 0) + ${communityInc})::text::jsonb)`,
+          learning: sql`jsonb_set(
+            jsonb_set(
+              jsonb_set(
+                jsonb_set(${dailyStats.learning},
+                  '{guideViews}', (COALESCE((${dailyStats.learning}->>'guideViews')::int, 0) + ${event === 'guide_view' ? 1 : 0})::text::jsonb),
+                '{shares}', (COALESCE((${dailyStats.learning}->>'shares')::int, 0) + ${socialInc})::text::jsonb),
+              '{exchangeCalc}', (COALESCE((${dailyStats.learning}->>'exchangeCalc')::int, 0) + ${toolsInc})::text::jsonb),
+            '{donateClicks}', (COALESCE((${dailyStats.learning}->>'donateClicks')::int, 0) + ${event === 'donate_click' ? 1 : 0})::text::jsonb)`,
           hourlyDistribution: sql`jsonb_set(${dailyStats.hourlyDistribution}, ${`{${hour}}`}, (COALESCE((${dailyStats.hourlyDistribution}->${hour})::int, 0) + 1)::text::jsonb)`,
           categoryDistribution: sql`jsonb_set(${dailyStats.categoryDistribution}, ${`{${catKey}}`}, (COALESCE((${dailyStats.categoryDistribution}->>${catKey})::int, 0) + 1)::text::jsonb)`,
           updatedAt: new Date(),
@@ -169,9 +133,6 @@ export async function POST(request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('[Analytics Track Error]', error);
-    return NextResponse.json(
-      { error: '이벤트 기록에 실패했습니다' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to track event' }, { status: 500 });
   }
 }
