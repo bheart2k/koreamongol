@@ -34,7 +34,20 @@
 - P1 도구: 퇴직금 계산기, 급여 계산기, 긴급연락처 페이지, 공유 버튼
 - 상세: `phase3-analysis-2026-02-15.md` 참조
 
+## /apps 페이지 기획 (2026-02-21)
+- URL: `/apps`, 제목: "Хэрэгтэй апп & хэрэгсэл"
+- 7개 섹션: 필수앱, 생활/쇼핑, 교통/지도, 금융/송금, 계산기/도구, 정부서비스, 설치팁
+- money.js 패턴 참고 (카드형 리스트), LinkCard props: href/title/description
+- 내부 도구(/exchange, /severance)는 LinkCard 대신 Next.js Link 사용
+- Phase 1: 필수앱~설치팁, Phase 2: 정부서비스, 상세 사용법
+- 상세: `apps-page-plan.md` 참조
+
+## 가이드 데이터 패턴 메모
+- meta(title,subtitle) + sections(id,title) + 콘텐츠 배열
+- money.js가 가장 구조적 — 새 가이드 작성 시 참고
+
 ## 파일 참조
 - `docs/koreamongol-mvp-plan.md` - MVP 기획서
 - `docs/koreamongol-design-guide.html` - 디자인 가이드
 - `phase3-analysis-2026-02-15.md` - 3차 개발 방향 분석
+- `apps-page-plan.md` - /apps 가이드 기획 상세
