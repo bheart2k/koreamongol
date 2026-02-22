@@ -6,7 +6,7 @@ import {
   GuideHero, GuideTOC, GuideNav, InfoTable,
   WarningBox, TipBox, StepList, LinkCard, ReportBanner, DonateBanner, ShareButtons,
 } from '@/components/guide';
-import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
   transportMeta, transportSections, FARE_DATE,
   tmoney, metro, bus, taxi, ktx,
@@ -22,6 +22,16 @@ export default function TransportPage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: 'Тээврийн гарын авлага', url: `${BASE_URL}/transport` },
       ]} />
+      <HowToJsonLd
+        name="Солонгосын нийтийн тээвэр ашиглах"
+        description="T-money карт авах, метро, автобус, такси, KTX ашиглах алхамчилсан гарын авлага."
+        steps={[
+          { title: 'T-money карт авах', description: '편의점 эсвэл метро станцаас T-money карт худалдаж авах (₩2,500~₩4,000)' },
+          { title: 'T-money цэнэглэх', description: '편의점 эсвэл метро станцын автоматаар мөнгө цэнэглэх' },
+          { title: 'Метро/автобуснд суух', description: 'Карт уншуулж суух, буухдаа дахин уншуулах' },
+          { title: 'Такси дуудах', description: 'Kakao T эсвэл TABA апп ашиглан такси захиалах' },
+        ]}
+      />
     <main className="min-h-content bg-background">
       <GuideHero
         title={transportMeta.title}

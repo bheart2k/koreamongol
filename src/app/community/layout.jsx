@@ -11,6 +11,7 @@ export async function generateMetadata() {
       title: 'Нийгэмлэг | KoreaMongol',
       description: 'Солонгос-Монголын нийгэмлэг.',
       url: `${BASE_URL}/community`,
+      images: ['/opengraph-image'],
     },
     twitter: {
       card: 'summary_large_image',

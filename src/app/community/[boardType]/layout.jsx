@@ -36,6 +36,7 @@ export async function generateMetadata({ params }) {
       title: `${board.title} | KoreaMongol`,
       description: board.desc,
       url: `${BASE_URL}/community/${boardType}`,
+      images: ['/opengraph-image'],
     },
     twitter: {
       card: 'summary',

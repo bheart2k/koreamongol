@@ -1,7 +1,7 @@
 import { HelpCircle } from 'lucide-react';
 import { faqData, faqCategories } from '@/data/faq';
 import { FAQAccordion } from '@/components/faq/FAQAccordion';
-import { FAQPageJsonLd } from '@/components/seo/JsonLd';
+import { FAQPageJsonLd, BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 const BASE_URL = 'https://koreamongol.com';
 
@@ -36,6 +36,10 @@ export default function FAQPage() {
 
   return (
     <>
+      <BreadcrumbJsonLd items={[
+        { name: 'KoreaMongol', url: BASE_URL },
+        { name: 'Түгээмэл асуултууд', url: `${BASE_URL}/faq` },
+      ]} />
       <FAQPageJsonLd faqs={faqData} />
       <main className="min-h-content bg-background">
         {/* Hero Section */}

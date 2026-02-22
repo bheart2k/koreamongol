@@ -1,11 +1,22 @@
+const BASE_URL = 'https://koreamongol.com';
+
 export const metadata = {
   title: 'Үйлчилгээний нөхцөл',
   description: 'KoreaMongol үйлчилгээний нөхцөл',
+  openGraph: {
+    title: 'Үйлчилгээний нөхцөл | KoreaMongol',
+    description: 'KoreaMongol үйлчилгээний нөхцөл',
+    url: `${BASE_URL}/terms`,
+    images: ['/opengraph-image'],
+  },
+  alternates: {
+    canonical: `${BASE_URL}/terms`,
+  },
 };
 
 export default function TermsPage() {
   return (
-    <main className="min-h-screen bg-background py-16 px-4">
+    <main className="min-h-content bg-background py-16 px-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-headline mb-8">Үйлчилгээний нөхцөл</h1>
 

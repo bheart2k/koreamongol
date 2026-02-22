@@ -3,7 +3,7 @@ import {
   GuideHero, GuideTOC, GuideNav, InfoTable,
   WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons,
 } from '@/components/guide';
-import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
   moneyMeta, moneySections, remittanceComparison,
   remittanceMethods, exchangeTips, financeWarnings, moneyLinks,
@@ -19,6 +19,16 @@ export default function MoneyPage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: 'Мөнгө ба санхүү', url: `${BASE_URL}/money` },
       ]} />
+      <HowToJsonLd
+        name="Солонгосоос Монгол руу мөнгө шилжүүлэх"
+        description="GME, Hanpass, Toss зэрэг аппаар Монгол руу хялбар, хямд мөнгө шилжүүлэх алхамчилсан гарын авлага."
+        steps={[
+          { title: 'Шилжүүлгийн арга сонгох', description: 'GME, Hanpass, Toss, Western Union зэргийг хураамж, хурдаар нь харьцуулж сонгох' },
+          { title: 'Апп татаж бүртгүүлэх', description: 'Сонгосон аппыг татаж, паспорт/외국인등록증-ээр бүртгүүлэх' },
+          { title: 'Хүлээн авагчийн мэдээлэл оруулах', description: 'Монгол дахь хүлээн авагчийн нэр, банкны данс оруулах' },
+          { title: 'Мөнгө шилжүүлэх', description: 'Дүн оруулж, ханш шалгаад шилжүүлэг хийх' },
+        ]}
+      />
     <main className="min-h-content bg-background">
       <GuideHero
         title={moneyMeta.title}

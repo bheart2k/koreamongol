@@ -8,6 +8,7 @@ export function generateMetadata() {
       title: 'Холбоо барих | KoreaMongol',
       description: 'KoreaMongol-д хандана уу.',
       url: `${BASE_URL}/contact`,
+      images: ['/opengraph-image'],
     },
     twitter: {
       card: 'summary',

@@ -1,11 +1,22 @@
+const BASE_URL = 'https://koreamongol.com';
+
 export const metadata = {
   title: 'Нууцлалын бодлого',
   description: 'KoreaMongol Нууцлалын бодлого',
+  openGraph: {
+    title: 'Нууцлалын бодлого | KoreaMongol',
+    description: 'KoreaMongol Нууцлалын бодлого',
+    url: `${BASE_URL}/privacy`,
+    images: ['/opengraph-image'],
+  },
+  alternates: {
+    canonical: `${BASE_URL}/privacy`,
+  },
 };
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-background py-16 px-4">
+    <main className="min-h-content bg-background py-16 px-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-headline mb-8">Нууцлалын бодлого</h1>
 

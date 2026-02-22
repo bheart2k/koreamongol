@@ -3,7 +3,7 @@ import {
   GuideHero, GuideTOC, GuideNav, CheckList,
   TipBox, WarningBox, InfoTable, ReportBanner, DonateBanner, ShareButtons,
 } from '@/components/guide';
-import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
   arrivalMeta, arrivalSections, arrivalTimeline,
   arrivalTips, essentialApps, alienRegistration,
@@ -19,6 +19,18 @@ export default function ArrivalPage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: 'Ирсний дараа', url: `${BASE_URL}/arrival` },
       ]} />
+      <HowToJsonLd
+        name="Солонгост ирсний дараа хийх зүйлс"
+        description="Солонгост шинээр ирсэн монгол иргэдэд зориулсан алхам алхмаар гарын авлага: бүртгэл, банк, утас, даатгал."
+        steps={[
+          { title: 'SIM карт ба T-money авах', description: '공항 편의점-оос SIM карт, T-money карт авах' },
+          { title: 'Гадаадын иргэний бүртгэл (외국인등록)', description: '출입국관리사무소-д бүртгүүлэх (90 хоногийн дотор)' },
+          { title: 'Банкны данс нээх', description: '외국인등록증 авсны дараа банкны данс нээх' },
+          { title: 'Гар утасны гэрээ хийх', description: '외국인등록증-тэй бол 후불 гэрээ хийх боломжтой' },
+          { title: 'Эрүүл мэндийн даатгалд бүртгүүлэх', description: '건강보험 бүртгэл хийлгэх' },
+          { title: '주민센터-д бүртгүүлэх', description: '전입신고 хийх' },
+        ]}
+      />
     <main className="min-h-content bg-background">
       <GuideHero
         title={arrivalMeta.title}
