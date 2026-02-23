@@ -45,7 +45,14 @@ export const metadata = {
   authors: [{ name: 'KoreaMongol' }],
   creator: 'KoreaMongol',
   publisher: 'KoreaMongol',
-      formatDetection: {
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [{ url: '/apple-icon.png' }],
+  },
+  formatDetection: {
       email: false,
       address: false,
       telephone: false,
