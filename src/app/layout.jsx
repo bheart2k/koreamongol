@@ -4,7 +4,6 @@ import { Analytics } from '@vercel/analytics/next';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/providers/theme-provider';
 import { AuthProvider } from '@/components/providers/auth-provider';
-import { auth } from '@/lib/auth';
 import SWRProvider from '@/components/providers/SWRProvider';
 import { OrganizationJsonLd } from '@/components/seo/JsonLd';
 import { LayoutShell } from '@/components/layout/layout-shell';
@@ -83,8 +82,9 @@ export const metadata = {
   },
 };
 
-export default async function RootLayout({ children }) {
-  const session = await auth();
+// auth()를 여기서 호출하면 전 페이지가 동적 렌더링으로 강등됨 (SSG 깨짐) —
+// 세션은 SessionProvider가 클라이언트에서 조회한다
+export default function RootLayout({ children }) {
   const fontVariables = [
     inter.variable,
     notoSans.variable,
@@ -96,7 +96,7 @@ export default async function RootLayout({ children }) {
         <OrganizationJsonLd />
       </head>
       <body className={`${fontVariables} font-sans antialiased`}>
-        <AuthProvider session={session}>
+        <AuthProvider>
           <SWRProvider>
             <ThemeProvider>
               <LayoutShell>{children}</LayoutShell>

@@ -1,26 +1,38 @@
 import { db, posts } from '@/lib/db';
 import { eq, and, desc, inArray } from 'drizzle-orm';
+import { visaMeta } from '@/data/guides/visa';
+import { arrivalMeta } from '@/data/guides/arrival';
+import { hospitalMeta } from '@/data/guides/hospital';
+import { moneyMeta } from '@/data/guides/money';
+import { koreanLifeMeta } from '@/data/guides/korean-life';
+import { jobsMeta } from '@/data/guides/jobs';
+import { housingMeta } from '@/data/guides/housing';
+import { topikMeta } from '@/data/guides/topik';
+import { transportMeta } from '@/data/guides/transport';
+import { emergencyMeta } from '@/data/guides/emergency';
+import { appsMeta } from '@/data/guides/apps';
 
 const BASE_URL = 'https://koreamongol.com';
 
-export default async function sitemap() {
-  const now = new Date().toISOString();
+// '2026.07.14' → '2026-07-14' (가이드 데이터의 실제 갱신일 — 매 요청 현재시각으로 찍으면 구글이 lastmod를 무시함)
+const metaDate = (meta) => meta.lastUpdated.replaceAll('.', '-');
 
+export default async function sitemap() {
   const staticPages = [
     { path: '', priority: 1.0, changeFrequency: 'daily' },
-    { path: '/visa', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/arrival', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/hospital', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/money', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/korean-life', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/jobs', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/housing', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/topik', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/transport', priority: 0.9, changeFrequency: 'monthly' },
-    { path: '/emergency', priority: 0.9, changeFrequency: 'monthly' },
+    { path: '/visa', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(visaMeta) },
+    { path: '/arrival', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(arrivalMeta) },
+    { path: '/hospital', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(hospitalMeta) },
+    { path: '/money', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(moneyMeta) },
+    { path: '/korean-life', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(koreanLifeMeta) },
+    { path: '/jobs', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(jobsMeta) },
+    { path: '/housing', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(housingMeta) },
+    { path: '/topik', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(topikMeta) },
+    { path: '/transport', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(transportMeta) },
+    { path: '/emergency', priority: 0.9, changeFrequency: 'monthly', lastModified: metaDate(emergencyMeta) },
     { path: '/exchange', priority: 0.8, changeFrequency: 'daily' },
     { path: '/severance', priority: 0.8, changeFrequency: 'monthly' },
-    { path: '/apps', priority: 0.8, changeFrequency: 'monthly' },
+    { path: '/apps', priority: 0.8, changeFrequency: 'monthly', lastModified: metaDate(appsMeta) },
     { path: '/donate', priority: 0.4, changeFrequency: 'monthly' },
     { path: '/community', priority: 0.7, changeFrequency: 'daily' },
     { path: '/community/blog', priority: 0.8, changeFrequency: 'daily' },
@@ -61,9 +73,10 @@ export default async function sitemap() {
     console.error('Sitemap: 게시글 조회 오류:', error);
   }
 
+  // lastModified는 실제 갱신일을 아는 페이지에만 넣는다 (없으면 생략이 낫다)
   const staticUrls = staticPages.map((page) => ({
     url: `${BASE_URL}${page.path}`,
-    lastModified: now,
+    ...(page.lastModified && { lastModified: page.lastModified }),
     changeFrequency: page.changeFrequency,
     priority: page.priority,
   }));

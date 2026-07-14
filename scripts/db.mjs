@@ -9,35 +9,37 @@
  *   node scripts/db.mjs count inbox
  *   node scripts/db.mjs push          (drizzle-kit push, 자동 env 로딩)
  *
- * .env.local에서 DATABASE_URL 자동 로딩
+ * .env.local → .env 순서로 DATABASE_URL 자동 로딩
  */
 
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { neon } from '@neondatabase/serverless';
 
-// .env.local 자동 로딩
+// .env.local → .env 순서로 자동 로딩
 function loadEnv() {
-  const envPath = resolve(process.cwd(), '.env.local');
-  try {
-    const content = readFileSync(envPath, 'utf-8');
-    for (const line of content.split('\n')) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const eqIdx = trimmed.indexOf('=');
-      if (eqIdx === -1) continue;
-      const key = trimmed.slice(0, eqIdx).trim();
-      let val = trimmed.slice(eqIdx + 1).trim();
-      // 따옴표 제거
-      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-        val = val.slice(1, -1);
+  for (const file of ['.env.local', '.env']) {
+    const envPath = resolve(process.cwd(), file);
+    try {
+      const content = readFileSync(envPath, 'utf-8');
+      for (const line of content.split('\n')) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        const eqIdx = trimmed.indexOf('=');
+        if (eqIdx === -1) continue;
+        const key = trimmed.slice(0, eqIdx).trim();
+        let val = trimmed.slice(eqIdx + 1).trim();
+        // 따옴표 제거
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        if (!process.env[key]) {
+          process.env[key] = val;
+        }
       }
-      if (!process.env[key]) {
-        process.env[key] = val;
-      }
+    } catch {
+      // 파일 없으면 무시
     }
-  } catch {
-    // .env.local 없으면 무시
   }
 }
 
@@ -46,7 +48,7 @@ loadEnv();
 const DATABASE_URL = process.env.DATABASE_URL;
 if (!DATABASE_URL) {
   console.error('ERROR: DATABASE_URL이 설정되지 않았습니다.');
-  console.error('.env.local 파일에 DATABASE_URL을 설정해주세요.');
+  console.error('.env 파일에 DATABASE_URL을 설정해주세요.');
   process.exit(1);
 }
 

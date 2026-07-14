@@ -236,14 +236,15 @@ src/
 
 ## 가이드/페이지 현황
 
-`docs/phase2-summary.md` 참조
+- **최신 현황·로드맵**: `docs/service-expansion-plan.md` (일자리 전략, 규제 조사, 홍보 단계)
+- 과거 구축 이력: `docs/old/phase2-summary.md`
 
 ---
 
 ## DB 작업
 
 ### CLI 도구
-`scripts/db.mjs` — .env.local 자동 로딩. `node scripts/db.mjs tables|describe|count|query|push`
+`scripts/db.mjs` — .env 자동 로딩 (.env.local 있으면 우선). `node scripts/db.mjs tables|describe|count|query|push`
 
 ### Claude용 DB 스크립트 작성 샘플
 
@@ -257,8 +258,8 @@ import { readFileSync } from 'fs';
 import { resolve } from 'path';
 import { neon } from '@neondatabase/serverless';
 
-// .env.local 로딩
-const envContent = readFileSync(resolve(process.cwd(), '.env.local'), 'utf-8');
+// .env 로딩
+const envContent = readFileSync(resolve(process.cwd(), '.env'), 'utf-8');
 for (const line of envContent.split('\n')) {
   const t = line.trim();
   if (!t || t.startsWith('#')) continue;
@@ -305,5 +306,6 @@ main().catch(e => { console.error(e); process.exit(1); });
 
 ## 참고 문서
 
-- **MVP 기획서**: `docs/koreamongol-mvp-plan.md`
+- **서비스 확장 계획**: `docs/service-expansion-plan.md`
+- **MVP 기획서**: `docs/old/koreamongol-mvp-plan.md`
 - **디자인 가이드**: `docs/koreamongol-design-guide.html`
