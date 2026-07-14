@@ -73,6 +73,7 @@ export default function AppsPage() {
         <GuideHero
           title={appsMeta.title}
           subtitle={appsMeta.subtitle}
+          lastUpdated={appsMeta.lastUpdated}
           icon={Smartphone}
           breadcrumbLabel={appsMeta.title}
         >

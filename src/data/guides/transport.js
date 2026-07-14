@@ -5,6 +5,7 @@ export const FARE_DATE = '2025.02.15';
 export const transportMeta = {
   title: 'Тээврийн гарын авлага',
   subtitle: 'Метро, автобус, такси, KTX — Солонгосын тээврийн бүх мэдээлэл',
+  lastUpdated: '2026.02.15',
 };
 
 export const transportSections = [

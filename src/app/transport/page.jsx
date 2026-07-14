@@ -36,6 +36,7 @@ export default function TransportPage() {
       <GuideHero
         title={transportMeta.title}
         subtitle={transportMeta.subtitle}
+        lastUpdated={transportMeta.lastUpdated}
         icon={Train}
         breadcrumbLabel="Тээвэр"
       >

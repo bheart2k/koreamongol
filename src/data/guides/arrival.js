@@ -1,6 +1,7 @@
 export const arrivalMeta = {
   title: 'Ирсний дараа',
   subtitle: 'Гадаадын иргэний бүртгэл, банк, утас, амьдрал эхлүүлэх',
+  lastUpdated: '2026.07.14',
 };
 
 export const arrivalSections = [
@@ -12,6 +13,13 @@ export const arrivalSections = [
   { id: 'arrival-phone', title: 'Утас / SIM карт' },
   { id: 'arrival-tips', title: 'Амьдралын зөвлөгөө' },
   { id: 'arrival-apps', title: 'Заавал суулгах апп' },
+  { id: 'arrival-links', title: 'Хэрэгтэй линк' },
+];
+
+export const arrivalLinks = [
+  { href: 'https://www.everycalc.pe.kr/english-address', title: '영문주소 변환기 — EVERYCALC', description: 'Солонгос хаягаа англи бичиглэл рүү хөрвүүлэх — банк, олон улсын илгээмжид хэрэгтэй' },
+  { href: 'https://www.everycalc.pe.kr/unit-converter', title: '단위 변환기 — EVERYCALC', description: 'Урт, жин, талбай зэрэг нэгжийг хөрвүүлэх' },
+  { href: 'https://hangulhub.co.kr/en/tools/seal-generator', title: '한글 도장 생성기 — HangulHub', description: 'Өөрийн нэрээр хангыл тамга (도장) үнэгүй хийж татах' },
 ];
 
 export const arrivalTimeline = [

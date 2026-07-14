@@ -1,6 +1,7 @@
 export const housingMeta = {
   title: 'Байр ба орон сууц',
   subtitle: 'Байрны төрөл, барьцаа/түрээс, гэрээ, амьдрал',
+  lastUpdated: '2026.07.14',
 };
 
 export const housingSections = [
@@ -209,4 +210,7 @@ export const housingLinks = [
   { href: 'https://www.dabangapp.com', title: '다방', description: 'Байр хайх апп — шүүлтүүртэй хайлт' },
   { href: 'https://www.iros.go.kr', title: '인터넷등기소', description: '등기부등본 онлайн авах (₩700)' },
   { href: 'https://www.klac.or.kr', title: '법률구조공단', description: 'Үнэгүй хуулийн зөвлөгөө' },
+  { href: 'https://www.everycalc.pe.kr/pyeong', title: '평수 계산기 — EVERYCALC', description: 'Пён(평) ↔ м² хөрвүүлэх. Байрны зарын талбайг ойлгоход хэрэгтэй' },
+  { href: 'https://www.everycalc.pe.kr/rent-convert', title: '전월세 전환 계산기 — EVERYCALC', description: 'Чонсэ ↔ сарын түрээс хөрвүүлж аль нь ашигтайг харьцуулах' },
+  { href: 'https://www.everycalc.pe.kr/broker-fee', title: '복비 계산기 — EVERYCALC', description: 'Зуучлалын хураамж (중개수수료) хэд гарахыг урьдчилан тооцох' },
 ];

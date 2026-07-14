@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { ChevronRight, Home } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export function GuideHero({ title, subtitle, icon: Icon, breadcrumbLabel, children, className }) {
+export function GuideHero({ title, subtitle, lastUpdated, icon: Icon, breadcrumbLabel, children, className }) {
   return (
     <section
       className={cn(
@@ -43,6 +43,11 @@ export function GuideHero({ title, subtitle, icon: Icon, breadcrumbLabel, childr
             <h1 className="text-headline text-navy dark:text-sky">{title}</h1>
             {subtitle && (
               <p className="text-body text-muted-foreground mt-1">{subtitle}</p>
+            )}
+            {lastUpdated && (
+              <p className="text-xs text-muted-foreground/80 mt-1.5">
+                Сүүлд шинэчилсэн: {lastUpdated}
+              </p>
             )}
           </div>
         </div>

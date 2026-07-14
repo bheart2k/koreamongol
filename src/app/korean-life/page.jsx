@@ -25,6 +25,7 @@ export default function KoreanLifePage() {
       <GuideHero
         title={koreanLifeMeta.title}
         subtitle={koreanLifeMeta.subtitle}
+        lastUpdated={koreanLifeMeta.lastUpdated}
         icon={BookOpen}
         breadcrumbLabel="Солонгос хэл & Соёл"
       >

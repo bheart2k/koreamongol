@@ -33,6 +33,7 @@ export default function MoneyPage() {
       <GuideHero
         title={moneyMeta.title}
         subtitle={moneyMeta.subtitle}
+        lastUpdated={moneyMeta.lastUpdated}
         icon={Banknote}
         breadcrumbLabel="Мөнгө ба санхүү"
       >

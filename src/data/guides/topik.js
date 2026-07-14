@@ -4,6 +4,7 @@ export const topikMeta = {
   title: 'TOPIK / EPS-TOPIK шалгалт',
   subtitle: 'Шалгалтын бүтэц, бүртгэл, оноо, бэлтгэл — бүгдийг нэг дороос',
   icon: GraduationCap,
+  lastUpdated: '2026.02.14',
 };
 
 export const topikSections = [

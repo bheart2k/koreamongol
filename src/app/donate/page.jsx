@@ -4,7 +4,8 @@ import { Heart, Coffee, ExternalLink } from 'lucide-react';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 const BASE_URL = 'https://koreamongol.com';
-const BMC_URL = 'https://buymeacoffee.com/koreamongol';
+const KOFI_URL = 'https://ko-fi.com/hangulhub';
+const KAKAOPAY_URL = 'https://qr.kakaopay.com/FPQmJ7fO0';
 
 export default function DonatePage() {
   return (
@@ -47,40 +48,52 @@ export default function DonatePage() {
         </div>
       </section>
 
-      {/* Buy Me a Coffee */}
+      {/* Ko-fi + KakaoPay */}
       <section className="py-16 px-6">
         <div className="max-w-2xl mx-auto">
           <div className="bg-card border-2 border-gold/30 rounded-2xl p-8 md:p-10 text-center">
             <Coffee className="w-10 h-10 text-gold mx-auto mb-4" />
-            <h2 className="text-title mb-2">Buy Me a Coffee</h2>
-            <p className="text-sm text-muted-foreground mb-6">
+            <h2 className="text-title mb-2">Ko-fi · KakaoPay</h2>
+            <p className="text-sm text-muted-foreground mb-8">
               Нэг аяга кофены үнээр дэмжлэг үзүүлэх
             </p>
 
-            <a
-              href={BMC_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[#FFDD00] text-[#000000] font-semibold hover:bg-[#FFDD00]/90 transition-colors text-sm"
-            >
-              <Coffee className="w-4 h-4" />
-              Buy me a coffee
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
+              <a
+                href={KOFI_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[#72A4F2] text-white font-semibold hover:bg-[#72A4F2]/90 transition-colors text-sm"
+              >
+                <Coffee className="w-4 h-4" />
+                Ko-fi дээр дэмжих
+                <ExternalLink className="w-3.5 h-3.5" />
+              </a>
 
-            {/* QR Code */}
-            <div className="mt-8 pt-6 border-t border-border">
-              <p className="text-xs text-muted-foreground mb-4">QR код уншуулж дэмжих</p>
-              <div className="w-40 h-40 mx-auto rounded-xl overflow-hidden border border-border">
-                <Image
-                  src="/images/bmc-qr.png"
-                  alt="Buy Me a Coffee QR code"
-                  width={160}
-                  height={160}
-                  className="w-full h-full object-contain"
-                />
-              </div>
+              <a
+                href={KAKAOPAY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <div className="w-36 mx-auto rounded-xl border border-border bg-white p-2">
+                  <Image
+                    src="/images/kakaopay-qr.png"
+                    alt="KakaoPay QR code"
+                    width={160}
+                    height={160}
+                    className="w-full h-auto"
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                  KakaoPay аппаар уншуулах
+                </p>
+              </a>
             </div>
+
+            <p className="text-xs text-muted-foreground mt-8">
+              Ko-fi — PayPal, олон улсын карт · KakaoPay — Солонгосын данстай бол утаснаасаа шууд (PC бол QR уншуулна) · Дүнгээ чөлөөтэй сонгоно
+            </p>
           </div>
         </div>
       </section>

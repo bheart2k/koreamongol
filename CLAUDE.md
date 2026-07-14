@@ -182,7 +182,7 @@ src/
 │   ├── housing/             # 주거/임대 가이드
 │   ├── topik/               # TOPIK/EPS-TOPIK 시험 가이드
 │   ├── exchange/            # 환율 계산기 (KRW↔MNT)
-│   ├── donate/              # 후원 페이지 (Buy Me a Coffee)
+│   ├── donate/              # 후원 페이지 (Ko-fi)
 │   ├── community/           # 커뮤니티 게시판
 │   ├── admin/               # 관리자
 │   ├── about/               # 소개

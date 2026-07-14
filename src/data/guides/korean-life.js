@@ -1,6 +1,7 @@
 export const koreanLifeMeta = {
   title: 'Бодит Солонгос хэл & Соёл',
   subtitle: 'Сурах бичигт байдаггүй чухал зүйлс, соёлын ялгаа, алдаа',
+  lastUpdated: '2026.02.14',
 };
 
 export const koreanLifeSections = [

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Menu, Sun, Moon } from 'lucide-react';
+import { Menu, Sun, Moon, Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { Logo } from '@/components/ui/logo';
 import { motion, AnimatePresence } from 'motion/react';
@@ -21,6 +21,7 @@ import { navItems, getLabel, getDesc } from './nav-items';
 import { MobileMenu } from './mobile-menu';
 import { UserMenu } from './user-menu';
 import { AdminButton } from './admin-button';
+import { SearchDialog } from './search-dialog';
 
 function NavLink({ item, pathname, index }) {
   const isActive = pathname.startsWith(item.href);
@@ -126,7 +127,19 @@ function ThemeToggle({ className }) {
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
 
   return (
     <header className="sticky top-0 z-40 bg-navy border-b border-navy-light/50 backdrop-blur-md">
@@ -147,6 +160,13 @@ export function Navbar() {
           </NavigationMenu>
 
           <div className="flex items-center gap-1 lg:gap-1">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="flex items-center justify-center w-9 h-9 rounded-lg transition-colors cursor-pointer text-sky/70 hover:text-sky hover:bg-navy-light"
+              aria-label="Хайх"
+            >
+              <Search className="w-5 h-5" />
+            </button>
             <ThemeToggle />
             <div className="flex items-center gap-1">
               <AdminButton />
@@ -167,6 +187,7 @@ export function Navbar() {
           </div>
         </div>
       </div>
+      <SearchDialog open={isSearchOpen} onOpenChange={setIsSearchOpen} />
     </header>
   );
 }

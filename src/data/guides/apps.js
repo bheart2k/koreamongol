@@ -1,6 +1,7 @@
 export const appsMeta = {
   title: 'Хэрэгтэй апп & хэрэгсэл',
   subtitle: 'Солонгосын амьдралд заавал хэрэгтэй апп, вэбсайт, тооцоолуурууд',
+  lastUpdated: '2026.07.14',
 };
 
 export const appsSections = [
@@ -136,7 +137,17 @@ export const usefulWebsites = [
   {
     href: 'https://hangulhub.co.kr',
     title: 'HangulHub',
-    description: 'Хангыл фонт (45+), хангыл тамга хийх, хангыл нэр үүсгэх — бүгд үнэгүй',
+    description: 'Хангыл фонт (100+), хангыл тамга хийх, хангыл нэр үүсгэх — бүгд үнэгүй, бүртгэл шаардлагагүй',
+  },
+  {
+    href: 'https://hangulhub.co.kr/en/tools/seal-generator',
+    title: 'HangulHub — 도장 생성기',
+    description: 'Өөрийн нэрээр хангыл тамга (도장) хийж зураг болгон татах',
+  },
+  {
+    href: 'https://hangulhub.co.kr/en/tools/fonts',
+    title: 'HangulHub — 폰트 갤러리',
+    description: '100+ үнэгүй хангыл фонт — өөрийн текстээ бичиж үзээд татах',
   },
   {
     href: 'https://www.gov.kr/portal/foreigner/ko',

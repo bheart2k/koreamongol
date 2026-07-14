@@ -6,6 +6,7 @@ import {
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
   jobsMeta, jobsSections, visaWorkConditions,
+  parttimePermit, dailyWorkSafety,
   salaryInfo, contractChecklist, contractWarnings,
   jobSearchMethods, laborRights, generalRights,
   jobsContacts, jobsLinks,
@@ -29,6 +30,7 @@ export default function JobsPage() {
       <GuideHero
         title={jobsMeta.title}
         subtitle={jobsMeta.subtitle}
+        lastUpdated={jobsMeta.lastUpdated}
         icon={Briefcase}
         breadcrumbLabel="Ажил"
       >
@@ -61,6 +63,33 @@ export default function JobsPage() {
                 <li key={i}>&#8226; {w}</li>
               ))}
             </ul>
+          </WarningBox>
+        </section>
+
+        {/* Student Part-time Permit */}
+        <section id="jobs-parttime">
+          <h2 className="text-title text-navy dark:text-sky mb-6">Оюутны цагийн ажил (알바) — зөвшөөрөл</h2>
+          <p className="text-sm text-muted-foreground mb-4">{parttimePermit.intro}</p>
+          <InfoTable
+            headers={parttimePermit.hoursTable.headers}
+            rows={parttimePermit.hoursTable.rows}
+          />
+          <p className="text-xs text-muted-foreground mt-2 mb-6">{parttimePermit.hoursNote}</p>
+
+          <h3 className="text-base font-semibold font-heading mb-3">Зөвшөөрөл авах дараалал</h3>
+          <StepList steps={parttimePermit.steps} />
+
+          <div className="mt-6 p-4 rounded-lg border border-border bg-card">
+            <h3 className="text-sm font-semibold text-foreground mb-2">Оюутанд хориотой ажил:</h3>
+            <ul className="space-y-1">
+              {parttimePermit.prohibited.map((p, i) => (
+                <li key={i} className="text-sm text-muted-foreground">&#8226; {p}</li>
+              ))}
+            </ul>
+          </div>
+
+          <WarningBox className="mt-4" title="Анхаар!">
+            <p>{parttimePermit.warning}</p>
           </WarningBox>
         </section>
 
@@ -153,6 +182,41 @@ export default function JobsPage() {
                     </a>
                   )}
                 </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Daily Work Safety */}
+        <section id="jobs-daily">
+          <h2 className="text-title text-navy dark:text-sky mb-6">Өдрийн ажил (일용직) — өөрийгөө хамгаалах</h2>
+          <p className="text-sm text-muted-foreground mb-4">{dailyWorkSafety.intro}</p>
+
+          <h3 className="text-base font-semibold font-heading mb-3">Ажил эхлэхийн өмнө шалгах</h3>
+          <CheckList items={dailyWorkSafety.beforeStart} storageKey="jobs-daily-before" />
+
+          <div className="mt-6 p-4 rounded-lg border border-border bg-card">
+            <h3 className="text-sm font-semibold text-foreground mb-2">Нотолгоо үлдээх:</h3>
+            <ul className="space-y-1">
+              {dailyWorkSafety.evidence.map((e, i) => (
+                <li key={i} className="text-sm text-muted-foreground">&#8226; {e}</li>
+              ))}
+            </ul>
+          </div>
+
+          <TipBox className="mt-4" title="Цалин өгөхгүй бол">
+            <p>{dailyWorkSafety.unpaidNote}</p>
+          </TipBox>
+          <TipBox className="mt-4" title="Татвар">
+            <p>{dailyWorkSafety.taxNote}</p>
+          </TipBox>
+
+          <h3 className="text-base font-semibold font-heading mt-6 mb-3">Facebook зарын залилангийн шинж</h3>
+          <div className="space-y-2">
+            {dailyWorkSafety.scamSigns.map((s) => (
+              <div key={s.sign} className="p-3 rounded-lg border border-terracotta/30 bg-terracotta/5">
+                <p className="text-sm font-medium text-foreground">🚩 {s.sign}</p>
+                <p className="text-xs text-muted-foreground mt-1">{s.why}</p>
               </div>
             ))}
           </div>

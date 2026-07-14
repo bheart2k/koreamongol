@@ -120,6 +120,14 @@ const guides = [
   },
 ];
 
+const situations = [
+  { emoji: '🛬', label: 'Би дөнгөж ирлээ', href: '/arrival' },
+  { emoji: '💸', label: 'Цалингаа аваагүй', href: '/jobs#jobs-rights' },
+  { emoji: '🏦', label: 'Гэртээ мөнгө илгээх', href: '/money' },
+  { emoji: '🏥', label: 'Эмч үзүүлэх хэрэгтэй', href: '/hospital' },
+  { emoji: '💼', label: 'Ажил хайж байна', href: '/jobs' },
+];
+
 export default function HomeContent() {
   return (
     <main className="min-h-content bg-background">
@@ -136,11 +144,29 @@ export default function HomeContent() {
               Солонгост тавтай морил!
             </h1>
             <p className="text-body-lg text-muted-foreground mb-8">
-              Таны Солонгос амьдралын хөтөч
+              Виз, банк, эмнэлэг, цалин, мөнгөн шилжүүлэг — Солонгост амьдрахад
+              хэрэгтэй бүх мэдээлэл монгол хэлээр, үнэ төлбөргүй.
             </p>
+
+            <p className="text-sm font-medium text-navy dark:text-sky mb-3">
+              Яг одоо танд юу хэрэгтэй вэ?
+            </p>
+            <div className="flex flex-wrap justify-center gap-2 mb-8">
+              {situations.map((s) => (
+                <Link
+                  key={s.href + s.label}
+                  href={s.href}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border bg-card text-sm text-foreground hover:border-gold/50 hover:shadow-sm transition-all"
+                >
+                  <span>{s.emoji}</span>
+                  {s.label}
+                </Link>
+              ))}
+            </div>
+
             <Button asChild variant="terracotta" size="lg">
-              <Link href="/visa">
-                Гарын авлага үзэх
+              <Link href="#guides">
+                Бүх гарын авлага үзэх
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
@@ -158,7 +184,7 @@ export default function HomeContent() {
       </section>
 
       {/* Guide Cards */}
-      <section className="py-16 md:py-24 px-6">
+      <section id="guides" className="py-16 md:py-24 px-6 scroll-mt-16">
         <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -34,6 +34,7 @@ export default function HospitalPage() {
       <GuideHero
         title={hospitalMeta.title}
         subtitle={hospitalMeta.subtitle}
+        lastUpdated={hospitalMeta.lastUpdated}
         icon={Heart}
         breadcrumbLabel="Эмнэлэг"
       >

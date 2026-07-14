@@ -1,6 +1,7 @@
 export const emergencyMeta = {
   title: 'Яаралтай утасны дугаарууд',
   subtitle: 'Солонгост амьдрахад хэрэг болох бүх утасны дугаар — нэг хуудсанд',
+  lastUpdated: '2026.02.15',
 };
 
 export const emergencySections = [

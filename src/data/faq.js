@@ -193,7 +193,7 @@ export const faqData = [
     category: 'service',
     question: 'KoreaMongol-ыг хэрхэн дэмжих вэ?',
     answer:
-      'Buy Me a Coffee (buymeacoffee.com/koreamongol) дээр дэмжлэг үзүүлэх, эсвэл буруу мэдээлэл олвол мэдэгдэх, найзуудад хуваалцах зэргээр тусалж болно. /donate хуудаснаас дэлгэрэнгүй үзнэ үү.',
+      'Ko-fi (ko-fi.com/hangulhub) эсвэл KakaoPay-ээр дэмжлэг үзүүлэх, буруу мэдээлэл олвол мэдэгдэх, найзуудад хуваалцах зэргээр тусалж болно. /donate хуудаснаас дэлгэрэнгүй үзнэ үү.',
   },
 
   // === 일반 ===

@@ -1,6 +1,7 @@
 export const hospitalMeta = {
   title: 'Эмнэлэг / Яаралтай тусламж',
   subtitle: 'Эмнэлэгт хандах, яаралтай дуудлага, даатгалын мэдээлэл',
+  lastUpdated: '2026.02.14',
 };
 
 export const hospitalSections = [

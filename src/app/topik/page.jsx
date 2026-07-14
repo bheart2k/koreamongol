@@ -33,6 +33,7 @@ export default function TopikPage() {
       <GuideHero
         title={topikMeta.title}
         subtitle={topikMeta.subtitle}
+        lastUpdated={topikMeta.lastUpdated}
         icon={GraduationCap}
         breadcrumbLabel="TOPIK"
       >

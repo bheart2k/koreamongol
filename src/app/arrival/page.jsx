@@ -1,13 +1,13 @@
 import { MapPin, Smartphone, Building2, Phone, FileCheck, ExternalLink } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList,
-  TipBox, WarningBox, InfoTable, ReportBanner, DonateBanner, ShareButtons,
+  TipBox, WarningBox, InfoTable, LinkCard, ReportBanner, DonateBanner, ShareButtons,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
   arrivalMeta, arrivalSections, arrivalTimeline,
   arrivalTips, essentialApps, alienRegistration,
-  bankRecommendations, phoneInfo,
+  bankRecommendations, phoneInfo, arrivalLinks,
 } from '@/data/guides/arrival';
 
 const BASE_URL = 'https://koreamongol.com';
@@ -35,6 +35,7 @@ export default function ArrivalPage() {
       <GuideHero
         title={arrivalMeta.title}
         subtitle={arrivalMeta.subtitle}
+        lastUpdated={arrivalMeta.lastUpdated}
         icon={MapPin}
         breadcrumbLabel="Ирсний дараа"
       >
@@ -217,6 +218,16 @@ export default function ArrivalPage() {
             headers={['Апп', 'Төрөл', 'Тайлбар']}
             rows={essentialApps}
           />
+        </section>
+
+        {/* Useful Links */}
+        <section id="arrival-links">
+          <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линк</h2>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {arrivalLinks.map((link) => (
+              <LinkCard key={link.href} {...link} />
+            ))}
+          </div>
         </section>
 
         <ReportBanner pageUrl="/arrival" />

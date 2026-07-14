@@ -1,6 +1,7 @@
 export const moneyMeta = {
   title: 'Мөнгө ба санхүү',
   subtitle: 'Монгол руу мөнгө шилжүүлэх, банк, карт, даатгал — бүх зүйл',
+  lastUpdated: '2026.02.14',
 };
 
 export const moneySections = [

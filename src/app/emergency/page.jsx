@@ -97,6 +97,7 @@ export default function EmergencyPage() {
       <GuideHero
         title={emergencyMeta.title}
         subtitle={emergencyMeta.subtitle}
+        lastUpdated={emergencyMeta.lastUpdated}
         icon={Phone}
         breadcrumbLabel="Яаралтай утас"
       >

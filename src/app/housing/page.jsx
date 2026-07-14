@@ -29,6 +29,7 @@ export default function HousingPage() {
       <GuideHero
         title={housingMeta.title}
         subtitle={housingMeta.subtitle}
+        lastUpdated={housingMeta.lastUpdated}
         icon={Home}
         breadcrumbLabel="Байр"
       >

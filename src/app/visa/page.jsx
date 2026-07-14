@@ -30,6 +30,7 @@ export default function VisaPage() {
       <GuideHero
         title={visaMeta.title}
         subtitle={visaMeta.subtitle}
+        lastUpdated={visaMeta.lastUpdated}
         icon={FileText}
         breadcrumbLabel="Виз"
       >
