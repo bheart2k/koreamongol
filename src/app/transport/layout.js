@@ -1,7 +1,7 @@
 const BASE_URL = 'https://koreamongol.com';
 
 export const metadata = {
-  title: 'Тээврийн гарын авлага — Метро, автобус, такси, KTX | KoreaMongol',
+  title: 'Тээврийн гарын авлага — Метро, автобус, такси, KTX',
   description: 'T-money карт, метро (₩1,550), автобус, такси, KTX — Солонгосын нийтийн тээврийн бүрэн гарын авлага. Аппууд, үнэ, зөвлөгөө.',
   keywords: ['тээвэр', 'метро', 'автобус', 'такси', 'KTX', 'T-money', '지하철', '교통'],
   openGraph: {

@@ -16,6 +16,7 @@ export { badges } from './schema/badges.js';
 export { points } from './schema/points.js';
 export { inbox } from './schema/inbox.js';
 export { analyticsEvents } from './schema/analyticsEvents.js';
+export { feedback } from './schema/feedback.js';
 export { dailyStats } from './schema/dailyStats.js';
 export { counters } from './schema/counters.js';
 export { commentLikes, postLikes } from './schema/likes.js';
@@ -29,6 +30,7 @@ export {
   INBOX_CATEGORIES,
   INBOX_STATUSES,
   INBOX_PRIORITIES,
+  FEEDBACK_CATEGORIES,
 } from './schema/constants.js';
 
 // 헬퍼

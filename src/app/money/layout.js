@@ -1,7 +1,7 @@
 const BASE_URL = 'https://koreamongol.com';
 
 export const metadata = {
-  title: 'Мөнгө ба санхүү — Шилжүүлэг, банк, даатгал | KoreaMongol',
+  title: 'Мөнгө ба санхүү — Шилжүүлэг, банк, даатгал',
   description: 'Монгол руу мөнгө шилжүүлэх арга, банкны данс, карт, 4 даатгал, тэтгэвэр буцаан авах. GME, Hanpass, Toss, Western Union.',
   keywords: ['мөнгө шилжүүлэг', 'банк данс', '4대보험', '국민연금', 'GME', 'Hanpass', 'ханш'],
   openGraph: {

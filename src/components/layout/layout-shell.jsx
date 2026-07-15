@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
+import { FeedbackFab } from '@/components/layout/FeedbackFab';
 
 export function LayoutShell({ children }) {
   const pathname = usePathname();
@@ -17,6 +18,7 @@ export function LayoutShell({ children }) {
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
+      <FeedbackFab />
     </div>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { X } from 'lucide-react';
+import { X, MessageSquareHeart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
 import { navItems, secondaryNavItems, getLabel } from './nav-items';
@@ -92,6 +92,16 @@ export function MobileMenu({ isOpen, onClose }) {
                 </Link>
               );
             })}
+
+            {/* 피드백 CTA — 눈에 띄게 강조 */}
+            <Link
+              href="/feedback"
+              onClick={onClose}
+              className="flex items-center gap-3 px-3 py-2.5 mt-2 text-sm font-medium text-gold border border-gold/40 bg-gold/10 rounded-lg hover:bg-gold/20 transition-colors"
+            >
+              <MessageSquareHeart className="w-4 h-4" />
+              Санал хүсэлт үлдээх
+            </Link>
           </nav>
         </motion.div>
       )}

@@ -2,8 +2,9 @@
 
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee, Briefcase, Home, GraduationCap, Calculator, Train, Phone, Smartphone } from 'lucide-react';
+import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee, Briefcase, Home, GraduationCap, Calculator, Train, Phone, Smartphone, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ExchangeMiniCard } from '@/components/home/ExchangeMiniCard';
 
 const guides = [
   {
@@ -126,9 +127,10 @@ const situations = [
   { emoji: '🏦', label: 'Гэртээ мөнгө илгээх', href: '/money' },
   { emoji: '🏥', label: 'Эмч үзүүлэх хэрэгтэй', href: '/hospital' },
   { emoji: '💼', label: 'Ажил хайж байна', href: '/jobs' },
+  { emoji: '⚡', label: 'Түргэн хариулт', href: '/tips' },
 ];
 
-export default function HomeContent() {
+export default function HomeContent({ recentUpdates = [] }) {
   return (
     <main className="min-h-content bg-background">
       {/* Hero Section */}
@@ -182,6 +184,51 @@ export default function HomeContent() {
           <span>📞 Гадаадын иргэн: 1345</span>
         </div>
       </section>
+
+      {/* Recent Updates + Exchange */}
+      {recentUpdates.length > 0 && (
+        <section className="py-12 px-6">
+          <div className="max-w-4xl mx-auto grid md:grid-cols-[1fr_260px] gap-5 items-stretch">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="rounded-2xl border border-border bg-card p-6"
+            >
+              <h2 className="flex items-center gap-2 text-base font-semibold font-heading text-navy dark:text-sky mb-4">
+                <RefreshCw className="w-4 h-4 text-gold" />
+                Сүүлийн шинэчлэл
+              </h2>
+              <ul className="space-y-2.5">
+                {recentUpdates.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="group flex items-baseline justify-between gap-3"
+                    >
+                      <span className="text-sm text-foreground group-hover:text-gold-dark transition-colors truncate">
+                        {item.title}
+                      </span>
+                      <span className="text-xs text-muted-foreground shrink-0">
+                        {item.lastUpdated}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+            >
+              <ExchangeMiniCard />
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Guide Cards */}
       <section id="guides" className="py-16 md:py-24 px-6 scroll-mt-16">

@@ -5,6 +5,7 @@ import {
   Settings,
   Inbox,
   BarChart3,
+  Star,
 } from 'lucide-react';
 
 export const ADMIN_MENU = {
@@ -28,6 +29,11 @@ export const ADMIN_MENU = {
       title: '받은편지함',
       url: '/admin/inbox',
       icon: Inbox,
+    },
+    {
+      title: '피드백',
+      url: '/admin/feedback',
+      icon: Star,
     },
     {
       title: '이미지 관리',

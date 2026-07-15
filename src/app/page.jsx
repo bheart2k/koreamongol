@@ -1,4 +1,5 @@
 import { WebSiteJsonLd } from '@/components/seo/JsonLd';
+import { getRecentUpdates } from '@/lib/recent-updates';
 import HomeContent from './HomeContent';
 
 export const metadata = {
@@ -14,7 +15,7 @@ export default function HomePage() {
   return (
     <>
       <WebSiteJsonLd />
-      <HomeContent />
+      <HomeContent recentUpdates={getRecentUpdates(5)} />
     </>
   );
 }

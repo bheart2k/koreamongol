@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import {
   Accordion,
   AccordionContent,
@@ -20,6 +21,14 @@ export function FAQAccordion({ items }) {
           </AccordionTrigger>
           <AccordionContent className="text-muted-foreground leading-relaxed">
             {item.answer}
+            {item.link && (
+              <Link
+                href={item.link.href}
+                className="block mt-2 text-accent hover:underline"
+              >
+                {item.link.label} →
+              </Link>
+            )}
           </AccordionContent>
         </AccordionItem>
       ))}

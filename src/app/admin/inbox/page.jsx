@@ -17,6 +17,7 @@ import {
   Mail,
   Flag,
   MessageCircle,
+  HelpCircle,
   RotateCcw,
   Monitor,
   Globe,
@@ -32,6 +33,7 @@ const TYPE_TABS = [
   { value: '', label: '전체' },
   { value: 'inquiry', label: '문의' },
   { value: 'report', label: '제보' },
+  { value: 'question', label: '질문' },
 ];
 
 const STATUS_OPTIONS = [
@@ -195,6 +197,14 @@ export default function AdminInboxPage() {
         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium text-blue-600 bg-blue-100">
           <MessageCircle className="w-3 h-3" />
           문의
+        </span>
+      );
+    }
+    if (type === 'question') {
+      return (
+        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium text-purple-600 bg-purple-100">
+          <HelpCircle className="w-3 h-3" />
+          질문
         </span>
       );
     }
@@ -403,7 +413,7 @@ export default function AdminInboxPage() {
                         {getDisplayName(item)}
                       </span>
                       <span>{formatDate(item.createdAt)}</span>
-                      {item.type === 'report' && item.pageUrl && (
+                      {(item.type === 'report' || item.type === 'question') && item.pageUrl && (
                         <span className="truncate max-w-[200px]">{item.pageUrl}</span>
                       )}
                     </div>
@@ -428,10 +438,12 @@ export default function AdminInboxPage() {
                         {item.content}
                       </div>
 
-                      {/* 제보: 페이지 URL */}
-                      {item.type === 'report' && item.pageUrl && (
+                      {/* 제보/질문: 페이지 URL */}
+                      {(item.type === 'report' || item.type === 'question') && item.pageUrl && (
                         <div className="mt-3 p-3 bg-orange-50 dark:bg-orange-950/20 rounded-lg border border-orange-200 dark:border-orange-800/30">
-                          <p className="text-xs font-semibold text-orange-700 dark:text-orange-400 mb-1">제보 페이지</p>
+                          <p className="text-xs font-semibold text-orange-700 dark:text-orange-400 mb-1">
+                            {item.type === 'question' ? '질문 발생 페이지' : '제보 페이지'}
+                          </p>
                           <a
                             href={item.pageUrl}
                             target="_blank"

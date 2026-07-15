@@ -1,7 +1,7 @@
 const BASE_URL = 'https://koreamongol.com';
 
 export const metadata = {
-  title: 'Бодит Солонгос хэл & Соёл | KoreaMongol',
+  title: 'Бодит Солонгос хэл & Соёл',
   description: 'Сурах бичигт байдаггүй бодит Солонгос хэл, соёлын ялгаа, түгээмэл алдаа. Монгол хүмүүст зориулсан.',
   keywords: ['Солонгос хэл', 'соёл', 'бодит хэллэг', 'Монгол', 'гарын авлага'],
   openGraph: {

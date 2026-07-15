@@ -11,6 +11,7 @@ import { topikMeta } from '@/data/guides/topik';
 import { transportMeta } from '@/data/guides/transport';
 import { emergencyMeta } from '@/data/guides/emergency';
 import { appsMeta } from '@/data/guides/apps';
+import { tips, tipsMeta } from '@/data/tips';
 
 const BASE_URL = 'https://koreamongol.com';
 
@@ -33,6 +34,13 @@ export default async function sitemap() {
     { path: '/exchange', priority: 0.8, changeFrequency: 'daily' },
     { path: '/severance', priority: 0.8, changeFrequency: 'monthly' },
     { path: '/apps', priority: 0.8, changeFrequency: 'monthly', lastModified: metaDate(appsMeta) },
+    { path: '/tips', priority: 0.8, changeFrequency: 'weekly', lastModified: metaDate(tipsMeta) },
+    ...tips.map((tip) => ({
+      path: `/tips/${tip.slug}`,
+      priority: 0.8,
+      changeFrequency: 'monthly',
+      lastModified: tip.lastUpdated.replaceAll('.', '-'),
+    })),
     { path: '/donate', priority: 0.4, changeFrequency: 'monthly' },
     { path: '/community', priority: 0.7, changeFrequency: 'daily' },
     { path: '/community/blog', priority: 0.8, changeFrequency: 'daily' },
@@ -42,6 +50,7 @@ export default async function sitemap() {
     { path: '/faq', priority: 0.7, changeFrequency: 'monthly' },
     { path: '/about', priority: 0.5, changeFrequency: 'monthly' },
     { path: '/contact', priority: 0.4, changeFrequency: 'yearly' },
+    { path: '/feedback', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/privacy', priority: 0.3, changeFrequency: 'yearly' },
     { path: '/terms', priority: 0.3, changeFrequency: 'yearly' },
   ];

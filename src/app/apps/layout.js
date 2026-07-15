@@ -1,7 +1,7 @@
 const BASE_URL = 'https://koreamongol.com';
 
 export const metadata = {
-  title: 'Хэрэгтэй апп & хэрэгсэл — KakaoTalk, Coupang, KakaoMap | KoreaMongol',
+  title: 'Хэрэгтэй апп & хэрэгсэл — KakaoTalk, Coupang, KakaoMap',
   description: 'Солонгост амьдрахад заавал хэрэгтэй апп: KakaoTalk, KakaoMap, Coupang, Baemin, Google Translate, тооцоолуурууд.',
   keywords: ['카카오톡', '쿠팡', '카카오맵', '배달의민족', '당근', 'Google Translate', '한국 앱', 'апп'],
   openGraph: {

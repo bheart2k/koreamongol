@@ -77,6 +77,7 @@ function getBreadcrumbs(pathname) {
     general: '일반',
     settings: '설정',
     inbox: '받은편지함',
+    feedback: '피드백',
   };
 
   let path = '';

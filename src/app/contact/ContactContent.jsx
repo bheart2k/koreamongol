@@ -211,8 +211,8 @@ function ContactPageContent() {
                               onClick={() => setSelectedCategory(cat.value)}
                               className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all text-left ${
                                 isSelected
-                                  ? 'border-primary bg-primary/5'
-                                  : 'border-border hover:border-primary/50'
+                                  ? 'border-gold bg-gold/10 text-gold-dark'
+                                  : 'border-border hover:border-gold/40'
                               }`}
                             >
                               <div className={`w-8 h-8 rounded-lg ${cat.color} flex items-center justify-center flex-shrink-0`}>

@@ -51,6 +51,16 @@
 - 경쟁: KOWORK/JOBPLOY/워크온/KoMate 등 외국인 채용플랫폼 이미 존재. 단 몽골 특화·"한국인 사업장" 필터 없음 → 틈새
 - 추천: koreamongol.com에 "구직 정보 허브 + 사업장 후기 커뮤니티"로 흡수, 별도 앱 신중
 
+## 재방문 전략 인프라 현황 (2026-07-15 코드 직접 확인)
+- **이미 존재하는 인프라 (신규 개발 아님, 활용만 하면 됨):**
+  - inbox DB (schema/inbox.js): type=inquiry|report, 자동 컨텍스트(pageUrl/sectionId/referrer/userAgent 등) 수집. admin/inbox 관리 페이지 + 우선순위/상태/adminNote 있음. → 요건4 "질문 접수" 파이프라인의 접수단은 이미 완성
+  - ReportBanner+ReportDialog: 가이드마다 "정보 오류 제보" (몽골어 "Мэдээлэл засах") → inbox 저장
+  - analytics/track API: guide_view/emergency_call/external_link/share_facebook/share_copy_link/exchange_calculate/donate_click 등 이벤트 + dailyStats 집계. admin/analytics 대시보드 다수. → "관심 신호" 백엔드 존재, 프론트 노출(조회수/도움됐어요)만 없음
+  - 커뮤니티: posts(boardType: blog/free/notice) + 댓글/조회수(viewCount)/좋아요/포인트/출석체크(checkin)/레벨 전부 구현됨
+- **⚠️ 커뮤니티 CommunityContent.jsx는 "한글허브" 껍데기 그대로** (Hangul Blog, 폰트 갤러리, 한국어 UI, isKo). KoreaMongol 몽골어 맥락으로 미전환 상태 — 커뮤니티 활성화 전 반드시 재설계 필요
+- tips 파이프라인: src/data/tips.js (팩트는 검증된 guides/*에서만, 새 팩트 금지) → /tips/[slug] SSG + FAQPage JSON-LD. 요건4 "질문→답변 영구화"의 출력단으로 최적합
+- 재검증 프로세스: 가이드별 lastUpdated만 있고 "주기적 재검증"은 없음 (요건3 갭)
+
 ## 가이드 데이터 패턴 메모
 - meta(title,subtitle) + sections(id,title) + 콘텐츠 배열
 - money.js가 가장 구조적 — 새 가이드 작성 시 참고

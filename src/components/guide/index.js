@@ -14,3 +14,6 @@ export { ReportBanner } from './ReportBanner';
 export { default as ReportDialog } from './ReportDialog';
 export { DonateBanner } from './DonateBanner';
 export { ShareButtons } from './ShareButtons';
+export { RelatedTips } from './RelatedTips';
+export { HelpfulWidget } from './HelpfulWidget';
+export { AskQuestionCta } from './AskQuestionCta';

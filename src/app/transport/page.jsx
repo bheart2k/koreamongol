@@ -4,7 +4,7 @@ import {
 } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, InfoTable,
-  WarningBox, TipBox, StepList, LinkCard, ReportBanner, DonateBanner, ShareButtons,
+  WarningBox, TipBox, StepList, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -272,6 +272,8 @@ export default function TransportPage() {
             ))}
           </div>
         </section>
+
+        <RelatedTips slugs={['tmoney-card']} />
 
         <ReportBanner pageUrl="/transport" />
         <DonateBanner />

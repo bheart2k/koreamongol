@@ -57,6 +57,14 @@ export const DEFAULT_BADGES = [
 export const INBOX_TYPES = {
   inquiry: { label: '문의', labelMn: 'Асуулт' },
   report: { label: '제보', labelMn: 'Мэдэгдэл' },
+  question: { label: '정보 질문', labelMn: 'Мэдээллийн асуулт' },
+};
+
+// 피드백 유형
+export const FEEDBACK_CATEGORIES = {
+  opinion: { label: '의견', labelMn: 'Сэтгэгдэл' },
+  bug: { label: '버그 신고', labelMn: 'Алдаа мэдэгдэх' },
+  improvement: { label: '개선 제안', labelMn: 'Сайжруулах санал' },
 };
 
 // Inbox 카테고리 (inquiry 하위)

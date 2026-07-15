@@ -16,7 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
-function getClientMeta() {
+export function getClientMeta() {
   if (typeof window === 'undefined') return {};
   return {
     currentUrl: window.location.href,

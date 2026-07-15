@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, MessageCircleQuestion } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ReportDialog from './ReportDialog';
+import AskQuestionDialog from './AskQuestionDialog';
 
 export function ReportBanner({ pageUrl }) {
   const [open, setOpen] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
 
   return (
     <>
@@ -19,24 +21,40 @@ export function ReportBanner({ pageUrl }) {
                 Хамтдаа бүтээе!
               </p>
               <p className="text-xs text-muted-foreground">
-                Бид мэдээллийг нягтлан шалгасан боловч алдаа байж болно. Буруу мэдээлэл олвол бидэнд мэдэгдэнэ үү.
+                Буруу мэдээлэл олсон эсвэл асуух зүйл байвал бидэнд мэдэгдээрэй — бид олж мэдээд хариулна.
               </p>
             </div>
           </div>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setOpen(true)}
-            className="shrink-0 border-gold/40 text-gold-dark hover:bg-gold/10"
-          >
-            Мэдээлэл засах
-          </Button>
+          <div className="flex flex-wrap gap-2 shrink-0">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setAskOpen(true)}
+              className="border-gold/40 text-gold-dark hover:bg-gold/10"
+            >
+              <MessageCircleQuestion className="w-4 h-4 mr-1.5" />
+              Асуулт асуух
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setOpen(true)}
+              className="border-gold/40 text-gold-dark hover:bg-gold/10"
+            >
+              Мэдээлэл засах
+            </Button>
+          </div>
         </div>
       </div>
 
       <ReportDialog
         open={open}
         onOpenChange={setOpen}
+        pageUrl={pageUrl}
+      />
+      <AskQuestionDialog
+        open={askOpen}
+        onOpenChange={setAskOpen}
         pageUrl={pageUrl}
       />
     </>

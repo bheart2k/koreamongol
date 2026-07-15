@@ -1,7 +1,7 @@
 import { FileText, Clock, AlertTriangle, ArrowRightLeft } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList,
-  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons,
+  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -199,6 +199,8 @@ export default function VisaPage() {
             ))}
           </div>
         </section>
+
+        <RelatedTips slugs={['visa-extension']} />
 
         <ReportBanner pageUrl="/visa" />
         <DonateBanner />

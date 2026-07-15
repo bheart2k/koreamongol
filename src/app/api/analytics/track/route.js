@@ -14,6 +14,8 @@ const ALLOWED_EVENTS = [
   'community_comment',
   'donate_click',
   'page_view',
+  'tip_view',
+  'tip_helpful',
 ];
 
 export async function POST(request) {

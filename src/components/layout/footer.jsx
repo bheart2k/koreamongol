@@ -9,7 +9,9 @@ const footerLinks = {
   company: [
     { href: '/about', label: 'Танилцуулга' },
     { href: '/faq', label: 'Түгээмэл асуулт' },
+    { href: '/tips', label: 'Түргэн хариулт' },
     { href: '/contact', label: 'Холбоо барих' },
+    { href: '/feedback', label: 'Санал хүсэлт' },
     { href: '/donate', label: 'Дэмжлэг' },
   ],
   legal: [

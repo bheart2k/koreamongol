@@ -1,7 +1,7 @@
 const BASE_URL = 'https://koreamongol.com';
 
 export const metadata = {
-  title: 'Яаралтай утасны дугаарууд | KoreaMongol',
+  title: 'Яаралтай утасны дугаарууд',
   description: 'Солонгост амьдрахад хэрэг болох бүх утасны дугаар: 119 яаралтай, 112 цагдаа, 1345 гадаадын иргэн, 1577-1366 дануры, 1588-5644 BBB орчуулга, элчин сайдын яам.',
   keywords: ['яаралтай утас', 'emergency Korea', '1345', '긴급 연락처', 'монгол элчин сайдын яам', 'BBB Korea'],
   openGraph: {

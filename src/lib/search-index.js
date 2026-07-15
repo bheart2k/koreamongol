@@ -11,6 +11,7 @@ import { transportSections } from '@/data/guides/transport';
 import { emergencySections } from '@/data/guides/emergency';
 import { appsSections } from '@/data/guides/apps';
 import { faqData } from '@/data/faq';
+import { tips } from '@/data/tips';
 
 // 검색 별칭: 섹션 제목에 없는 한국어/몽골어 검색어를 보강
 const KEYWORDS = {
@@ -81,6 +82,13 @@ export const searchIndex = [
       keywords: KEYWORDS[s.id] || '',
     }));
   }),
+  // 팁 (질문 페이지)
+  ...tips.map((t) => ({
+    title: t.question,
+    category: 'Түргэн хариулт',
+    href: `/tips/${t.slug}`,
+    keywords: t.keywords.join(' '),
+  })),
   // 도구
   { title: 'Ханш тооцоолуур (KRW ↔ MNT)', category: 'Хэрэгсэл', href: '/exchange', keywords: '환율 계산기 ханш' },
   { title: 'Тэтгэмж тооцоолуур (퇴직금)', category: 'Хэрэгсэл', href: '/severance', keywords: '퇴직금 계산기 тэтгэмж' },
