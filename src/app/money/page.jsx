@@ -278,7 +278,7 @@ export default function MoneyPage() {
           </div>
         </section>
 
-        <RelatedTips slugs={['send-money-to-mongolia']} />
+        <RelatedTips slugs={['send-money-to-mongolia', 'open-bank-account', 'pension-refund']} />
 
         <ReportBanner pageUrl="/money" />
         <DonateBanner />

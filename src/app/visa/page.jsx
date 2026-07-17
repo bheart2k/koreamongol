@@ -200,7 +200,7 @@ export default function VisaPage() {
           </div>
         </section>
 
-        <RelatedTips slugs={['visa-extension']} />
+        <RelatedTips slugs={['visa-extension', 'alien-registration']} />
 
         <ReportBanner pageUrl="/visa" />
         <DonateBanner />

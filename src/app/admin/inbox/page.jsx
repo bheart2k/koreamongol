@@ -22,6 +22,7 @@ import {
   Monitor,
   Globe,
   Link2,
+  SearchCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -34,6 +35,7 @@ const TYPE_TABS = [
   { value: 'inquiry', label: '문의' },
   { value: 'report', label: '제보' },
   { value: 'question', label: '질문' },
+  { value: 'recheck', label: '재검증' },
 ];
 
 const STATUS_OPTIONS = [
@@ -205,6 +207,14 @@ export default function AdminInboxPage() {
         <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium text-purple-600 bg-purple-100">
           <HelpCircle className="w-3 h-3" />
           질문
+        </span>
+      );
+    }
+    if (type === 'recheck') {
+      return (
+        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium text-teal-600 bg-teal-100">
+          <SearchCheck className="w-3 h-3" />
+          재검증
         </span>
       );
     }

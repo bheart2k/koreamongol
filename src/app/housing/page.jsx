@@ -1,7 +1,7 @@
 import { Home, ExternalLink } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList, StepList,
-  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons,
+  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -223,6 +223,8 @@ export default function HousingPage() {
             ))}
           </div>
         </section>
+
+        <RelatedTips slugs={['housing-deposit']} />
 
         <ReportBanner pageUrl="/housing" />
         <DonateBanner />

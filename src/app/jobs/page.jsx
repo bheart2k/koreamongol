@@ -279,7 +279,7 @@ export default function JobsPage() {
           </div>
         </section>
 
-        <RelatedTips slugs={['student-part-time', 'unpaid-wages']} />
+        <RelatedTips slugs={['student-part-time', 'unpaid-wages', 'minimum-wage-2026', 'work-injury']} />
 
         <ReportBanner pageUrl="/jobs" />
         <DonateBanner />
