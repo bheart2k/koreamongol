@@ -1,5 +1,7 @@
 import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import IndexNowPanel from '@/components/admin/IndexNowPanel';
+import { KEY_LOCATION } from '@/lib/indexnow';
 
 export default async function SettingsPage() {
   const session = await auth();
@@ -21,6 +23,8 @@ export default async function SettingsPage() {
           <li>• 시스템 설정</li>
         </ul>
       </div>
+
+      <IndexNowPanel keyLocation={KEY_LOCATION} />
     </div>
   );
 }

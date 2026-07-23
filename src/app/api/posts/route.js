@@ -5,6 +5,7 @@ import { eq, and, desc, asc, count, sql, or, ilike } from 'drizzle-orm';
 import { givePoints } from '@/lib/services/pointService';
 import { extractImageUrls, moveTempImages } from '@/lib/upload/imageUtils';
 import { generateSummary } from '@/lib/utils/postUtils';
+import { submitToIndexNow } from '@/lib/indexnow';
 
 /**
  * GET /api/posts - 게시글 목록 조회
@@ -196,6 +197,12 @@ export async function POST(request) {
 
     const results = await Promise.all(updates);
     const pointResult = boardType !== 'notice' ? results[1] : null;
+
+    // IndexNow 색인 통보 (실패해도 작성 흐름에는 영향 없음)
+    await submitToIndexNow([
+      `/community/${boardType}/${post.id}`,
+      `/community/${boardType}`,
+    ]);
 
     return NextResponse.json({
       success: true,

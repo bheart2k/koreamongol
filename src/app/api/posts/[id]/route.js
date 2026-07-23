@@ -4,6 +4,7 @@ import { db, posts, users } from '@/lib/db';
 import { eq, sql } from 'drizzle-orm';
 import { extractImageUrls, moveTempImages, findRemovedImages, deleteImagesFromR2 } from '@/lib/upload/imageUtils';
 import { generateSummary } from '@/lib/utils/postUtils';
+import { submitToIndexNow } from '@/lib/indexnow';
 
 /**
  * GET /api/posts/[id] - 게시글 상세 조회
@@ -165,6 +166,9 @@ export async function PUT(request, { params }) {
       level: users.level,
     }).from(users).where(eq(users.id, updatedPost.authorId)).limit(1);
 
+    // IndexNow 색인 통보 (실패해도 수정 흐름에는 영향 없음)
+    await submitToIndexNow([`/community/${post.boardType}/${postId}`]);
+
     return NextResponse.json({
       success: true,
       data: {
@@ -219,6 +223,12 @@ export async function DELETE(request, { params }) {
     }
 
     await Promise.all(updates);
+
+    // IndexNow 색인 통보 — 삭제된 URL도 제출해야 검색엔진이 재확인 후 색인을 내린다
+    await submitToIndexNow([
+      `/community/${post.boardType}/${postId}`,
+      `/community/${post.boardType}`,
+    ]);
 
     return NextResponse.json({
       success: true,
