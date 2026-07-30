@@ -3,6 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
+import { FamilyBanner } from '@/components/layout/family-banner';
 import { FeedbackFab } from '@/components/layout/FeedbackFab';
 
 export function LayoutShell({ children }) {
@@ -17,6 +18,7 @@ export function LayoutShell({ children }) {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1">{children}</main>
+      <FamilyBanner />
       <Footer />
       <FeedbackFab />
     </div>
