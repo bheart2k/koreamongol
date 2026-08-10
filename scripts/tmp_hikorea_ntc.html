@@ -1,0 +1,1181 @@
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>멀티게시판 공지사항 &lt; 하이코리아</title>
+	<meta charset="utf-8">
+	<meta name="title" content="멀티게시판 공지사항">
+	<meta name="author" content="하이코리아">
+	<meta name="keywords" content="하이코리아">
+	<meta name="robots" content="noindex, follow">
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/common/css/jquery-ui.css" />
+<link rel="stylesheet" type="text/css" href="/common/css/ptg/style.css?ver=2025081401"/>
+ 
+
+<script src="/common/js/ptg/jquery-1.12.2.min.js"></script>
+<script src="/common/js/ptg/jquery-ui.min.js"></script>
+<script src="/common/js/ptg/jquery-ui-1.10.4.custom.js"></script>
+<script src="/common/js/jquery.form.js"></script>
+<script src="/common/js/jquery.fileDownload.js"></script>
+<script src="/common/js/ptg/jquery.bxslider.js"></script>
+
+
+<script src="/common/js/g4f_string.js"></script>
+<script src="/common/js/g4f_gVariable.js"></script>
+<script src="/common/js/g4f_message.js"></script>
+<script src="/common/js/g4f_common.js"></script>
+<script src="/common/js/encodeX.js"></script>
+<script src="/common/js/globalUtils.js"></script>
+<script src="/common/js/common.js?var=20260723"></script>
+<script src="/common/js/dateUtils.js"></script> 
+<script src="/common/js/stringUtils.js"></script>
+
+
+<script src="/common/js/ptg/placeholders.js"></script>
+
+
+<script  src="/common/js/ecv.js"></script>
+
+
+<script src="/common/js/tinymce/tinymce.min.js"></script>
+
+<script src="/common/js/ptg/common_pub.js?ver=20251202"></script>
+<script>
+gfv_seLang = 'KR';
+console.log("gfv_seLang >>> " + gfv_seLang);
+$(document).ready(function() {
+	// UI 공통
+	// 모든 화면에서 사용
+	ctrlUi();
+	preventBack();
+});
+</script> 
+<script type="text/javascript">
+//<![CDATA[
+	
+function search() {
+	$("#page").val(1);
+	var comSubmit = new ComSubmit("f1");
+	comSubmit.setUrl("/board/BoardListR.pt");
+	comSubmit.tran();
+}
+
+
+function MovePage(p){
+	$("#page").val(p);
+	var comSubmit = new ComSubmit("f1");
+	comSubmit.setUrl("/board/BoardListR.pt");
+	comSubmit.tran();
+}
+
+
+function boardDetailR(NTCCTT_SEQ){
+	var comSubmit = new ComSubmit("f1");
+	comSubmit.setUrl("/board/BoardDetailR.pt");
+	comSubmit.addParam("NTCCTT_SEQ", NTCCTT_SEQ);
+	comSubmit.tran();
+}
+
+
+function boardUpdate(NTCCTT_SEQ){
+	var comSubmit = new ComSubmit();
+	comSubmit.setUrl("/board/BoardUpdate.pt");
+	comSubmit.addParam("NTCCTT_SEQ", NTCCTT_SEQ);
+	comSubmit.addParam("BBS_SEQ", $("#BBS_SEQ").val());
+	comSubmit.addParam("BBS_GB_CD", $("#BBS_GB_CD").val());
+	comSubmit.tran();
+}
+
+
+function userBoardDetailR(PTCCTT_SEQ){
+	var comSubmit = new ComSubmit("f1");
+	comSubmit.setUrl("/board/UserBoardDetailR.pt");
+	comSubmit.addParam("PTCCTT_SEQ", PTCCTT_SEQ);
+	comSubmit.tran();
+}
+
+
+function UMovePage(p){
+	var comSubmit = new ComSubmit("f1");
+	comSubmit.setUrl("/board/UserBoardListR.pt");
+	$("#page").val(p);
+	comSubmit.tran();
+}
+
+
+function searchU() {	
+	$("#page").val(1);
+	var comSubmit = new ComSubmit("f1");
+	comSubmit.setUrl("/board/UserBoardListR.pt");
+	comSubmit.tran();		
+
+}
+
+$(document).ready(function(){
+	document.title = '공지사항 목록' + " < 뉴스.공지 < 하이코리아";
+	
+	
+	$("#boardInsert").on("click",function(){
+		var comSubmit = new ComSubmit("f1");
+		comSubmit.setUrl("/board/BoardInsert.pt");
+		comSubmit.tran();
+	});
+	
+	$("#nonLogin").on("click",function(){
+		gfn_confirm("로그인하지 않았거나 로그아웃된 상태입니다. 먼저 로그인하십시오.", function(){
+			location.href = "/memb/MembLoginR.pt";
+		},function(){});
+	});
+
+	$("#userBoardInsert").on("click",function(){
+		if("CH" == gfv_seLang){
+			gfn_alert("中文咨询（问题与回复）服务正在准备中。如有咨询，请利用韩文或英文咨询（问题与回复）服务或者致电法务部外国人综合咨询中心（电话：1345，无区号）咨询。",function(){
+			});
+			return;
+		}
+		var dialogHtml 	= '';
+		dialogHtml += '<div class="alert_con">';
+		dialogHtml += 	'<table border="0" cellpadding="1" cellspacing="0" class="board_alert01">';
+		dialogHtml += 		'<tr>';
+		dialogHtml += 			'<td scope="row">문의 유형 선택</td>';
+		dialogHtml += 		'</tr>';
+		
+		dialogHtml += 	'</table>';	
+		dialogHtml += '</div>';
+		dialogHtml += '<div class="alert_btn01">';		
+		dialogHtml += 	'<a href="#this" id="confirmTrue" class="btn_blue_b">';
+		dialogHtml += (gfv_seLang == 'KR' ? '확인' : (gfv_seLang == 'EN' ? "OK" : (gfv_seLang == 'CH' ? '确认' : '확인')));
+		dialogHtml += 	'</a>';
+		dialogHtml += 	'<a href="#this" id="confirmFalse" class="btn_green_b">';
+		dialogHtml += (gfv_seLang == 'KR' ? '취소' : (gfv_seLang == 'EN' ? "Cancel" : (gfv_seLang == 'CH' ? '取消' : '취소')));
+		dialogHtml += 	'</a>';
+		dialogHtml += '</div>';
+
+		$("#dialog-message").dialog({
+			autoOpen: false,
+			resizable: false,
+			modal: true,
+			title:'HIKOREA',
+			position:['center', 200],
+			width:400,		
+			zIndex:99,
+			open:function(event, ui){
+				$('.ui-widget-header').addClass('alert_tit');
+				$('.ui-dialog-titlebar-close').hide();
+			}
+		});
+		$("#dialog-message").html(dialogHtml);
+		$("#dialog-message").dialog('open');
+		$('#confirmTrue').on("click",function(){
+			if($("input[name='jobGb']:checked").val() == undefined || $("input[name='jobGb']:checked").val() == ''){
+				alert("문의 유형을 선택하세요.");
+			}else{
+				$("#dialog-message").dialog('close');
+				var comSubmit = new ComSubmit("f1");
+				comSubmit.addParam("CD",$("input[name='jobGb']:checked").val());
+				comSubmit.setUrl("/board/UserBoardInsert.pt");
+				comSubmit.tran();
+			}
+		});
+		$('#confirmFalse').on("click",function(){
+			$("#dialog-message").dialog('close');
+		});
+	});
+	
+	/* $("#CATEGORY2").change(function(){
+		var BBS_SEQ_GB_CD = $(this).val();
+		$("#BBS_SEQ_GB_CD").val(BBS_SEQ_GB_CD);
+		var comSubmit = new ComSubmit("f1");
+		comSubmit.setUrl("/board/BoardListR.pt");
+		$("#page").val(1);
+		$("#SEARCHMESSAGE").val("");
+		$("#CATEGORY").val("TITLE");
+		comSubmit.tran();
+	}); */
+	$("#CATESEARCHING").click(function(){
+		var BBS_SEQ_GB_CD = $("#CATEGORY2").val();
+		$("#BBS_SEQ_GB_CD").val(BBS_SEQ_GB_CD);
+		var comSubmit = new ComSubmit("f1");
+		comSubmit.setUrl("/board/BoardListR.pt");
+		$("#page").val(1);
+		$("#SEARCHMESSAGE").val("");
+		$("#CATEGORY").val("TITLE");
+		comSubmit.tran();
+	});
+});
+
+function boardSesUserDetailR(NTCCTT_SEQ, CREA_USER_ID){
+	var comSubmit = new ComSubmit("f1");
+	comSubmit.setUrl("/mypage/QnaDetailR.pt");
+	comSubmit.addParam("NTCCTT_SEQ", NTCCTT_SEQ);
+	comSubmit.addParam("CREA_USER_ID", CREA_USER_ID);
+	comSubmit.tran();
+}
+
+function clickshow(NTCCTT_SEQ){
+	var display = document.getElementById(NTCCTT_SEQ).style.display; 
+	var total = $("#total").val();
+	
+	if (display == "none") {
+		for (i = 0; i < total; i++) {
+			document.getElementsByName('NTCCTT_TXT')[i].style.display = "none"; 
+		}
+		document.getElementById(NTCCTT_SEQ).style.display = "block";
+	} else {
+		document.getElementById(NTCCTT_SEQ).style.display = "none";
+	}
+	/* document.getElementById(NTCCTT_SEQ).style.display ="block";  block */
+	/* $("#"+NTCCTT_SEQ).show();
+	*/
+	
+}
+//]]>
+</script>
+</head>
+<body>
+<!-- 전체 메뉴 -->
+
+<!-- //전체 메뉴 -->
+<div id="wrapper">
+	<!-- header -->
+	
+<meta http-equiv="cache-control" content="no-cache">
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        var anyidAdaptor = anyidAdaptor || {};
+      
+        /*
+ 	   anyidAdaptor.orgLoginTest = function(data){
+ 		  alert("orgLoginTest 테스트");
+ 		  let jsonObject = new Object();
+          jsonObject.txId = data.txId;
+          jsonObject.ssob = data.ssob;
+          jsonObject.userSeCd = data.userSeCd;
+          jsonObject.afData = data.afData;
+          let jsonStr = JSON.stringify(jsonObject);
+          
+          let encodedString = btoa(jsonStr);
+          console.log("origin::::"+window.location.origin);
+          console.log("agencyContextPath::::"+anyidAdaptor.agencyContextPath);
+          //var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/anyid/users/niClearApi";
+          console.log("data.ssob::::"+data.ssob);
+          console.log("data.txId::::"+data.txId);
+          console.log("data.userSeCd::::"+data.userSeCd);
+          console.log("jsonStr::::"+jsonStr);
+          
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", anyidAdaptor.agencyContextPath + "/memb/AnyIdLogin.pt", true);
+          xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+          let ssobEnc = btoa(data.ssob);
+          console.log("anyidAdaptor.orgLogin data.ssob::::"+data.ssob);
+          console.log("anyidAdaptor.orgLogin data.ssobEnc::::"+ssobEnc);
+          var postData = "data=" + encodedString + "&ssob=" + ssobEnc + "&txId=" + data.txId;
+          console.log("anyidAdaptor.orgLogin NOSSO orgLogin  userCheck() xhr.send SEND data::::"+data);
+          xhr.send(postData);
+       }
+        */
+ 	   
+ 	  /*이용기관 수정 영역 Start*/ 
+	   anyidAdaptor.orgLogin = function(data){
+	    	console.log("anyidAdaptor.orgLogin START");
+	        let jsonObject = new Object();
+	        jsonObject.txId = data.txId;
+	        jsonObject.ssob = data.ssob;
+	        jsonObject.userSeCd = data.userSeCd;
+	        jsonObject.afData = data.afData;
+	        
+	        let jsonStr = JSON.stringify(jsonObject);
+	        let encodedString = btoa(jsonStr);
+	        
+	        var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/memb/AnyIdLogin.pt";
+	        var urlWithParams = baseUrl + "?data=" + encodedString;
+
+	        window.location.href = urlWithParams;
+	        console.log("anyidAdaptor.orgLogin END");
+        }
+	    /*이용기관 수정 영역 End*/ 
+        
+        /*이용기관 문구수정 영역 Start*/
+        anyidAdaptor.JoinConfirm = function(portalJoinUri, memberData){
+            if(!confirm('Any-ID 사용자등록 하시겠습니까?')) {
+                //anyidAdaptor.orgLogin();
+                anyidAdaptor.orgLogin(anyidAdaptor.certData);
+                return;
+            }else{
+                anyidAdaptor.receiveAnyIdJoin(portalJoinUri, memberData);
+            }
+        }
+        /*이용기관 문구수정 영역 End*/
+        
+        anyidAdaptor.portalJoinUri = "";
+        anyidAdaptor.certData = null;
+        anyidAdaptor.ssoByPass = "0";
+        anyidAdaptor.niRegYn = "";
+        anyidAdaptor.agencyContextPath = "";
+        
+        
+        anyidAdaptor.success = function(data){
+            if(anyidAdaptor.ssoByPass != 0 || !data.useSso) {
+                anyidAdaptor.orgLogin(data);
+            } else {
+                anyidAdaptor.certData = data;
+                anyidAdaptor.userCheck();
+            }  
+        }
+        
+        anyidAdaptor.userCheck = function(){
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", anyidAdaptor.agencyContextPath + "/oidc/userCheck", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.success) {
+                        anyidAdaptor.ssoLogin();
+                    } else {
+                        setTimeout(function() {
+                            anyidAdaptor.receiveAnyIdJoin(response.uri, response.data);
+                        }, 100);  
+                    }
+                }
+            };
+            let jsonObject = new Object();
+            jsonObject.txId = anyidAdaptor.certData.txId;
+            jsonObject.ssob = anyidAdaptor.certData.ssob;
+            jsonObject.userSeCd = anyidAdaptor.certData.userSeCd;
+            
+            let jsonStr = JSON.stringify(jsonObject);
+            let encodedString = btoa(jsonStr);
+ 
+            var data = "data=" + encodedString + "&txId=" + anyidAdaptor.certData.txId;
+            xhr.send(data);
+            
+        }
+
+        //anyid가입
+        anyidAdaptor.receiveAnyIdJoin = function(portalJoinUri, memberData){
+            var url = portalJoinUri+encodeURIComponent(memberData);
+            anyidAdaptor.popup(url,"openAnyIdRegistUserIdv",700,740);
+
+            window.addEventListener("message", function(event) {
+                var result;
+                try {
+                    result = JSON.parse(event.data);
+                } catch (error) {
+                    console.error("Received message is not valid JSON:", error);
+                    return;
+                }
+                
+                if(!result.funcName || (result.funcName !== "trmsAgreComplete" && result.funcName !== "registUserComplete")) {
+                    return;
+                }
+                if(result.status === "success") {
+                    if(result.trmsAgreYn == "Y"){
+                        anyidAdaptor.ssoLogin();
+                    }else{
+                        anyidAdaptor.orgLogin(anyidAdaptor.certData);
+                    }
+                }else{
+                    
+                    anyidAdaptor.orgLogin(anyidAdaptor.certData);
+                }
+
+            }, false);
+        }
+
+        // 팝업 호출
+        anyidAdaptor.popup = function(url, name, width, height){
+            let left = (screen.width) ? (screen.width-width)/2 : 0;
+            let top = (screen.height) ? (screen.height-height)/2 : 0;
+            let popup=window.open(url, name ,"resizable=yes,toolbar=no,scrollbars=yes,location=no,top="+top+"px,left="+left+"px,width="+width+"px,height="+height+"px");
+            if(popup){
+                popup.focus();
+            }
+        }
+
+        anyidAdaptor.ssoLogin = function(){
+        	console.log("anyidAdaptor.ssoLogin START");
+            let jsonObject = new Object();
+            jsonObject.txId = anyidAdaptor.certData.txId;
+            jsonObject.ssob = anyidAdaptor.certData.ssob;
+            jsonObject.userSeCd = anyidAdaptor.certData.userSeCd;
+            jsonObject.afData = anyidAdaptor.certData.afData;
+  
+            let jsonStr = JSON.stringify(jsonObject);            
+            let encodedString = btoa(jsonStr);
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/ssoLogin";
+            
+            var urlWithParams = baseUrl + "?data=" + encodedString;
+            window.location.href = urlWithParams;
+            console.log("anyidAdaptor.ssoLogin END");
+            
+        }
+        
+        anyidAdaptor.ssoLoginPageSub = function(baseUrl, endPoint, acrValues){
+        	console.log("anyidAdaptor.ssoLoginPageSub START");
+            var subUrl = "";
+            
+            if (endPoint && endPoint.trim() !== "") {
+                subUrl = "?endPoint=" + encodeURIComponent(endPoint);
+            }
+            
+            if (!acrValues && acrValues.trim() == "") {
+                acrValues = "3";
+            }
+            
+            if (acrValues && acrValues.trim() !== "") {
+                if(subUrl == ""){
+                    subUrl = "?";
+                }else{
+                    subUrl = subUrl + "&";
+                }
+                subUrl = subUrl + "acrValues=" + acrValues;
+            }
+
+            window.location.replace(baseUrl+subUrl);
+        }
+        
+        /**/
+        anyidAdaptor.ssoLogout = function(endPoint) {
+            endPoint = typeof endPoint !== 'undefined' ? endPoint : "/";
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/ssoLogout";
+            baseUrl = baseUrl + "?endPoint=" + encodeURIComponent(endPoint);
+            window.location.replace(baseUrl);
+        }
+        /**/
+        anyidAdaptor.reAuthLevel = function(endPoint, acrValues){
+            endPoint = typeof endPoint !== 'undefined' ? endPoint : "/";
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/reAuthLevel";
+            anyidAdaptor.ssoLoginPageSub(baseUrl, endPoint, acrValues);
+
+        }
+        /**/
+        anyidAdaptor.ssoLoginPage = function(endPoint, acrValues){
+        	console.log("anyidAdaptor.ssoLoginPage START");
+            endPoint = typeof endPoint !== 'undefined' ? endPoint : "/";
+            var baseUrl = window.location.origin + anyidAdaptor.agencyContextPath + "/oidc/auth";
+            endPoint ='/memb/AnyIdSsoLogin.pt';  //추가, SSO인증시 호출 END POINT
+            anyidAdaptor.ssoLoginPageSub(baseUrl, endPoint, acrValues);
+            console.log("anyidAdaptor.ssoLoginPage END");
+        }
+        
+        /**/
+        anyidAdaptor.ssoSvcToSvc = function(url, endPoint){
+            var baseUrl = url + "/oidc/svcToSvc?endPoint=" + encodeURIComponent(endPoint);
+            window.open(baseUrl, "_blank");
+        }
+
+        
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+
+
+	<div class="skip">
+		<ul>
+			<li><a href="#content">본문 바로가기</a></li>
+		</ul>
+	</div>
+	<div id="header" >
+		<div class="guide-nuri-box">
+			<div class="inner">
+				<span> <img src="/common/images/ptg/common/top_direct1.png" alt="태극기" style="margin-top: -2px;"> 이 누리집은 대한민국 공식 전자정부 누리집입니다. 
+												
+					<a href="#" onclick='anyidAdaptor.ssoLoginPage("/memb/AnyIdLogin.pt","")' title="로그인" style="color:#f2f2f2">..</a>
+				
+				</span>
+			</div>
+		</div>
+		<div class="top">
+			<div class="inner">
+				<div class="fr">
+					<ul class="list_header_top">				
+						<li class="pt5">
+							
+						</li>
+						<li class="pt5">
+							
+							
+								<a href="/memb/MembLoginR.pt" title="로그인">로그인</a>
+							
+							
+						</li>
+						<li class="pt5">
+							
+								<a href="/memb/stipDetailRM.pt" title="회원가입">회원가입</a>
+							
+								
+						</li>
+						<li class="pt5">
+							<a href="/guide/G4FIntroR.pt" title="이용안내">이용안내</a>
+						</li >
+						<li class="pt5">
+							<a href="/cnslt/faq/FaqListR.pt" title="고객센터">고객센터</a>
+						</li>
+						
+						<li>
+							<div class="combo select_language">
+								<ul>
+								
+								
+								
+								
+									<li class="selected_lang"><a href="" onclick="gfn_setLocale('kr'); return false;" id="lang_kr" title="한국어(선택)">한국어</a></li>
+									<li><a href="" onclick="gfn_setLocale('en'); return false;" id="lang_en" title="영어">ENGLISH</a></li>
+									<li><a href="" onclick="gfn_setLocale('ch'); return false;" id="lang_ch" title="중국어">中文</a></li>
+								
+								
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="gnb">
+			<!-- 통합 검색 -->
+			<div id="search_all">
+				<div class="inner">					
+					<div class="sec_search">
+						<div class="form_input">
+							<div class="fl">
+								<div class="search_option">통합검색</div>
+							</div>
+							<div class="fr">
+								<input type="text" name="search" class="search_word" title="검색어" placeholder="검색어를 입력하세요." />
+								<a href="javascript:;" class="btn_search_all" title="검색"><span class="sr-only">검색</span></a>
+							</div>
+						</div>
+					</div>
+					<div class="btn_top">
+						<a href="javascript:;" class="btn_close_search_all"><span class="sr-only">통합검색 닫기</span></a>
+					</div>
+				</div>
+			</div>
+			<!-- //통합 검색 -->
+			<div class="inner">
+				<div class="img_sub_header"></div>
+
+				<div class="menu">
+					<h1>
+					<a href="/" title="Hi Korea">Hi Korea</a>
+					</h1>
+					<div class="fr">
+						<nav>
+						<ul class="list_gnb" id="gnb" role="menubar">
+							<li>
+								<a role="menuitem" href="javascript:void(0);" aria-expanded="false" aria-haspopup="true">민원신청</a>
+								<ul role="menu">
+									<li role="none">
+										<a href="/cvlappl/CvlapplStep1.pt" title="전자민원">전자민원</a>
+									</li>
+									<li role="none">
+										<a href="/resv/ResvIntroR.pt" title="방문예약">방문예약</a>
+									</li>
+									
+									<li role="none">
+										<a href="/cvlappl/CvlapplAgentInfo.pt" title="출입국민원 대행기관 이용">출입국민원 대행기관 이용</a>
+									</li>
+									<li role="none">
+										<a href="/prefcard/PrefCardMain.pt" title="출입국우대카드(기관담당자전용)">출입국우대카드(기관담당자전용)</a>
+									</li>								
+									<li role="none">
+									<!-- 2021.03.15 민원신청 온라인 상륙허가 메뉴 황경희계장님 요청으로 주석 해제  -->
+										<a href="/online/Landing.pt">온라인 상륙허가</a>  
+									</li>
+									
+								</ul>
+							</li>
+							<li>
+								<a role="menuitem" href="javascript:void(0);" aria-expanded="false" aria-haspopup="true">정보조회</a>
+								<ul role="menu">
+									<li role="none">
+										<a role="menuitem" href="javascript:void(0);" aria-expanded="false" aria-haspopup="true">민원신청결과 </a>
+										<ul role="menu">
+											<li role="none">
+												<a href="/mypage/MypgCvlapplPageR.pt" title="전자민원">전자민원</a>
+											</li>
+											<li role="none">
+												<a href="/mypage/MypgResvPageR.pt" title="방문예약">방문예약</a>
+											</li>
+											<li role="none">
+												<a target="_blank" href="https://www.visa.go.kr/openPage.do?MENU_ID=10301" title="사증발급인정서(새창열림)">사증발급인정서</a>
+											</li>
+											<li role="none">
+												<a href="/mypage/MypgCvlapplRfgPageR.pt">난민 이의신청</a>
+											</li>
+											
+										</ul>
+									</li>
+									<li role="none">
+										<!-- <a href="javascript:;" title="기타 조회 서비스">기타 조회 서비스</a> -->
+										<a role="menuitem" href="javascript:void(0);" aria-expanded="false" aria-haspopup="true" >기타 조회 서비스</a>
+										<ul role="menu">
+											<li role="none">
+												<a href="/gvrnsrch/GvrnSrchPageR.pt" title="관할 출입국.외국인관서 조회">관할 출입국.외국인관서 조회</a>
+											</li>
+											<li role="none">
+												<a href="/info/InfoFrnRegIdChkIdentityPageR.pt" title="등록증 · 거소증 유효확인" >등록증 · 거소증 유효확인</a>
+											</li>
+											<li role="none">
+												<a href="/info/InfoFrnReportLostPageR.pt" title="등록증·거소증 분실(철회) 신고" >등록증·거소증 분실(철회) 신고</a>
+											</li>
+											
+											<li role="none">
+												<a href="/info/InfoFrnJobIdentityPageR.pt" title="외국인 취업 및 고용가능여부 조회">외국인 취업 및 고용가능여부 조회</a>
+											</li>
+											<li role="none">
+												<a href="/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=208" title="출입국민원 대행기관 조회">출입국민원 대행기관 조회</a>
+											</li>
+											<li role="none">
+												<a href="/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=365&page=1" title="법무부지정 의료기관 조회">법무부지정 의료기관 조회</a>
+											</li>
+											
+											<li role="none">
+												<a href="/info/CheckExprYmdByPassNoR.pt" title="체류만료일조회">체류만료일조회</a>
+											</li>
+											
+											<li role="none">
+												<a href="/info/BabySitterIdentityPageR.pt" title="육아도우미 교육수료자 조회">육아도우미 교육수료자 조회</a>
+											</li>
+											
+											<li role="none">
+												<a href="/info/OtherMyCvlapplPageR.pt" title="통합고용변동 민원조회">통합고용변동 민원조회</a>
+											</li>
+											<li role="none">
+												<a href="/info/PermFormIssCnfrmR.pt" title="전자민원 허가서 발급 확인">전자민원 허가서 발급 확인</a>
+											</li>
+											
+											<li role="none">
+												<a href="/info/ProhibitionSearchIdentityPageR.pt" title="출국금지 여부 조회<br/>(한국인 전용)" >출국금지 여부 조회<br/>(한국인 전용)</a>
+											</li>
+											
+											<li role="none">
+												<a href="/info/CvlapplNltR.pt" title="국적심사 진행상황 조회">국적심사 진행상황 조회</a>
+											</li>
+											
+										</ul>
+									</li>
+								</ul>
+							</li>
+							
+							<li>
+								<a role="menuitem" href="javascript:void(0);" aria-expanded="false" aria-haspopup="true">자동출입국심사</a>
+								<ul role="menu">
+									<li role="none">
+										<a role="menuitem" href="javascript:void(0);" aria-expanded="false" aria-haspopup="true" title="SES 안내">SES 안내</a>
+										<ul>
+											<li role="none">
+												<a href="/ses/SesInfoR.pt" title="Smart Entry Service란?">Smart Entry Service란?</a>
+											</li>
+											<li role="none">
+												<a href="/ses/SesObjectR.pt" title="이용대상">이용대상</a>
+											</li>
+											<li role="none">
+												<a href="/ses/SesUseStepR.pt" title="SES Auto-gate 이용방법">SES Auto-gate 이용방법</a>
+											</li>
+											<li role="none">
+												<a href="/ses/SesCenterR.pt" title="SES 등록센터 및 이용가능 공항" >SES 등록센터 및 이용가능 공항</a>
+											</li>
+										</ul>
+									</li>
+									<li>
+										<a role="menuitem" href="javascript:void(0);" aria-expanded="false" aria-haspopup="true" >자동출입국심사 상호이용</a>
+										<ul role="menu">
+											<li role="none">
+												<a href="/ses/GeApplInfoR.pt" title="한·미국">한·미국(SeS-GE)</a>
+											</li>
+											<li role="none">
+												<a href="/ses/sesecn/EcnApplInfoR.pt" title="한-홍콩(SES-e-Channel)">한-홍콩(SES-e-Channel)</a>
+											</li>
+											<li role="none">
+												<a href="/ses/sesapc/ApcApplInfoR.pt" title="한-마카오(SES-APC)">한-마카오(SES-APC)</a>
+											</li>
+											<li role="none">
+												<a href="/ses/sesegt/EgtApplInfoR.pt" title="한-대만(SES-e-Gate)">한-대만(SES-e-Gate)</a>
+											</li>
+											<li role="none">
+												<a href="/ses/seseyp/EypApplInfoR.pt" title="한-독일(SES-EasyPASS)">한-독일(SES-EasyPASS)</a>
+											</li>
+										</ul>
+									</li>
+									
+								</ul>
+							</li>
+							
+							<li>
+								<a role="menuitem" href="javascript:void(0);" aria-expanded="false" aria-haspopup="true">정보광장</a>
+								<ul role="menu">
+									<li role="none">
+										<a href="/info/NavigatorGuide.pt" title="비자내비게이터(맞춤형 <br>체류가이드)" >비자내비게이터(맞춤형 <br>체류가이드)</a>
+									</li>
+									
+									<li role="none">
+										<a href="/info/InfoDatail.pt?CAT_SEQ=7215&PARENT_ID=1585" title="동포 맞춤형 길라잡이" >동포 맞춤형 길라잡이</a>
+									</li>
+									
+									
+									<li role="none">
+										<a href="/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1" title="체류자격별 안내메뉴얼" >체류자격별 안내메뉴얼</a>
+									</li>
+									
+									<li role="none">
+										<a target="_blank" title="한국생활 길잡이(새창열림)" href="http://korea.net" >한국생활 길잡이</a>
+									</li>
+									<li role="none">
+									
+										<a href="/info/InfoMain.pt" title="출입국/체류안내">출입국/체류안내</a>
+									
+									
+									</li>
+									<li role="none">
+										<a href="/info/InfoDatail.pt?CAT_SEQ=2026&PARENT_ID=147" title="국적/귀화안내" >국적/귀화안내</a>
+									</li>
+									<li role="none">
+										<a target="_blank" title="사회통합(새창열림)" href="http://www.socinet.go.kr" >사회통합</a>
+									</li>
+									
+									<li role="none">
+										<a href="/info/InfoSkilMainR.pt" title="기술창업이민" >기술창업이민</a>
+									</li>
+									
+									<li role="none">
+										<a target="_blank" title="투자이민(새창열림)" href="http://www.visa.go.kr">투자이민</a>
+									</li>
+									<li role="none">
+										<a target="_blank" title="투자지원(새창열림)" href="http://www.investkorea.org">투자지원</a>
+									</li>
+									<li role="none">
+										<a target="_blank" title="고용지원(새창열림)" href="http://www.eps.go.kr">고용지원</a>
+									</li>
+									
+									<li role="none">
+										<a href="/guide/LawLink.pt" title="출입국관련 법령지침정보" >출입국관련 법령지침정보</a>
+									</li>
+									<li role="none">
+										<a href="https://hikorea.go.kr/bix5/shares/4b2e1e226e5ae81abafa859bbf63fa91" target="_blank"  title="빅데이터 분석·시각화" >빅데이터 분석·시각화</a>
+									</li>
+									
+								</ul>
+							</li>
+							<li role="none">
+								<a role="menuitem" href="javascript:void(0);" aria-expanded="false" aria-haspopup="true">뉴스·공지</a>
+								<ul role="menu">
+									<li role="none">
+										<a href="/board/BoardListR.pt?BBS_GB_CD=BS10&BBS_SEQ=1" title="공지사항" >공지사항</a>
+									</li>
+									<li role="none">
+										<a target="_blank" title="보도자료(새창열림)" href="http://www.immigration.go.kr/immigration/1502/subview.do" >보도자료</a>
+									</li>
+									<li role="none">
+										<a target="_blank" title="자료실(새창열림)" href="http://www.immigration.go.kr/immigration/1569/subview.do" >자료실</a>
+									</li>
+									<li role="none">
+										<a href="/board/BoardListR.pt?BBS_GB_CD=BS10&BBS_SEQ=41" title="민원서식" >민원서식</a>
+									</li>
+									<li role="none">
+										<a target="_blank" title="뉴스레터(새창열림)" href="http://www.immigration.go.kr/immigration/1477/subview.do" >뉴스레터</a>
+									</li>									
+																
+								
+								</ul>
+							</li>
+						</ul>
+						</nav>
+					</div>
+				</div>
+				
+				<div class="textbox_sub">
+					<div class="row_top">하이코리아에서는</div>
+					<!-- 1depth 에 따라 text 내용 구분
+					민원신청 -->
+					<div class="row_bottom">편리한 민원신청을 위해<br/>온라인으로 신청하실 수 있는 서비스를 제공하고 있습니다.</div>
+					
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
+	<!-- //header -->
+	<!-- //header -->
+	<!-- container -->
+	<div id="container">
+		<div class="inner">
+			<!-- side -->
+			
+			<div id="side">
+				<div class="lnb">
+<h1 class="box_sz_bd"><span >뉴스 · 공지</span></h1>
+<ul class="list_lnb">
+<li class="active">
+<a href="/board/BoardNtcListR.pt" ><span style='font-size:16px'>공지사항</span></a>
+</li>
+<li class="main_li_seq201">
+<a target='_BLANK' title='새창열림' href="http://www.immigration.go.kr/immigration/1502/subview.do" ><span style='font-size:16px'>보도자료</span></a>
+</li>
+<li class="main_li_seq202">
+<a target='_BLANK' title='새창열림' href="http://www.immigration.go.kr/immigration/1569/subview.do" ><span style='font-size:16px'>자료실</span></a>
+</li>
+<li class="main_li_seq5169">
+<a href="/board/BoardApplicationListR.pt" ><span style='font-size:16px'>민원서식</span></a>
+</li>
+<li class="main_li_seq203">
+<a target='_BLANK' title='새창열림' href="http://www.immigration.go.kr/immigration/1477/subview.do" ><span style='font-size:16px'>뉴스레터</span></a>
+</li>
+</ul>
+</div>
+</div>
+
+			<!-- //side -->
+			<!-- content -->
+			<div id="content">
+				<div class="section_title">
+					<div class="location_bar">
+						<div class="location">
+							<span><a  title="홈" class="home">홈</a></span> <span><a href="/board/BoardListR.pt" title="뉴스 · 공지">뉴스 · 공지</a></span> <span><a href="/board/BoardNtcListR.pt" title="공지사항" class="current">공지사항</a></span> 
+						</div>
+					</div>
+					
+						<h1>공지사항</h1>
+						
+						
+						
+						
+						
+					
+				</div>
+				
+					
+
+<div class="section_content">
+	<!-- content box -->
+	<div class="grp_content">
+		<!-- //search -->
+		<form id="f1" name="f1">
+			<input type="hidden" name="page" id="page" value="1"/>
+			<input type="hidden" name="BBS_SEQ" id="BBS_SEQ" value="1"/>
+			<input type="hidden" name="BBS_GB_CD" id="BBS_GB_CD" value="BS10"/>
+			<input type="hidden" name="BBS_SEQ_GB_CD" id="BBS_SEQ_GB_CD" value=""/>					
+			<div class="grp_search">
+				<div class="search_term">
+					<table class="tbl_search">
+						<colgroup>
+							<col style="width: 83px;" />
+							<col style="width: 110px;" />
+							<col style="width: 90px;" />
+							<col />
+						</colgroup>
+						<tbody>
+							<tr>
+								<td class="th"><label for="CATEGORY">구분</label>	</td>
+								<td>
+									<select name="CATEGORY" id="CATEGORY" title="구분 선택">
+										<option value="TITLE" >제목</option>
+										<option value="TXT" >내용</option>
+										<option value="TITLETXT" >제목+내용</option>
+									</select>
+								</td>
+								<td class="th"><label for="SEARCHMESSAGE">검색어</label></td>
+								<td><input type="text" name="SEARCHMESSAGE" id="SEARCHMESSAGE" value=""/></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- button -->
+				<div class="search_button">
+					<button onclick="search()" id="searching" class="btn_search" title="조회">조회</button>
+				</div>
+				<!-- button -->
+			</div>
+		</form>
+		<!-- //search -->
+		<!-- 목록갯수 영역 시작 -->
+		<div class="grp_title">
+			<div class="fl" id="CATEGORY2Button">
+				<select name="CATEGORY2" id="CATEGORY2" title="구분">
+					<option value="ALL" >전체</option>
+					<option value="HIKOREA" >HIKOREA</option>
+					<option value="SES" >SES</option>
+				</select>
+				<button id="CATESEARCHING" class="btn_goSearch">이동</button>
+			</div>
+			<br/>
+			<div class="fr">
+				<div class="total_count">
+					<span>건수</span>
+					<span>:</span>
+					<span class="number">1459</span>
+					<span> </span>
+				</div>
+			</div>
+		</div>
+		<!-- 목록갯수 영역 끝 -->
+		<!--List Start -->
+		<div class="grp_content">
+			<div class="grp_table scroll_x">
+				<table class="grid">
+					<caption>공지사항 목록</caption>
+					<colgroup>
+						<col style="width:10%;">
+						<col style="width:10%;">
+						<col style="width:60%;">
+						<col style="width:10%;">
+						<col style="width:13%;">
+					</colgroup>
+					<thead>
+						<tr>
+							<th scope="col">번호</th>
+							<th scope="col">구분</th>
+							<th scope="col">제목</th>
+							<th scope="col">작성자</th>
+							<th scope="col">등록일</th>
+						</tr>	
+					</thead>
+					<tbody>
+						
+							
+							
+								
+									<tr class="board_line">
+										<td class="tac">1</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1985')">'26.8.7. 출입국민원 대행기관 보수교육 취소 공고</a>														
+											
+										</td>
+										<td class="tac">HIKOREA</td>
+										<td class="tac">2026-07-30</td>
+									</tr>
+								
+									<tr class="board_line">
+										<td class="tac">2</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1984')">양주출입국외국인사무소 출입국민원 대행기관 전용창구 시행 연기 안내</a>														
+											
+										</td>
+										<td class="tac">HIKOREA</td>
+										<td class="tac">2026-07-30</td>
+									</tr>
+								
+									<tr class="board_line">
+										<td class="tac">3</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1983')">제1기 「난민참여자문단」 모집 공고</a>														
+											
+										</td>
+										<td class="tac">난민정책과</td>
+										<td class="tac">2026-07-28</td>
+									</tr>
+								
+									<tr class="board_line">
+										<td class="tac">4</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1982')">대행기관 전용창구 운영 변경 공지</a>														
+											
+										</td>
+										<td class="tac">HIKOREA</td>
+										<td class="tac">2026-07-23</td>
+									</tr>
+								
+									<tr class="board_line">
+										<td class="tac">5</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1979')">계절근로 배정 현황 및 참여 광역 지방정부 현황 안내</a>														
+											
+										</td>
+										<td class="tac">HIKOREA</td>
+										<td class="tac">2026-07-16</td>
+									</tr>
+								
+									<tr class="board_line">
+										<td class="tac">6</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1978')">「외국인 계절근로 프로그램 기본지침」안내</a>														
+											
+										</td>
+										<td class="tac">HIKOREA</td>
+										<td class="tac">2026-07-16</td>
+									</tr>
+								
+									<tr class="board_line">
+										<td class="tac">7</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1976')">2026년 8월 출입국민원 대행기관 교육 일정 알림</a>														
+											
+										</td>
+										<td class="tac">HIKOREA</td>
+										<td class="tac">2026-07-13</td>
+									</tr>
+								
+									<tr class="board_line">
+										<td class="tac">8</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1975')">2026년 7월 국적업무 심사기간 안내</a>														
+											
+										</td>
+										<td class="tac">HIKOREA</td>
+										<td class="tac">2026-07-12</td>
+									</tr>
+								
+									<tr class="board_line">
+										<td class="tac">9</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1974')">전자민원 일부항목 일시 중단 안내</a>														
+											
+										</td>
+										<td class="tac">HIKOREA</td>
+										<td class="tac">2026-07-10</td>
+									</tr>
+								
+									<tr class="board_line">
+										<td class="tac">10</td>
+										<td class="tac">HIKOREA</td>
+										<td>
+											<a href="javascript:void(0)" onclick="boardDetailR('1973')">행정안전부 주민등록정보시스템 관련 작업에 따른 외국인실명인증서비스 일시 중단 안내</a>														
+											
+										</td>
+										<td class="tac">HIKOREA</td>
+										<td class="tac">2026-07-10</td>
+									</tr>
+								
+							
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!--List End -->
+		<!-- Paging -->
+		<div class="paging">
+			<div class="list_page">
+				<a title="1" class="btn_go first">|<</a> <a title="0" class="btn_go prev"><</a> <a title="1" class="current">1</a> <a href="javascript:MovePage(2);" title="2">[2]</a> <a href="javascript:MovePage(3);" title="3">[3]</a> <a href="javascript:MovePage(4);" title="4">[4]</a> <a href="javascript:MovePage(5);" title="5">[5]</a> <a href="javascript:MovePage(6);" title="6">[6]</a> <a href="javascript:MovePage(7);" title="7">[7]</a> <a href="javascript:MovePage(8);" title="8">[8]</a> <a href="javascript:MovePage(9);" title="9">[9]</a> <a href="javascript:MovePage(10);" title="10">[10]</a> <a title="11" class="btn_go next active"  href="javascript:MovePage(11);">></a> <a title="146" class="btn_go end active"  href="javascript:MovePage(146);">>|</a> 
+			</div>
+		</div>
+		<!-- Paging -->
+		<div class="grp_button">							
+						
+		</div>
+	</div>
+</div>
+
+				
+				
+				
+				
+			</div>
+			<!-- //content -->
+		</div>	
+	</div>
+	
+ 
+	<p id="btn_go_top"><a href="#" aria-label="문서 처음으로 이동">TOP</a></p>
+	<div id="footer">
+		<div class="list_footer_menu">
+			<div class="inner">
+				<div>
+					<a href="/guide/UsrInfoPttPlcyR.pt"><span style="color: #0619a0;"><b><u>개인정보처리방침</u></b></span></a>
+				</div>
+				
+				<div>
+					<a href="/guide/WebAccessGuide.pt">웹접근성정책</a>
+				</div>
+				
+				<div>
+					<a href="http://152.99.88.171" target="_blank" title="새창열림">원격접속</a>
+				</div>
+				<div>
+					<a href="javascript:;">관련사이트</a>
+				</div>
+				<div>
+					<a href="javascript:;">지역/지방정부</a>
+				</div>
+			</div>
+		</div>
+		<div class="information">
+			<div class="inner">
+				<div class="contact">
+					<div class="fl">
+						<span class="number">1345</span>
+						<span>(국번없이)</span>
+						<span>(FAX) 02-2650-4550</span>
+						
+						<span>(FAX민원) 1577-1346</span>
+						
+						
+						
+						<span>(해외문의) +82-2-1345, +82-2-6908-1345~6</span>
+						<div class="link_sns">
+							<!-- <a href="http://twitter.com/IMMIGRATION_KR" target="_blank" class="twitter" title="새창열림">트위터</a> -->
+							<a href="http://www.facebook.com/immigration.kr" target="_blank" class="facebook" title="새창열림">페이스북</a>
+						</div>
+					</div>
+					<div class="fr">
+						<div class="combo download_viewer">
+							<div class="selected">
+								<a href="#this" class="acrobat" title="다운로드 목록 열기">다운로드</a>
+							</div>
+							<div class="expand">
+								<a href="http://get.adobe.com/kr/reader/" class="acrobat" title="새창열림 " target="_blank">아크로벳 다운로드</a>
+								<a href="http://www.microsoft.com/downloads/ko-kr/details.aspx?FamilyID=1cd6acf9-ce06-4e1c-8dcf-f33f669dbc3a&amp;DisplayLang=ko" class="excel" title="새창열림" target="_blank">엑셀 다운로드</a>
+								<a href="http://www.hancom.co.kr/downLoad.downPU.do?mcd=001" class="hangeul" title="새창열림" target="_blank">한글 다운로드</a>
+								<a href="ttp://www.microsoft.com/downloads/ko-kr/details.aspx?FamilyID=3657ce88-7cfa-457a-9aec-f4f827f20cac&amp;DisplayLang=ko" class="word" title="새창열림" target="_blank">워드 다운로드</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div>
+					
+						<span>주소 : 경기도 과천시 관문로 47 정부과천청사 1동 ( 외국인종합안내센터 : 국번없이 1345 )</span>
+					
+					
+					
+				</div>
+				<div class="copyright">
+					<span>Copyright ⓒ 2020 HI KOREA. All rights Reserved.</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+<!-- <script type="text/javascript" src="/TouchEn/nxKey/js/TouchEnNx.js"></script> -->	
+<form style="display: none" name="frmCmmAuth" id="frmCmmAuth" method="post" action="/"></form>
+</div>
+</body>
+</html>

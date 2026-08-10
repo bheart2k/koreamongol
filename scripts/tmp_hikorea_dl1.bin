@@ -1,0 +1,54 @@
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="pragma" content="no-cache" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/><!-- 호환성보기 제거 -->
+	<link rel="stylesheet" type="text/css" href="/common/css/ptg/style.css" />
+	<script type="text/javascript" src="/common/js/ptg/jquery-1.7.1.min.js" /></script>
+	<script type="text/javascript" src="/common/js/ptg/jquery-ui.min.js" /></script>
+	<script type="text/javascript" src="/common/js/ptg/jquery-ui-1.10.4.custom.js" /></script>
+	<script type="text/javascript" src="/common/js/globalUtils.js" ></script>
+	<script type="text/javascript" src="/common/js/common.js" /></script>
+	<script type="text/javascript" src="/common/js/dateUtils.js" /></script>
+	
+	<script type="text/javascript">
+	//<![CDATA[
+		$(document).ready(function(){
+			
+			var moveType ='URL';	
+			var msgId = '파일이 존재하지 않습니다.';
+			
+			if(gfn_isNull(msgId) == false){
+				gfn_alert(msgId, function(){
+					var comSubmit = new ComSubmit("frm");
+					comSubmit.setUrl("https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1");						
+					comSubmit.tran();	
+				});
+			}else{
+				var comSubmit = new ComSubmit("frm");
+				
+				comSubmit.setUrl("https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1");						
+				comSubmit.tran();
+			}
+		});
+	//]]>	
+	</script>
+</head>
+
+<body class="empty">
+	<form id="frm" name="frm" method="post" >
+	
+	</form>
+</body>
+</html>
