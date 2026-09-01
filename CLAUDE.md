@@ -7,6 +7,7 @@
 - **도메인**: koreamongol.com
 - **기술 스택**: Next.js 15+ (App Router), TailwindCSS v4, Neon PostgreSQL (Drizzle ORM), shadcn/ui, Zustand
 - **배포**: Vercel (함수 리전: icn1)
+- **env 원본은 Infisical** (자체 호스팅, **GBs Projects 조직** — 개인 Vercel 배포분) — 로컬 `.env`는 복사본, Vercel env는 prod 자동싱크. 세부는 `docs/env-secrets.md` + 공통 문서 `C:\workspace\bloomingheart_next\docs\infisical-사용법.md`
 - **타겟**: 한국 체류 몽골인 (E-9 노동자, D-2/D-4 유학생, 예비 이주자)
 - **언어**: 몽골어 (키릴 문자) 단일 언어. 다국어(i18n) 없음
 - **개발 언어**: JavaScript (TypeScript 미사용)
@@ -247,7 +248,7 @@ src/
 
 | 작업 | 주기 | 마지막 실행 | 다음 예정 | 처리 방법 |
 |---|---|---|---|---|
-| 팩트 재검증 결과 처리 | 매월 (자동 실행: 1일 10:00 작업 스케줄러) | 2026-07-17 (초회 수동 검증) | 2026-08-01 | `/admin/inbox` 재검증 탭 확인 → 변동 항목 반영. `logs/recheck.log`로 자동 실행 성공 확인, 실패했으면 `/recheck` 수동 실행 |
+| 팩트 재검증 결과 처리 | 매월 (자동 실행: 1일 10:00 작업 스케줄러) | 2026-09-01 (/recheck 수동 실행, 6건 큐잉 — inbox 처리 대기) | 2026-10-01 | `/admin/inbox` 재검증 탭 확인 → 변동 항목 반영. `logs/recheck.log`로 자동 실행 성공 확인, 실패했으면 `/recheck` 수동 실행 |
 | Search Console 미색인 URL 수동 색인 요청 잔여분 | 1회성 (일일 제한으로 분할 중) | 2026-07-15 | 2026-07-17 | Search Console에서 남은 URL 색인 요청 (완료 시 이 행 삭제) |
 
 ---
