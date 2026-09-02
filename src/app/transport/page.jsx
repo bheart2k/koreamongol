@@ -4,7 +4,7 @@ import {
 } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, InfoTable,
-  WarningBox, TipBox, StepList, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
+  WarningBox, TipBox, StepList, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -33,6 +33,7 @@ export default function TransportPage() {
         ]}
       />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="transport" />
       <GuideHero
         title={transportMeta.title}
         subtitle={transportMeta.subtitle}

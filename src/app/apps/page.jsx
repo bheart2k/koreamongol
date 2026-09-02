@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, TipBox, WarningBox,
-  LinkCard, ReportBanner, DonateBanner, ShareButtons,
+  LinkCard, ReportBanner, DonateBanner, ShareButtons, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -70,6 +70,7 @@ export default function AppsPage() {
         { name: appsMeta.title, url: `${BASE_URL}/apps` },
       ]} />
       <main className="min-h-content bg-background">
+        <GuideViewTracker guideId="apps" />
         <GuideHero
           title={appsMeta.title}
           subtitle={appsMeta.subtitle}

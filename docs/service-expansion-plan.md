@@ -142,6 +142,17 @@ housing/jobs/arrival 가이드 링크 + apps 가이드 한글허브 딥링크 �
 - 피드백: `/feedback` 평점 4문항(5점)+유형+의견+이메일(optional), `feedback` 테이블(HangulHub 잔재 빈 테이블은 확인 후 드롭·재생성), admin `/admin/feedback`(평균+목록). 진입점: 전 페이지 플로팅 버튼 + 햄버거 메뉴 강조 항목 + footer
 - 기타 수정: 사이트 전역 `<title>` 이중 접미사(`| KoreaMongol` 중복) 제거, /tips 진입점(footer·홈 칩) 추가, FAQPage JSON-LD 중복 정리(상세만 유지), contact 유형 선택을 gold 강조로 통일
 
+### 우선순위 재정리 (2026-09-02 기획 분석, 사용자 승인)
+실측 데이터(가입 2명·글 0건·30일 이벤트 25건 = 트래픽 극초기) 기준으로 "기능 고도화가 아니라 몽골어 무경쟁 고관여 콘텐츠 선점"으로 방향 확정. 상세 분석: `.claude/agent-memory/koreamongol-planner/priorities-2026-09-02.md`
+1. [x] **가이드 조회 계측 보강** — 완료 (2026-09-02): GuideViewTracker 신설, 가이드 11개 페이지에 guide_view 이벤트 연결 (기존엔 tips만 계측돼 트래픽이 실제보다 작게 보였음)
+2. [x] **E-9 장기체류 경로 가이드 (1순위)** — 완료 (2026-09-02): visa.js `longTermPaths` 섹션(성실근로자 재입국·E-7-4·F-2/F-5) + tips 3개(e9-reentry, e9-to-e74, f2-f5-path). 연변동 수치는 recheck 체크리스트 9번에 등록
+3. [ ] **운전면허 교환 가이드 (2순위)** — transport.js 신규 섹션 + tip. 착수 전 도로교통공단·경찰청 공식 출처로 상호인정 조건·수수료 검증 필수 (웹 자료 연도 엇갈림)
+4. [ ] **비자×업종 취업 가능 셀프체크 (3순위)** — D-4 등급제 데이터 재활용, 서버 SSG + 클라이언트 위저드 분리
+5. [ ] **tips 3차 확장 10개 (4순위)** — 몽골 카고(금액 대신 비교 방법으로), 연말정산(12월 공개로 시즌 선점), 건강보험 지역가입자 등
+6. [ ] **신뢰 신호 패키지 (5순위)** — 검증일·출처 뱃지 + about 재검증 프로세스 명시 (아래 기존 4·5번과 동일 항목)
+- 보류 확정: 커뮤니티 재설계·구인 게시판·회원 고도화·PWA·AI 챗봇·한국어 병행 콘텐츠 — 트래픽 확보 전에는 착수하지 않음
+- 공통 전제: 콘텐츠 공개마다 페이스북 그룹 공유 등 홍보 실행과 짝 지을 것
+
 ### 다음 작업 (우선순위순, 2026-07-15 정리)
 1. [x] **월 1회 팩트 재검증** — 구현 완료 (2026-07-17): `/recheck` 명령(.claude/commands/recheck.md, 체크리스트 9항목) → `scripts/recheck-queue.mjs`로 inbox `type=recheck` 큐잉(미처리 중복 방지) → admin inbox "재검증" 탭. Windows 작업 스케줄러 "KoreaMongol Recheck"가 매월 1일 10:00 `scripts/recheck.cmd`를 헤드리스 실행(놓친 일정은 다음 부팅 시 보충). 로그: `logs/recheck.log`. 수동 실행: Claude Code에서 `/recheck` 또는 `scripts\recheck.cmd`. 자동 수정 절대 금지 — 운영자 확인 후에만 반영
 2. [ ] **질문→답변→tips 영구화 운영 착수** — 접수(inbox `question`) → 조사·출처 검증 → tips.js 추가 → 질문자 이메일 회신. 기술 인프라 완비, 운영만 시작하면 됨

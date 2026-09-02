@@ -1,7 +1,7 @@
 import { Home, ExternalLink } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList, StepList,
-  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
+  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -26,6 +26,7 @@ export default function HousingPage() {
         steps={contractSteps}
       />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="housing" />
       <GuideHero
         title={housingMeta.title}
         subtitle={housingMeta.subtitle}

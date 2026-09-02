@@ -2,7 +2,7 @@ import { BookOpen } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   GuideHero, GuideTOC, GuideNav,
-  CultureCard, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons,
+  CultureCard, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -22,6 +22,7 @@ export default function KoreanLifePage() {
         { name: 'Солонгос хэл & Соёл', url: `${BASE_URL}/korean-life` },
       ]} />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="korean-life" />
       <GuideHero
         title={koreanLifeMeta.title}
         subtitle={koreanLifeMeta.subtitle}

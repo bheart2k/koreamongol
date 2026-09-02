@@ -2,7 +2,7 @@ import { Heart } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
   GuideHero, GuideTOC, GuideNav, EmergencyBanner, StepList,
-  InfoTable, LinkCard, WarningBox, TipBox, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
+  InfoTable, LinkCard, WarningBox, TipBox, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -26,6 +26,7 @@ export default function HospitalPage() {
         steps={hospitalSteps}
       />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="hospital" />
       <EmergencyBanner
         sticky
         items={emergencyContacts.slice(0, 3)}

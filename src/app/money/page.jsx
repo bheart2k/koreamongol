@@ -1,7 +1,7 @@
 import { Banknote, ThumbsUp, ThumbsDown, ExternalLink, Building2, CreditCard, Landmark, ShieldCheck, AlertTriangle, CircleDollarSign } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, InfoTable,
-  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
+  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -21,15 +21,16 @@ export default function MoneyPage() {
       ]} />
       <HowToJsonLd
         name="Солонгосоос Монгол руу мөнгө шилжүүлэх"
-        description="GME, Hanpass, Toss зэрэг аппаар Монгол руу хялбар, хямд мөнгө шилжүүлэх алхамчилсан гарын авлага."
+        description="GME, Hanpass зэрэг аппаар Монгол руу хялбар, хямд мөнгө шилжүүлэх алхамчилсан гарын авлага."
         steps={[
-          { title: 'Шилжүүлгийн арга сонгох', description: 'GME, Hanpass, Toss, Western Union зэргийг хураамж, хурдаар нь харьцуулж сонгох' },
+          { title: 'Шилжүүлгийн арга сонгох', description: 'GME, Hanpass, Western Union зэргийг хураамж, хурдаар нь харьцуулж сонгох' },
           { title: 'Апп татаж бүртгүүлэх', description: 'Сонгосон аппыг татаж, паспорт/외국인등록증-ээр бүртгүүлэх' },
           { title: 'Хүлээн авагчийн мэдээлэл оруулах', description: 'Монгол дахь хүлээн авагчийн нэр, банкны данс оруулах' },
           { title: 'Мөнгө шилжүүлэх', description: 'Дүн оруулж, ханш шалгаад шилжүүлэг хийх' },
         ]}
       />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="money" />
       <GuideHero
         title={moneyMeta.title}
         subtitle={moneyMeta.subtitle}

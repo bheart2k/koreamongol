@@ -1,7 +1,7 @@
 export const arrivalMeta = {
   title: 'Ирсний дараа',
   subtitle: 'Гадаадын иргэний бүртгэл, банк, утас, амьдрал эхлүүлэх',
-  lastUpdated: '2026.07.14',
+  lastUpdated: '2026.09.02',
 };
 
 export const arrivalSections = [
@@ -51,7 +51,7 @@ export const arrivalTimeline = [
     items: [
       { id: 'week2-resident', label: '주민센터-д бүртгүүлэх (전입신고)' },
       { id: 'week2-nhi', label: 'Үндэсний даатгалд бүртгүүлэх (건강보험)' },
-      { id: 'week2-remit', label: 'Мөнгө шилжүүлгийн апп бэлдэх', sub: 'GME, Hanpass, Toss гэх мэт' },
+      { id: 'week2-remit', label: 'Мөнгө шилжүүлгийн апп бэлдэх', sub: 'GME, Hanpass гэх мэт' },
       { id: 'week2-korean', label: 'Солонгос хэлний анги хайх' },
       { id: 'week2-community', label: 'Монгол хамт олонтой холбогдох' },
     ],
@@ -62,13 +62,13 @@ export const arrivalTimeline = [
 export const alienRegistration = {
   title: 'Гадаадын иргэний бүртгэл (외국인등록)',
   deadline: 'Ирснээс хойш 90 хоногийн дотор',
-  cost: '₩30,000~₩35,000',
+  cost: '₩35,000 (зөвхөн бэлнээр)',
   duration: 'Ердийн: 2-4 долоо хоног (2, 3, 9, 12 сар ачаалалтай)',
   required: [
     'Гадаад паспорт (нүүр ба визний хуудас хуулбар тус 1)',
     'Өнгөт зураг 1 ш (3.5cm × 4.5cm)',
     'Оршин суугаа газрын нотлох бичиг (임대차계약서 эсвэл 숙소제공확인서)',
-    'Хураамж: ₩30,000~₩35,000',
+    'Хураамж: ₩35,000 (зөвхөн бэлнээр)',
   ],
   howToFind: {
     title: 'Бүртгэлийн газар олох',

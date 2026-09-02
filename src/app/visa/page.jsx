@@ -1,13 +1,13 @@
-import { FileText, Clock, AlertTriangle, ArrowRightLeft } from 'lucide-react';
+import { FileText, Clock, AlertTriangle, ArrowRightLeft, TrendingUp } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList,
-  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
+  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
   visaMeta, visaSections, mongoliaPrep,
   rejectionReasons, illegalStayWarnings, usefulLinks,
-  visaCostInfo, workplaceChange,
+  visaCostInfo, workplaceChange, longTermPaths,
 } from '@/data/guides/visa';
 import { visaTypes } from '@/data/guides/visa';
 import VisaTabs from './VisaTabs';
@@ -27,6 +27,7 @@ export default function VisaPage() {
         steps={visaTypes.e9.steps}
       />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="visa" />
       <GuideHero
         title={visaMeta.title}
         subtitle={visaMeta.subtitle}
@@ -148,6 +149,43 @@ export default function VisaPage() {
           </div>
         </section>
 
+        {/* Long-term Stay Paths */}
+        <section id="visa-longterm">
+          <h2 className="text-title text-navy dark:text-sky mb-6">
+            <TrendingUp className="w-6 h-6 inline mr-2" />
+            {longTermPaths.title}
+          </h2>
+          <p className="text-muted-foreground mb-6">{longTermPaths.intro}</p>
+
+          <div className="space-y-4 mb-6">
+            {longTermPaths.paths.map((path) => (
+              <div key={path.name} className="p-5 rounded-lg border border-border bg-card">
+                <h3 className="text-lg font-semibold font-heading text-foreground mb-2">{path.name}</h3>
+                <p className="text-sm text-muted-foreground mb-3">{path.summary}</p>
+                <h4 className="text-sm font-semibold text-foreground mb-2">Болзол:</h4>
+                <ul className="space-y-1 mb-3">
+                  {path.requirements.map((r, i) => (
+                    <li key={i} className="text-sm text-muted-foreground">&#8226; {r}</li>
+                  ))}
+                </ul>
+                {path.note && <p className="text-xs text-gold-dark">{path.note}</p>}
+              </div>
+            ))}
+          </div>
+
+          <WarningBox title="Жил бүр өөрчлөгдөнө">
+            <p>{longTermPaths.warning}</p>
+          </WarningBox>
+
+          <TipBox title="Одооноос бэлдэх зүйлс">
+            <ul className="space-y-1">
+              {longTermPaths.checklist.map((item, i) => (
+                <li key={i}>&#8226; {item}</li>
+              ))}
+            </ul>
+          </TipBox>
+        </section>
+
         {/* Mongolia Preparation */}
         <section id="visa-mongolia-prep">
           <h2 className="text-title text-navy dark:text-sky mb-6">Монголоос бэлтгэх зүйлс</h2>
@@ -200,7 +238,7 @@ export default function VisaPage() {
           </div>
         </section>
 
-        <RelatedTips slugs={['visa-extension', 'alien-registration']} />
+        <RelatedTips slugs={['e9-reentry', 'e9-to-e74', 'visa-extension']} />
 
         <ReportBanner pageUrl="/visa" />
         <DonateBanner />

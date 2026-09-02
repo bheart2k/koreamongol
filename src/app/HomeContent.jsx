@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'motion/react';
 import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee, Briefcase, Home, GraduationCap, Calculator, Train, Phone, Smartphone, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -135,17 +136,27 @@ export default function HomeContent({ recentUpdates = [] }) {
     <main className="min-h-content bg-background">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-sky to-background">
-        <div className="relative z-10 max-w-4xl mx-auto text-center px-6 py-20 md:py-28">
+        <div
+          aria-hidden="true"
+          className="absolute -left-24 top-16 h-64 w-64 rounded-full bg-gold/10 blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-terracotta/10 blur-3xl"
+        />
+
+        <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-8 px-6 py-14 md:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.82fr)] lg:gap-10 lg:py-24">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
+            className="text-center lg:text-left"
           >
-            <p className="text-4xl mb-4">🇰🇷 🇲🇳</p>
+            <p className="mb-4 text-4xl">🇰🇷 🇲🇳</p>
             <h1 className="text-display text-navy dark:text-sky mb-4">
               Солонгост тавтай морил!
             </h1>
-            <p className="text-body-lg text-muted-foreground mb-8">
+            <p className="mx-auto mb-8 max-w-2xl text-body-lg text-muted-foreground lg:mx-0">
               Виз, банк, эмнэлэг, цалин, мөнгөн шилжүүлэг — Солонгост амьдрахад
               хэрэгтэй бүх мэдээлэл монгол хэлээр, үнэ төлбөргүй.
             </p>
@@ -153,7 +164,7 @@ export default function HomeContent({ recentUpdates = [] }) {
             <p className="text-sm font-medium text-navy dark:text-sky mb-3">
               Яг одоо танд юу хэрэгтэй вэ?
             </p>
-            <div className="flex flex-wrap justify-center gap-2 mb-8">
+            <div className="mb-8 flex flex-wrap justify-center gap-2 lg:justify-start">
               {situations.map((s) => (
                 <Link
                   key={s.href + s.label}
@@ -172,6 +183,27 @@ export default function HomeContent({ recentUpdates = [] }) {
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="relative mx-auto w-full max-w-[420px] lg:max-w-[460px]"
+          >
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-[12%] bottom-[5%] h-[18%] rounded-full bg-navy/10 blur-2xl dark:bg-black/30"
+            />
+            <Image
+              src="/images/mascot-preview/mazaalai-j.png"
+              alt="Солонгосын аяллын газрын зураг барьсан Мазаалай баавгай"
+              width={1024}
+              height={1536}
+              priority
+              sizes="(min-width: 1024px) 460px, (min-width: 640px) 420px, 88vw"
+              className="relative h-auto w-full drop-shadow-[0_24px_32px_rgba(27,45,79,0.16)]"
+            />
           </motion.div>
         </div>
       </section>

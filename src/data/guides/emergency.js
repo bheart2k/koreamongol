@@ -1,7 +1,7 @@
 export const emergencyMeta = {
   title: 'Яаралтай утасны дугаарууд',
   subtitle: 'Солонгост амьдрахад хэрэг болох бүх утасны дугаар — нэг хуудсанд',
-  lastUpdated: '2026.02.15',
+  lastUpdated: '2026.09.02',
 };
 
 export const emergencySections = [
@@ -83,7 +83,7 @@ export const foreignerContacts = [
 // 노동/법률
 export const laborContacts = [
   {
-    number: '1644-0644',
+    number: '1577-0071',
     label: 'Гадаад ажилчдын зөвлөгөө',
     labelKo: '외국인력상담센터',
     description: 'Цалин, гэрээ, ажлын нөхцөл, сунгалт — гадаад ажилчдад зориулсан',

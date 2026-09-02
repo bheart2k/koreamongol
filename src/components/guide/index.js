@@ -17,3 +17,4 @@ export { ShareButtons } from './ShareButtons';
 export { RelatedTips } from './RelatedTips';
 export { HelpfulWidget } from './HelpfulWidget';
 export { AskQuestionCta } from './AskQuestionCta';
+export { GuideViewTracker } from './GuideViewTracker';

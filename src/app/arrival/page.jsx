@@ -1,7 +1,7 @@
 import { MapPin, Smartphone, Building2, Phone, FileCheck, ExternalLink } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList,
-  TipBox, WarningBox, InfoTable, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
+  TipBox, WarningBox, InfoTable, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -32,6 +32,7 @@ export default function ArrivalPage() {
         ]}
       />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="arrival" />
       <GuideHero
         title={arrivalMeta.title}
         subtitle={arrivalMeta.subtitle}

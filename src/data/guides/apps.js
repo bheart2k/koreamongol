@@ -175,7 +175,7 @@ export const appsLinks = [
   {
     href: '/money',
     title: 'Мөнгө ба санхүү',
-    description: 'Шилжүүлгийн апп (GME, Hanpass, Toss) дэлгэрэнгүй',
+    description: 'Шилжүүлгийн апп (GME, Hanpass) дэлгэрэнгүй',
   },
   {
     href: '/transport',

@@ -1,7 +1,7 @@
 import { GraduationCap } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, StepList,
-  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons,
+  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -30,6 +30,7 @@ export default function TopikPage() {
         steps={epsRegistrationSteps}
       />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="topik" />
       <GuideHero
         title={topikMeta.title}
         subtitle={topikMeta.subtitle}

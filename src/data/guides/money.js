@@ -1,7 +1,7 @@
 export const moneyMeta = {
   title: 'Мөнгө ба санхүү',
   subtitle: 'Монгол руу мөнгө шилжүүлэх, банк, карт, даатгал — бүх зүйл',
-  lastUpdated: '2026.07.15',
+  lastUpdated: '2026.09.02',
 };
 
 export const moneySections = [
@@ -19,7 +19,6 @@ export const remittanceComparison = {
   rows: [
     ['GME Remittance', { text: '₩5,000~', highlight: true }, '1-2 өдөр', 'Тийм', 'Апп (Монгол хэлтэй)'],
     ['Hanpass (한패스)', { text: 'Үнэгүй~₩5,000', highlight: true }, '1-2 өдөр', 'Тийм', 'Апп (Монгол хэлтэй)'],
-    ['Toss (토스)', { text: '₩3,900', highlight: false }, '1-3 өдөр', 'Тийм', 'Апп'],
     ['KakaoBank + WU', '$6~$12', 'Шууд~1 өдөр', 'Тийм', 'Апп'],
     ['Western Union', 'Дүнгээс хамаарна', 'Шууд~1 өдөр', 'Тийм', 'Онлайн / Банк'],
     ['Банк шилжүүлэг', '₩13,000~33,000+', '2-5 өдөр', 'Үгүй', 'Банканд очих'],
@@ -40,13 +39,6 @@ export const remittanceMethods = [
     pros: ['Монгол хэлтэй', 'Хураамж хямд~үнэгүй', 'Монгол хэлний утасны дэмжлэг (02-3409-1540)'],
     cons: ['GME-ээс бага зэрэг бага хэрэглэгчтэй'],
     url: 'https://www.hanpass.com',
-  },
-  {
-    name: 'Toss (토스) хилийн чанад шилжүүлэг',
-    description: 'Солонгосын алдартай санхүүгийн апп. 50 гаруй улс руу шилжүүлэх боломжтой.',
-    pros: ['Хураамж хямд (₩3,900)', 'Хурдан, хялбар'],
-    cons: ['Монгол хэлний дэмжлэг байхгүй байж магадгүй'],
-    url: 'https://www.tossbank.com',
   },
   {
     name: 'KakaoBank + Western Union (카카오뱅크)',
@@ -212,11 +204,6 @@ export const moneyLinks = [
     href: 'https://www.hanpass.com',
     title: 'Hanpass (한패스)',
     description: 'Монгол хэлтэй шилжүүлгийн апп',
-  },
-  {
-    href: 'https://www.tossbank.com',
-    title: 'Toss (토스)',
-    description: 'Хилийн чанад шилжүүлэг (50+ улс)',
   },
   {
     href: 'https://www.kakaobank.com',

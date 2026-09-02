@@ -21,14 +21,14 @@ KoreaMongol은 한국 체류 몽골인 대상 정보 사이트다. 잘못된 정
 | # | 항목 | 현재 표기 위치 | 확인 출처 |
 |---|---|---|---|
 | 1 | 최저임금 (시급 ₩10,320 / 월 ₩2,156,880, 2026) | jobs.js salaryInfo, tips minimum-wage-2026 | 최저임금위원회·고용노동부 (특히 매년 8월 이후 다음 해 고시 확인) |
-| 2 | 유학생 시간제취업 (D-2 학부 10→25/우수 30h, 석박사 15→30/35h, D-4 6개월+TOPIK 2급+주중 10h) | jobs.js parttimePermit, tips student-part-time, visa.js d2/d4 warnings | easylaw.go.kr 유학 중 아르바이트 페이지 (csmSeq=2853) — 페이지 하단 기준일이 갱신됐는지 확인 |
-| 3 | 비자 연장 수수료 ₩60,000 / 외국인등록 ₩30,000~35,000 | visa.js visaCostInfo, arrival.js alienRegistration, tips visa-extension·alien-registration | hikorea.go.kr·출입국외국인정책본부 |
-| 4 | 주요 전화번호: 1345, 1644-0644, 1577-1366, 1588-5644, 1350, 132, 129, 1372, 1330, 02-798-3464 | emergency.js, tips emergency-numbers·unpaid-wages | 각 기관 공식 사이트 |
+| 2 | 유학생 시간제취업 (D-2 학부 10→25/우수 30h, 석박사 15→30/35h, D-4 10→TOPIK 2급 20/우대 25h) | jobs.js parttimePermit, tips student-part-time, visa.js d2/d4 warnings | easylaw.go.kr 유학 중 아르바이트 페이지 (csmSeq=2853)·법무부 체류자격별 통합 안내 매뉴얼 — 기준일 갱신 여부 확인 |
+| 3 | 비자 연장 수수료 ₩60,000 / 외국인등록 ₩35,000 (현금만) | visa.js visaCostInfo, arrival.js alienRegistration, tips visa-extension·alien-registration | hikorea.go.kr·출입국외국인정책본부 |
+| 4 | 주요 전화번호: 1345, 1577-0071, 1577-1366, 1588-5644, 1350, 132, 129, 1372, 1330, 02-798-3464 | emergency.js, tips emergency-numbers·unpaid-wages | 각 기관 공식 사이트 |
 | 5 | 지하철 기본요금 (카드 ₩1,550 / 현금 ₩1,650) | tips tmoney-card, transport.js | 서울교통공사·티머니 |
-| 6 | 국민연금 요율 4.5% / 반환일시금 5년 기한 | jobs.js deductions, money.js insuranceInfo, tips pension-refund | nps.or.kr |
-| 7 | 송금 앱 수수료 (GME ₩5,000~ / Hanpass 무료~₩5,000 / Toss ₩3,900) | money.js, tips send-money-to-mongolia | 각 서비스 공식 사이트·공지 |
+| 6 | 국민연금 요율 4.75% (2026, 매년 +0.25%p — 2027부터 5.0%) / 반환일시금 5년 기한 | jobs.js deductions, money.js insuranceInfo, tips pension-refund·minimum-wage-2026 | nps.or.kr |
+| 7 | 송금 앱 수수료 (GME ₩5,000~ / Hanpass 무료~₩5,000) — Toss는 몽골 미지원으로 2026-09 제외됨 | money.js, tips send-money-to-mongolia | 각 서비스 공식 사이트·공지 |
 | 8 | 확정일자 ₩600 / 등기부등본 열람 ₩700 | housing.js, tips housing-deposit | 정부24·인터넷등기소 |
-| 9 | [미해결] D-4 어학연수생 주말·공휴일·방학 상한 수치 (2026-07 확정 실패 — 출처 갈림 20h vs 25h) | 현재 사이트에는 "한도 있음"으로만 표기 | 법무부 체류자격별 통합 안내 매뉴얼·easylaw |
+| 9 | E-9 장기체류 경로: 성실근로자 재입국(1개월 대기·총 9년8개월·계약 1년 잔여) / E-7-4 연간 선발계획(2026: 쿼터 33,000·연봉 ₩26,000,000·200/300점 — **매년 초 법무부 공고 확인**) | visa.js longTermPaths, tips e9-reentry·e9-to-e74·f2-f5-path | 고용노동부(moel.go.kr)·법무부 E-7-4 선발계획 공고·hikorea.go.kr |
 
 시간·토큰이 부족하면 위 순서대로 진행하고, 못 한 항목은 마지막 요약에 "미검증"으로 명시한다.
 

@@ -1,6 +1,6 @@
 import { Phone, Siren, Globe, Briefcase, Languages, Building2, Flag, Clock, CheckCircle2, ExternalLink } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
+  GuideHero, GuideTOC, GuideNav, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -94,6 +94,7 @@ export default function EmergencyPage() {
         { name: 'Яаралтай утасны дугаарууд', url: `${BASE_URL}/emergency` },
       ]} />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="emergency" />
       <GuideHero
         title={emergencyMeta.title}
         subtitle={emergencyMeta.subtitle}

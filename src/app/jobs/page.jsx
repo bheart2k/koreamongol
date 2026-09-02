@@ -1,7 +1,7 @@
 import { Briefcase, ExternalLink } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList, StepList,
-  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips,
+  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -27,6 +27,7 @@ export default function JobsPage() {
         steps={laborRights[0].steps}
       />
     <main className="min-h-content bg-background">
+      <GuideViewTracker guideId="jobs" />
       <GuideHero
         title={jobsMeta.title}
         subtitle={jobsMeta.subtitle}
