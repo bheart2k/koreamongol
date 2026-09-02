@@ -51,52 +51,79 @@ export function inboxStatusFromHub(status) {
   return HUB_STATUS_TO_INBOX[status] || status;
 }
 
-/** feedback 행(leftJoin users → row.author.nickname) → 표준 필드 shape */
+// 신형(표준 모듈, 2026-09-02) 행 판별 — 표준 POST는 title을 항상 서버에서 생성한다.
+// 구형 4문항 행은 title 컬럼이 없던 시절 것이라 ''(마이그레이션 기본값).
+export function isStandardFeedbackRow(row) {
+  return !!row.title;
+}
+
+/** feedback 행(leftJoin users → row.author.nickname) → 표준 필드 shape
+ *  신형 행은 표준 컬럼 그대로, 구형 4문항 행은 평균 별점 rating으로 유도(category 'rating' 고정) */
 export function feedbackToHubItem(row) {
-  const ratingValues = [row.ratingUseful, row.ratingTrust, row.ratingEasy, row.ratingRecommend].filter(
-    (v) => v != null
-  );
-  const rating = ratingValues.length
-    ? Math.round(ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length)
-    : null;
+  const standard = isStandardFeedbackRow(row);
 
-  const comment = (row.comment || '').trim();
-  const title = comment
-    ? comment.split('\n')[0].slice(0, 100)
-    : rating != null
-      ? `별점 ${rating}/5`
-      : '(제목 없음)';
+  let category = 'rating';
+  let rating = row.rating ?? null;
+  let title = row.title || '';
+  let extra = null;
 
-  return {
-    id: `fb-${row.id}`,
-    category: 'rating',
-    status: feedbackStatusToHub(row.status),
-    previousStatus: null, // feedback 테이블에 previousStatus 컬럼 없음 — 휴지통 복원 백업 미지원(스펙 §3.3 일부 미준수)
-    priority: 'medium', // feedback 테이블에 priority 컬럼 없음
-    title,
-    content: row.comment || '',
-    rating,
-    feature: null,
-    pageUrl: null,
-    source: null,
-    locale: row.language || null,
-    guestEmail: row.email || null,
-    authorId: row.userId ?? null,
-    authorName: row.author?.nickname || null,
-    userAgent: row.userAgent || null,
-    ipAddress: null,
-    country: null,
-    city: null,
-    viewport: null,
-    referrer: null,
-    attachments: [],
-    extra: {
+  if (standard) {
+    category = HUB_CATEGORIES.includes(row.category) ? row.category : 'other';
+    if (row.extra) {
+      try {
+        extra = JSON.parse(row.extra);
+      } catch {
+        extra = null;
+      }
+    }
+  } else {
+    const ratingValues = [row.ratingUseful, row.ratingTrust, row.ratingEasy, row.ratingRecommend].filter(
+      (v) => v != null
+    );
+    rating = ratingValues.length
+      ? Math.round(ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length)
+      : null;
+
+    const comment = (row.comment || '').trim();
+    title = comment
+      ? comment.split('\n')[0].slice(0, 100)
+      : rating != null
+        ? `별점 ${rating}/5`
+        : '(제목 없음)';
+
+    extra = {
       type: row.category, // 'opinion' | 'bug' | 'improvement'
       ratingUseful: row.ratingUseful,
       ratingTrust: row.ratingTrust,
       ratingEasy: row.ratingEasy,
       ratingRecommend: row.ratingRecommend,
-    },
+    };
+  }
+
+  return {
+    id: `fb-${row.id}`,
+    category,
+    status: feedbackStatusToHub(row.status),
+    previousStatus: row.previousStatus || null,
+    priority: HUB_PRIORITIES.includes(row.priority) ? row.priority : 'medium',
+    title,
+    content: row.comment || '',
+    rating,
+    feature: row.feature || null,
+    pageUrl: row.pageUrl || null,
+    source: row.source || null,
+    locale: row.language || null,
+    guestEmail: row.email || null,
+    authorId: row.userId ?? null,
+    authorName: row.author?.nickname || null,
+    userAgent: row.userAgent || null,
+    ipAddress: row.ipAddress || null,
+    country: row.country || null,
+    city: row.city || null,
+    viewport: row.viewport || null,
+    referrer: row.referrer || null,
+    attachments: [],
+    extra,
     adminNote: row.adminNote || null,
     createdAt: new Date(row.createdAt).toISOString(),
     updatedAt: new Date(row.updatedAt).toISOString(),

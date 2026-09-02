@@ -24,6 +24,7 @@
 
 ## 이력
 
+- **2026-09-02** `FEEDBACK_WEBHOOK_URL` 키를 로컬 `.env`에 빈 값으로 추가(표준 피드백 모듈의 Discord 호환 웹훅, 전 사이트 공용 채널) — 값 결정·Infisical dev/prod 등록은 웹훅 통합 작업에서 일괄 예정. 같은 날 표준 UI 교체로 feedback 테이블 표준 컬럼 13종 추가(DDL 적용 대기 — 스펙 §6 참조), 8/31 이력의 fb-* 제약은 해소됨.
 - **2026-08-31** Infisical 연동(1차, BLOOMINGHEART 조직): 프로젝트 생성, 로컬 `.env`의 DOPPLER_* 잔재 3줄 제거(우리 Doppler에 koreamongol 없음 — 외부 다운로드본 흔적) + FEEDBACK_HUB_TOKEN 추가, dev/prod 12키 업로드, prod NEXTAUTH_URL을 운영값으로 교체.
 - **2026-08-31** **GBs Projects 조직으로 이동(사용자 승인)**: 개인 Vercel(gbs-projects) 배포분은 GBs 조직에서 관리(피디아 시리즈 패턴)하기로. 새 프로젝트 생성 + dev/prod 12키 복사, `.infisical.json` 교체, Vercel 싱크 생성(`import-prioritize-source` — Vercel 전용 키 20종 유입, **빈 값 키 0개 확인**), Vercel에 있던 DOPPLER_* 잔재 3키 삭제(prod 29키 확정), 싱크 `succeeded`. **BLOOMINGHEART 조직의 구 koreamongol 프로젝트 삭제**(내용 전부 이관 후).
 - **2026-09-01** `NEXT_PUBLIC_SITE_URL`을 apex(`https://koreamongol.com`)로 확정·교체(사용자 확인 — Vercel에서 www→apex 308 리다이렉트). 로컬 `.env` + Infisical dev/prod 반영, 싱크 succeeded. CLI는 GBs 조직 프로젝트에 403 → `select-organization` API로 조직 전환 토큰 받아 PATCH로 처리. NEXT_PUBLIC_*은 빌드 타임 주입이라 재배포 필요.

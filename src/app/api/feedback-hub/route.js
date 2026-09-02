@@ -12,6 +12,7 @@ import {
   inboxStatusFromHub,
   feedbackToHubItem,
   inboxToHubItem,
+  isStandardFeedbackRow,
 } from '@/lib/feedbackHub';
 
 // 피드백 허브 어댑터: 목록 + 통계 (스펙 §3.2)
@@ -35,9 +36,9 @@ export async function GET(request) {
       if (!Number.isNaN(d.getTime())) sinceDate = d;
     }
 
-    // feedback은 항상 category 'rating', inbox는 항상 category 'other'로 내보낸다.
-    // 요청한 category가 둘 다 아니면 두 테이블 모두 조회할 필요 없음.
-    const wantFeedback = !category || category === 'rating';
+    // inbox는 항상 category 'other'. feedback은 신형(표준 모듈) 행이 5개 카테고리 전부 가능(2026-09-02),
+    // 구형 4문항 행은 'rating' — 신/구 판별이 행 단위(title)라 category 필터는 아래에서 JS로 적용한다.
+    const wantFeedback = !category || HUB_CATEGORIES.includes(category);
     const wantInbox = !category || category === 'other';
 
     const feedbackConditions = [];
@@ -83,6 +84,10 @@ export async function GET(request) {
           ratingEasy: feedback.ratingEasy,
           ratingRecommend: feedback.ratingRecommend,
           status: feedback.status,
+          category: feedback.category,
+          title: feedback.title,
+          rating: feedback.rating,
+          priority: feedback.priority,
         })
         .from(feedback)
         .where(ne(feedback.status, 'deleted')),
@@ -93,9 +98,11 @@ export async function GET(request) {
     ]);
 
     // 병합 정렬 + 페이지네이션 (개인 운영 규모 — 전체 조회 후 JS에서 병합/페이징)
-    const items = [...feedbackRows.map(feedbackToHubItem), ...inboxRows.map(inboxToHubItem)].sort(
+    // category 필터는 행 단위 판별(신형=표준 컬럼/구형=rating)이라 변환 후 JS에서 적용
+    let items = [...feedbackRows.map(feedbackToHubItem), ...inboxRows.map(inboxToHubItem)].sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
     );
+    if (category) items = items.filter((item) => item.category === category);
     const total = items.length;
     const paged = items.slice((page - 1) * limit, (page - 1) * limit + limit);
 
@@ -110,15 +117,29 @@ export async function GET(request) {
     for (const row of feedbackStatsRows) {
       const s = feedbackStatusToHub(row.status);
       byStatus[s] = (byStatus[s] || 0) + 1;
-      byCategory.rating += 1;
-      if (inProgress.has(s)) byPriority.medium += 1; // feedback엔 priority 컬럼 없음 — 전부 medium 집계
 
-      const vals = [row.ratingUseful, row.ratingTrust, row.ratingEasy, row.ratingRecommend].filter(
-        (v) => v != null
-      );
-      if (vals.length) {
-        ratingSum += Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
-        ratingCount += 1;
+      // 신형(표준 모듈) 행은 저장된 category/rating/priority, 구형 4문항 행은 'rating'+평균 별점
+      const standard = isStandardFeedbackRow(row);
+      const cat = standard && HUB_CATEGORIES.includes(row.category) ? row.category : standard ? 'other' : 'rating';
+      byCategory[cat] += 1;
+      if (inProgress.has(s)) {
+        const p = HUB_PRIORITIES.includes(row.priority) ? row.priority : 'medium';
+        byPriority[p] += 1;
+      }
+
+      if (standard) {
+        if (row.rating != null) {
+          ratingSum += row.rating;
+          ratingCount += 1;
+        }
+      } else {
+        const vals = [row.ratingUseful, row.ratingTrust, row.ratingEasy, row.ratingRecommend].filter(
+          (v) => v != null
+        );
+        if (vals.length) {
+          ratingSum += Math.round(vals.reduce((a, b) => a + b, 0) / vals.length);
+          ratingCount += 1;
+        }
       }
     }
     for (const row of inboxStatsRows) {

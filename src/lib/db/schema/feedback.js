@@ -29,6 +29,22 @@ export const feedback = pgTable('feedback', {
   status: varchar('status', { length: 20 }).notNull().default('pending'),
   adminNote: text('admin_note').default(''),
 
+  // 표준 제출 모듈 필드 (2026-09-02, 허브 스펙 §2.2) — 신형 행 전용(title 비어있으면 구형 4문항 행).
+  // category 컬럼은 신형 행에서 표준 enum(rating/feature_request/improvement/bug_report/other)을 담는다.
+  rating: smallint('rating'),
+  title: varchar('title', { length: 100 }).default(''),
+  feature: varchar('feature', { length: 50 }),
+  pageUrl: varchar('page_url', { length: 255 }),
+  source: varchar('source', { length: 20 }),
+  viewport: varchar('viewport', { length: 20 }),
+  referrer: varchar('referrer', { length: 500 }),
+  ipAddress: varchar('ip_address', { length: 50 }),
+  country: varchar('country', { length: 5 }),
+  city: varchar('city', { length: 100 }),
+  extra: text('extra'), // JSON 문자열
+  priority: varchar('priority', { length: 10 }).default('medium'),
+  previousStatus: varchar('previous_status', { length: 20 }).default(''),
+
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
 }, (table) => [

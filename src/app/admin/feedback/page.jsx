@@ -15,6 +15,11 @@ const CATEGORY_LABELS = {
   opinion: { label: '의견', color: 'text-blue-600 bg-blue-100' },
   bug: { label: '버그', color: 'text-red-600 bg-red-100' },
   improvement: { label: '개선', color: 'text-green-600 bg-green-100' },
+  // 표준 제출 모듈(2026-09-02) 카테고리 — 신형 행 (자세한 관리는 블루밍하트 허브에서)
+  rating: { label: '만족도', color: 'text-amber-600 bg-amber-100' },
+  feature_request: { label: '기능 요청', color: 'text-purple-600 bg-purple-100' },
+  bug_report: { label: '버그', color: 'text-red-600 bg-red-100' },
+  other: { label: '기타', color: 'text-gray-600 bg-gray-100' },
 };
 
 const RATING_LABELS = [

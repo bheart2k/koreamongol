@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { Navbar } from '@/components/layout/navbar';
 import { Footer } from '@/components/layout/footer';
 import { FamilyBanner } from '@/components/layout/family-banner';
-import { FeedbackFab } from '@/components/layout/FeedbackFab';
+import { FeedbackFab } from '@/components/feedback/feedback-fab';
 
 export function LayoutShell({ children }) {
   const pathname = usePathname();

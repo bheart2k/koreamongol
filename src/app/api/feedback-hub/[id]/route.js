@@ -45,9 +45,20 @@ export async function PATCH(request, { params }) {
         return NextResponse.json({ error: 'not_found' }, { status: 404 });
       }
 
-      // feedback 테이블: status/adminNote만 매핑 가능한 컬럼 존재. priority 컬럼 없음 → 무시.
+      // feedback 테이블: 2026-09-02 표준 컬럼 추가로 priority/previousStatus 전부 지원 (스펙 §3.3 완전 준수)
       const updateData = { updatedAt: new Date() };
-      if (status !== undefined) updateData.status = feedbackStatusFromHub(status);
+      if (status !== undefined) {
+        const rawStatus = feedbackStatusFromHub(status);
+        if (rawStatus === 'deleted') {
+          // 휴지통 이동: 기존 상태 백업
+          updateData.previousStatus = current.status;
+          updateData.status = 'deleted';
+        } else {
+          updateData.status = rawStatus;
+          if (current.status === 'deleted') updateData.previousStatus = '';
+        }
+      }
+      if (priority !== undefined) updateData.priority = priority;
       if (adminNote !== undefined) updateData.adminNote = adminNote;
 
       await db.update(feedback).set(updateData).where(eq(feedback.id, numId));
