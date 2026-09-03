@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { MapPin, Smartphone, Building2, Phone, FileCheck, ExternalLink } from 'lucide-react';
 import {
   GuideHero, GuideTOC, GuideNav, CheckList,
@@ -39,6 +40,17 @@ export default function ArrivalPage() {
         lastUpdated={arrivalMeta.lastUpdated}
         icon={MapPin}
         breadcrumbLabel="Ирсний дараа"
+        illustration={(
+          <Image
+            src="/images/guides/arrival-mazaalai.png"
+            alt="Паспорт, тээврийн карт, аяллын чемодантай Солонгост ирсэн Мазаалай"
+            width={1024}
+            height={1536}
+            sizes="(min-width: 1024px) 30vw, 300px"
+            className="h-full w-full object-contain drop-shadow-[0_22px_30px_rgba(27,45,79,0.18)]"
+            priority
+          />
+        )}
       >
         <GuideTOC sections={arrivalSections} />
       </GuideHero>
