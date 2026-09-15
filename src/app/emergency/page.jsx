@@ -1,6 +1,9 @@
+import contactStyles from './emergency.module.css';
+import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
+import styles from '@/components/guide/IllustratedGuide.module.css';
 import { Phone, Siren, Globe, Briefcase, Languages, Building2, Flag, Clock, CheckCircle2, ExternalLink } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
+  GuideNav, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
@@ -22,8 +25,8 @@ const sectionIcons = {
 
 function ContactCard({ contact }) {
   return (
-    <div className={`p-5 rounded-lg border bg-card ${contact.important ? 'border-gold/50 ring-1 ring-gold/20' : 'border-border'}`}>
-      <div className="flex items-start justify-between gap-3 mb-2">
+    <div className={[contactStyles.card, contact.important ? contactStyles.important : ""].join(" ")}>
+      <div className={contactStyles.heading}>
         <div>
           <h3 className="text-base font-semibold font-heading text-foreground">
             {contact.label}
@@ -32,7 +35,7 @@ function ContactCard({ contact }) {
         </div>
         <a
           href={`tel:${contact.number.replace(/[^0-9]/g, '')}`}
-          className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-terracotta text-white font-bold font-heading text-sm hover:bg-terracotta/90 transition-colors"
+          className={contactStyles.call}
         >
           <Phone className="w-4 h-4" />
           {contact.number}
@@ -93,21 +96,27 @@ export default function EmergencyPage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: 'Яаралтай утасны дугаарууд', url: `${BASE_URL}/emergency` },
       ]} />
-    <main className="min-h-content bg-background">
+    <main className={styles.page}>
       <GuideViewTracker guideId="emergency" />
-      <GuideHero
-        title={emergencyMeta.title}
-        subtitle={emergencyMeta.subtitle}
-        lastUpdated={emergencyMeta.lastUpdated}
+      <div className={contactStyles.urgent}>
+        {urgentContacts.slice(0, 2).map((contact) => (
+          <a key={contact.number} href={`tel:${contact.number}`}>
+            <Phone aria-hidden="true" /><span>{contact.label}</span><strong>{contact.number}</strong>
+          </a>
+        ))}
+      </div>
+      <IllustratedGuideHeader
+        meta={emergencyMeta}
+        sections={emergencySections}
+        quickIds={["em-urgent","em-translate","em-embassy"]}
+        image="/images/guides/emergency-mazaalai-l.png"
         icon={Phone}
-        breadcrumbLabel="Яаралтай утас"
-      >
-        <GuideTOC sections={emergencySections} />
-      </GuideHero>
+        breadcrumbLabel={emergencyMeta.title}
+      />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+      <IllustratedGuideBody sections={emergencySections}>
 
-        <WarningBox title="Яаралтай үед">
+        <WarningBox title="Яаралтай үед" className={styles.warning}>
           <p>119 (эмнэлэг/гал) эсвэл 112 (цагдаа) руу залгахад <strong>монгол хэл мэдэхгүй байсан ч</strong> байршлыг GPS-ээр тогтооно. Чимээгүй байсан ч залга!</p>
         </WarningBox>
 
@@ -123,7 +132,7 @@ export default function EmergencyPage() {
           contacts={foreignerContacts}
         />
 
-        <TipBox title="1345 — Хамгийн чухал дугаар">
+        <TipBox title="1345 — Хамгийн чухал дугаар" className={styles.tip}>
           <p>Виз, бүртгэл, оршин суух зөвшөөрөл зэрэг бүх асуудлаар монгол хэлээр зөвлөгөө авах боломжтой. Ажлын өдөр 09:00-18:00 цагт залгаарай.</p>
         </TipBox>
 
@@ -139,7 +148,7 @@ export default function EmergencyPage() {
           contacts={translateContacts}
         />
 
-        <TipBox title="BBB Korea — Үнэгүй 24 цагийн орчуулга">
+        <TipBox title="BBB Korea — Үнэгүй 24 цагийн орчуулга" className={styles.tip}>
           <p>1588-5644 руу залгаад монгол хэлийг сонговол сайн дурын орчуулагчтай холбоно. Эмнэлэг, цагдаа, банк гэх мэт газарт орчуулга хэрэгтэй бол ашиглаарай.</p>
         </TipBox>
 
@@ -171,7 +180,7 @@ export default function EmergencyPage() {
         <DonateBanner />
         <ShareButtons />
         <GuideNav currentGuideId="emergency" />
-      </div>
+      </IllustratedGuideBody>
     </main>
     </>
   );

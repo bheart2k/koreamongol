@@ -1,5 +1,7 @@
 'use client';
 
+import styles from '@/components/guide/SupportPages.module.css';
+
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { ArrowUpDown, RefreshCw } from 'lucide-react';
 import { analytics } from '@/lib/analytics-events';
@@ -103,11 +105,12 @@ export default function ExchangeCalculator() {
 
   const krwField = (
     <div>
-      <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+      <label htmlFor="exchange-krw" className="block text-xs font-medium text-muted-foreground mb-1.5">
         🇰🇷 Солонгос вон (KRW)
       </label>
       <div className="relative">
-        <input
+        <input id="exchange-krw"
+
           type="text"
           inputMode="numeric"
           value={krw}
@@ -122,11 +125,12 @@ export default function ExchangeCalculator() {
 
   const mntField = (
     <div>
-      <label className="block text-xs font-medium text-muted-foreground mb-1.5">
+      <label htmlFor="exchange-mnt" className="block text-xs font-medium text-muted-foreground mb-1.5">
         🇲🇳 Монгол төгрөг (MNT)
       </label>
       <div className="relative">
-        <input
+        <input id="exchange-mnt"
+
           type="text"
           inputMode="numeric"
           value={mnt}
@@ -140,8 +144,8 @@ export default function ExchangeCalculator() {
   );
 
   return (
-    <div className="max-w-md mx-auto">
-      <div className="p-6 rounded-2xl border border-border bg-card shadow-sm">
+    <div className={styles.calculator}>
+      <div className={styles.form}>
         {loading ? (
           <div className="flex items-center justify-center py-8 text-muted-foreground">
             <RefreshCw className="w-5 h-5 animate-spin mr-2" />
@@ -165,7 +169,7 @@ export default function ExchangeCalculator() {
               <div className="flex justify-center">
                 <button
                   onClick={handleSwap}
-                  className="p-2 rounded-full border border-border hover:bg-muted transition-colors cursor-pointer"
+                  className={styles.swap}
                   aria-label="Солих"
                 >
                   <ArrowUpDown className="w-4 h-4 text-muted-foreground" />
@@ -176,7 +180,7 @@ export default function ExchangeCalculator() {
             </div>
 
             {rate && (
-              <div className="mt-5 pt-4 border-t border-border text-center">
+              <div className={styles.rate}>
                 <p className="text-sm text-muted-foreground">
                   1,000 ₩ ≈ {formatNumber(Math.round(rate * 1000))} ₮
                 </p>
@@ -204,7 +208,7 @@ export default function ExchangeCalculator() {
                   setMnt(formatNumber(Math.round(amount * rate)));
                   setDirection('krw-to-mnt');
                 }}
-                className="px-3 py-2 text-sm rounded-lg border border-border bg-card hover:border-gold/40 hover:bg-gold/5 transition-all text-left cursor-pointer"
+                className={styles.quickAmount}
               >
                 <span className="font-medium text-foreground">{formatNumber(amount)} ₩</span>
                 <span className="block text-xs text-muted-foreground">{formatNumber(Math.round(amount * rate))} ₮</span>

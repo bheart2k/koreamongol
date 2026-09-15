@@ -1,5 +1,8 @@
+import { SupportHeader } from '@/components/guide/SupportHeader';
+import styles from '@/components/guide/SupportPages.module.css';
+import pageStyles from '@/components/guide/IllustratedGuide.module.css';
 import { Calculator } from 'lucide-react';
-import { GuideHero, ReportBanner, DonateBanner, ShareButtons } from '@/components/guide';
+import { ReportBanner, DonateBanner, ShareButtons } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import ExchangeCalculator from './ExchangeCalculator';
 
@@ -12,18 +15,17 @@ export default function ExchangePage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: 'Ханш тооцоолуур', url: `${BASE_URL}/exchange` },
       ]} />
-    <main className="min-h-content bg-background">
-      <GuideHero
+    <main className={pageStyles.page}>
+      <SupportHeader
         title="Ханш тооцоолуур"
         subtitle="KRW ↔ MNT хөрвүүлэг"
         icon={Calculator}
-        breadcrumbLabel="Ханш"
-      />
+      image="/images/guides/exchange-mazaalai-l.png" />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-10">
+      <div className={[styles.content, "space-y-10"].join(" ")}>
         <ExchangeCalculator />
 
-        <div className="max-w-md mx-auto">
+        <div className={[styles.note, ""].join(" ")}>
           <div className="p-4 rounded-lg border border-gold/30 bg-gold/5">
             <p className="text-xs text-muted-foreground text-center">
               Энэ ханш нь зөвхөн лавлагааны зорилготой. Бодит гүйлгээний ханш банк, мөнгө шилжүүлгийн үйлчилгээгээр өөрчлөгдөж болно.

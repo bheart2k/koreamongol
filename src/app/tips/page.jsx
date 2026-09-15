@@ -1,6 +1,9 @@
+import { SupportHeader } from '@/components/guide/SupportHeader';
+import styles from '@/components/guide/SupportPages.module.css';
+import pageStyles from '@/components/guide/IllustratedGuide.module.css';
 import Link from 'next/link';
 import { MessageCircleQuestion, ChevronRight } from 'lucide-react';
-import { GuideHero, AskQuestionCta } from '@/components/guide';
+import { AskQuestionCta } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import { tips, tipsMeta } from '@/data/tips';
 
@@ -36,23 +39,22 @@ export default function TipsPage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: 'Түргэн хариулт', url: `${BASE_URL}/tips` },
       ]} />
-      <main className="min-h-content bg-background">
-        <GuideHero
+      <main className={pageStyles.page}>
+        <SupportHeader
           title={tipsMeta.title}
           subtitle={tipsMeta.subtitle}
           icon={MessageCircleQuestion}
-          breadcrumbLabel="Түргэн хариулт"
-        />
+        image="/images/guides/tips-mazaalai-l.png" />
 
-        <div className="max-w-4xl mx-auto px-6 py-10">
+        <div className={styles.content}>
           <div className="space-y-3">
             {sortedTips.map((tip) => (
               <Link
                 key={tip.slug}
                 href={`/tips/${tip.slug}`}
-                className="group flex items-start gap-4 p-5 rounded-xl border border-border bg-card hover:shadow-md hover:border-gold/40 transition-all duration-200"
+                className={styles.question}
               >
-                <div className="w-10 h-10 rounded-lg bg-sky dark:bg-navy-light flex items-center justify-center shrink-0 group-hover:bg-gold/10 transition-colors">
+                <div className={styles.questionIcon}>
                   <MessageCircleQuestion className="w-5 h-5 text-navy dark:text-gold" />
                 </div>
                 <div className="flex-1 min-w-0">

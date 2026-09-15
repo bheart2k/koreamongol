@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import styles from './korean-life.module.css';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LanguageCard } from '@/components/guide';
 import { survivalKorean } from '@/data/guides/korean-life';
@@ -10,7 +11,7 @@ export default function KoreanLifeTabs() {
 
   return (
     <Tabs value={langTab} onValueChange={setLangTab}>
-      <TabsList>
+      <TabsList className={styles.tabs}>
         <TabsTrigger value="daily">Өдөр тутам</TabsTrigger>
         <TabsTrigger value="work">Ажлын газар</TabsTrigger>
       </TabsList>

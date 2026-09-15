@@ -1,6 +1,8 @@
+import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
+import styles from '@/components/guide/IllustratedGuide.module.css';
 import { Briefcase, ExternalLink } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, CheckList, StepList,
+  GuideNav, CheckList, StepList,
   InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
@@ -26,19 +28,11 @@ export default function JobsPage() {
         description="Солонгост цалин олгохгүй байх тохиолдолд гомдол гаргах алхмууд"
         steps={laborRights[0].steps}
       />
-    <main className="min-h-content bg-background">
+    <main className={styles.page}>
       <GuideViewTracker guideId="jobs" />
-      <GuideHero
-        title={jobsMeta.title}
-        subtitle={jobsMeta.subtitle}
-        lastUpdated={jobsMeta.lastUpdated}
-        icon={Briefcase}
-        breadcrumbLabel="Ажил"
-      >
-        <GuideTOC sections={jobsSections} />
-      </GuideHero>
+      <IllustratedGuideHeader meta={jobsMeta} sections={jobsSections} quickIds={["jobs-visa-conditions","jobs-salary","jobs-contract"]} image="/images/guides/jobs-mazaalai-l.png" icon={Briefcase} breadcrumbLabel="Ажил" />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+      <IllustratedGuideBody sections={jobsSections}>
         {/* Visa Work Conditions */}
         <section id="jobs-visa-conditions">
           <h2 className="text-title text-navy dark:text-sky mb-6">Визээр ажлын нөхцөл</h2>
@@ -58,7 +52,7 @@ export default function JobsPage() {
             </div>
           </div>
 
-          <WarningBox className="mt-4">
+          <WarningBox className={[styles.warning, "mt-4"].join(" ")}>
             <ul className="space-y-1">
               {visaWorkConditions.warnings.map((w, i) => (
                 <li key={i}>&#8226; {w}</li>
@@ -89,7 +83,7 @@ export default function JobsPage() {
             </ul>
           </div>
 
-          <WarningBox className="mt-4" title="Анхаар!">
+          <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Анхаар!">
             <p>{parttimePermit.warning}</p>
           </WarningBox>
         </section>
@@ -99,11 +93,11 @@ export default function JobsPage() {
           <h2 className="text-title text-navy dark:text-sky mb-6">Цалин / Хамгийн бага цалин ({salaryInfo.year})</h2>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-6">
-            <div className="p-5 rounded-xl border-2 border-gold/40 bg-gold/5 text-center">
+            <div className={[styles.salary, "p-5 text-center"].join(" ")}>
               <p className="text-sm text-muted-foreground">Цагийн хөлс</p>
               <p className="text-2xl font-bold text-navy dark:text-sky">{salaryInfo.minimumWage.hourly}</p>
             </div>
-            <div className="p-5 rounded-xl border-2 border-gold/40 bg-gold/5 text-center">
+            <div className={[styles.salary, "p-5 text-center"].join(" ")}>
               <p className="text-sm text-muted-foreground">Сарын цалин (주 40시간)</p>
               <p className="text-2xl font-bold text-navy dark:text-sky">{salaryInfo.minimumWage.monthly}</p>
             </div>
@@ -130,13 +124,13 @@ export default function JobsPage() {
           </div>
 
           {/* Retirement */}
-          <TipBox className="mt-4" title={salaryInfo.retirement.title}>
+          <TipBox className={[styles.tip, "mt-4"].join(" ")} title={salaryInfo.retirement.title}>
             <p><strong>Нөхцөл:</strong> {salaryInfo.retirement.condition}</p>
             <p><strong>Хэмжээ:</strong> {salaryInfo.retirement.amount}</p>
             <p><strong>Хугацаа:</strong> {salaryInfo.retirement.deadline}</p>
           </TipBox>
 
-          <TipBox className="mt-4" title="Зөвлөгөө">
+          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Зөвлөгөө">
             <ul className="space-y-1">
               {salaryInfo.tips.map((t, i) => (
                 <li key={i}>&#8226; {t}</li>
@@ -149,7 +143,7 @@ export default function JobsPage() {
         <section id="jobs-contract">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хөдөлмөрийн гэрээ шалгах</h2>
           <CheckList items={contractChecklist} storageKey="jobs-contract" />
-          <WarningBox className="mt-4" title="Анхааруулга">
+          <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Анхааруулга">
             <ul className="space-y-1">
               {contractWarnings.map((w, i) => (
                 <li key={i}>&#8226; {w}</li>
@@ -205,10 +199,10 @@ export default function JobsPage() {
             </ul>
           </div>
 
-          <TipBox className="mt-4" title="Цалин өгөхгүй бол">
+          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Цалин өгөхгүй бол">
             <p>{dailyWorkSafety.unpaidNote}</p>
           </TipBox>
-          <TipBox className="mt-4" title="Татвар">
+          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Татвар">
             <p>{dailyWorkSafety.taxNote}</p>
           </TipBox>
 
@@ -245,7 +239,7 @@ export default function JobsPage() {
                 </h3>
                 <StepList steps={situation.steps} />
                 {situation.importantNote && (
-                  <TipBox className="mt-3" title="Чухал">
+                  <TipBox className={[styles.tip, "mt-3"].join(" ")} title="Чухал">
                     <p>{situation.importantNote}</p>
                   </TipBox>
                 )}
@@ -286,7 +280,7 @@ export default function JobsPage() {
         <DonateBanner />
         <ShareButtons />
         <GuideNav currentGuideId="jobs" />
-      </div>
+      </IllustratedGuideBody>
     </main>
     </>
   );

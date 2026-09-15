@@ -1,5 +1,7 @@
 'use client';
 
+import styles from './header.module.css';
+
 import { useSession, signIn, signOut } from 'next-auth/react';
 import { useState, useRef, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
@@ -12,10 +14,10 @@ const ProfileButton = memo(function ProfileButton({ user, isOpen, onClick }) {
   return (
     <button
       onClick={onClick}
+      aria-label="Миний хуудас" aria-expanded={isOpen} aria-controls="header-user-menu"
       className={cn(
-        "flex items-center gap-2 p-1 pr-2 rounded-full transition-colors cursor-pointer",
-        "hover:bg-navy-light",
-        isOpen && "bg-navy-light"
+        styles.profileButton,
+        isOpen && styles.active
       )}
     >
       {user?.image ? (
@@ -71,7 +73,7 @@ export function UserMenu() {
   // SSR과 클라이언트 초기 렌더를 일치시켜 hydration error 방지
   if (!mounted) {
     return (
-      <div className="w-9 h-9 rounded-full" />
+      <div className={styles.iconPlaceholder} />
     );
   }
 
@@ -80,7 +82,7 @@ export function UserMenu() {
 
   if (isFirstLoading) {
     return (
-      <div className="w-9 h-9 rounded-full bg-navy-light animate-pulse" />
+      <div className={cn(styles.iconPlaceholder, "bg-navy-light animate-pulse")} />
     );
   }
 
@@ -88,9 +90,9 @@ export function UserMenu() {
     return (
       <button
         onClick={() => signIn('google')}
+        aria-label="Нэвтрэх"
         className={cn(
-          "flex items-center justify-center w-9 h-9 lg:w-[68px] rounded-full transition-colors cursor-pointer",
-          "text-sky/70 hover:text-sky hover:bg-navy-light"
+          styles.iconButton
         )}
       >
         <LogIn className="w-4 h-4" />
@@ -113,9 +115,9 @@ export function UserMenu() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 8, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="absolute right-0 mt-2 w-56 bg-white dark:bg-navy rounded-xl shadow-lg border border-border dark:border-navy-light overflow-hidden z-50"
+            id="header-user-menu" className={styles.userPanel}
           >
-            <div className="p-3 border-b border-border dark:border-navy-light">
+            <div className={styles.panelHeading}>
               <p className="text-sm font-medium text-foreground dark:text-sky truncate">
                 {displayUser.nickname || 'Нэрээ тохируулна уу'}
               </p>
@@ -125,7 +127,7 @@ export function UserMenu() {
               <Link
                 href="/mypage"
                 onClick={() => setIsOpen(false)}
-                className="w-full flex items-center gap-3 px-3 py-2 text-sm text-muted-foreground dark:text-sky/70 hover:bg-muted dark:hover:bg-navy-light rounded-lg transition-colors"
+                className={styles.mobileLink}
               >
                 <User className="w-4 h-4" />
                 Миний хуудас
@@ -135,7 +137,7 @@ export function UserMenu() {
                   setIsOpen(false);
                   signOut({ callbackUrl: '/' });
                 }}
-                className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors cursor-pointer"
+                className={cn(styles.mobileLink, "text-red-700 dark:text-red-300")}
               >
                 <LogOut className="w-4 h-4" />
                 Гарах

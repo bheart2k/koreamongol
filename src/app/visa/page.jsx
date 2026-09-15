@@ -1,6 +1,9 @@
-import { FileText, Clock, AlertTriangle, ArrowRightLeft, TrendingUp } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import styles from './visa.module.css';
+import { FileText, Clock, AlertTriangle, ArrowRightLeft, TrendingUp, Home, ChevronRight, ArrowUpRight, List } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, CheckList,
+  GuideNav, CheckList,
   WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
@@ -26,19 +29,37 @@ export default function VisaPage() {
         description="Солонгост ажиллах E-9 виз авах үе шат"
         steps={visaTypes.e9.steps}
       />
-    <main className="min-h-content bg-background">
+    <main className={`${styles.page} min-h-content`}>
       <GuideViewTracker guideId="visa" />
-      <GuideHero
-        title={visaMeta.title}
-        subtitle={visaMeta.subtitle}
-        lastUpdated={visaMeta.lastUpdated}
-        icon={FileText}
-        breadcrumbLabel="Виз"
-      >
-        <GuideTOC sections={visaSections} />
-      </GuideHero>
-
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+      <section className={styles.hero}>
+        <div className={styles.heroInner}>
+          <nav className={styles.breadcrumb} aria-label="breadcrumb">
+            <Link href="/" aria-label="KoreaMongol"><Home aria-hidden="true" /></Link>
+            <ChevronRight aria-hidden="true" /><span aria-current="page">Виз</span>
+          </nav>
+          <div className={styles.welcome}>
+            <div>
+              <span className={styles.emblem} aria-hidden="true"><FileText /></span>
+              <h1>{visaMeta.title}</h1>
+              <p className={styles.subtitle}>{visaMeta.subtitle}</p>
+              <p className={styles.updated}>Сүүлд шинэчилсэн: {visaMeta.lastUpdated}</p>
+              <a href="#visa-types" className={styles.startLink}>Визний төрлүүд<ArrowUpRight aria-hidden="true" /></a>
+            </div>
+            <Image src="/images/guides/visa-mazaalai-l.png" alt="Бичиг баримтаа шалгаж буй Мазаалай"
+              width={1024} height={1536} sizes="(min-width: 768px) 240px, 140px" priority className={styles.mascot} />
+          </div>
+        </div>
+      </section>
+      <div className={styles.layout}>
+        <aside className={styles.sidebar}>
+          <nav className={styles.toc} aria-label="Агуулга">
+            <h2><List aria-hidden="true" />Агуулга</h2>
+            <ul>{visaSections.map(({ id, title }) => (
+              <li key={id}><a href={`#${id}`}>{title}</a></li>
+            ))}</ul>
+          </nav>
+        </aside>
+        <div className={styles.content}>
         {/* Visa Types */}
         <section id="visa-types">
           <h2 className="text-title text-navy dark:text-sky mb-6">Визний төрлүүд</h2>
@@ -52,7 +73,7 @@ export default function VisaPage() {
             {visaCostInfo.title}
           </h2>
 
-          <div className="space-y-4 mb-6">
+          <div className={styles.costGrid}>
             {visaCostInfo.visas.map((v) => (
               <div key={v.type} className="p-4 rounded-lg border border-border bg-card">
                 <h3 className="text-base font-semibold font-heading text-foreground mb-3">{v.type}</h3>
@@ -125,11 +146,11 @@ export default function VisaPage() {
             ))}
           </div>
 
-          <WarningBox title={workplaceChange.deadline}>
+          <WarningBox className={styles.warning} title={workplaceChange.deadline}>
             <p className="font-semibold">{workplaceChange.deadlineWarning}</p>
           </WarningBox>
 
-          <TipBox title="Тоонд оруулахгүй тохиолдол">
+          <TipBox className={styles.tip} title="Тоонд оруулахгүй тохиолдол">
             <p>{workplaceChange.exceptions}</p>
           </TipBox>
 
@@ -173,11 +194,11 @@ export default function VisaPage() {
             ))}
           </div>
 
-          <WarningBox title="Жил бүр өөрчлөгдөнө">
+          <WarningBox className={styles.warning} title="Жил бүр өөрчлөгдөнө">
             <p>{longTermPaths.warning}</p>
           </WarningBox>
 
-          <TipBox title="Одооноос бэлдэх зүйлс">
+          <TipBox className={styles.tip} title="Одооноос бэлдэх зүйлс">
             <ul className="space-y-1">
               {longTermPaths.checklist.map((item, i) => (
                 <li key={i}>&#8226; {item}</li>
@@ -190,7 +211,7 @@ export default function VisaPage() {
         <section id="visa-mongolia-prep">
           <h2 className="text-title text-navy dark:text-sky mb-6">Монголоос бэлтгэх зүйлс</h2>
 
-          <TipBox title="Монгол Улсын ЭСЯ (Сөүл)">
+          <TipBox className={styles.tip} title="Монгол Улсын ЭСЯ (Сөүл)">
             <p><strong>Хаяг:</strong> {mongoliaPrep.embassy.address}</p>
             <p><strong>Утас:</strong> <a href={`tel:${mongoliaPrep.embassy.phone}`} className="underline">{mongoliaPrep.embassy.phone}</a></p>
             <p><strong>И-мэйл:</strong> {mongoliaPrep.embassy.email}</p>
@@ -207,7 +228,7 @@ export default function VisaPage() {
         {/* Rejection Reasons */}
         <section id="visa-rejection">
           <h2 className="text-title text-navy dark:text-sky mb-6">Татгалзах шалтгаан</h2>
-          <WarningBox title="Виз татгалзах гол шалтгаанууд">
+          <WarningBox className={styles.warning} title="Виз татгалзах гол шалтгаанууд">
             <ul className="space-y-1">
               {rejectionReasons.map((reason, i) => (
                 <li key={i}>&#8226; {reason}</li>
@@ -219,7 +240,7 @@ export default function VisaPage() {
         {/* Illegal Stay */}
         <section id="visa-illegal">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хууль бус оршин суух</h2>
-          <WarningBox title="Хууль бус оршин суухын үр дагавар">
+          <WarningBox className={styles.warning} title="Хууль бус оршин суухын үр дагавар">
             <ul className="space-y-1">
               {illegalStayWarnings.map((w, i) => (
                 <li key={i}>&#8226; {w}</li>
@@ -244,6 +265,7 @@ export default function VisaPage() {
         <DonateBanner />
         <ShareButtons />
         <GuideNav currentGuideId="visa" />
+        </div>
       </div>
     </main>
     </>

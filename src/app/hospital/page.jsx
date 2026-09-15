@@ -1,7 +1,9 @@
+import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
+import styles from '@/components/guide/IllustratedGuide.module.css';
 import { Heart } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import {
-  GuideHero, GuideTOC, GuideNav, EmergencyBanner, StepList,
+  GuideNav, EmergencyBanner, StepList,
   InfoTable, LinkCard, WarningBox, TipBox, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
@@ -25,24 +27,16 @@ export default function HospitalPage() {
         description="Солонгост эмнэлэгт хандах үе шат"
         steps={hospitalSteps}
       />
-    <main className="min-h-content bg-background">
+    <main className={[styles.page, styles.hospital].join(" ")}>
       <GuideViewTracker guideId="hospital" />
       <EmergencyBanner
         sticky
         items={emergencyContacts.slice(0, 3)}
       />
 
-      <GuideHero
-        title={hospitalMeta.title}
-        subtitle={hospitalMeta.subtitle}
-        lastUpdated={hospitalMeta.lastUpdated}
-        icon={Heart}
-        breadcrumbLabel="Эмнэлэг"
-      >
-        <GuideTOC sections={hospitalSections} />
-      </GuideHero>
+      <IllustratedGuideHeader meta={hospitalMeta} sections={hospitalSections} quickIds={["hospital-emergency","hospital-steps","hospital-interpreter"]} image="/images/guides/hospital-mazaalai-l.png" icon={Heart} breadcrumbLabel="Эмнэлэг" />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+      <IllustratedGuideBody sections={hospitalSections}>
         {/* Emergency Contacts (full list) */}
         <section id="hospital-emergency">
           <h2 className="text-title text-navy dark:text-sky mb-6">Яаралтай холбоо барих</h2>
@@ -51,7 +45,7 @@ export default function HospitalPage() {
               <a
                 key={contact.number}
                 href={`tel:${contact.number}`}
-                className="flex items-center gap-3 p-4 rounded-lg border border-border bg-card hover:border-terracotta/40 hover:shadow-sm transition-all"
+                className={[styles.contact, "flex items-center gap-3 border border-border hover:shadow-sm transition-all"].join(" ")}
               >
                 <span className="text-2xl">{contact.emoji}</span>
                 <div>
@@ -87,7 +81,7 @@ export default function HospitalPage() {
             </div>
           </div>
 
-          <TipBox className="mt-4" title="Анхаар">
+          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Анхаар">
             <p>{pharmacyGuide.tip}</p>
           </TipBox>
         </section>
@@ -99,7 +93,7 @@ export default function HospitalPage() {
             headers={insuranceComparison.headers}
             rows={insuranceComparison.rows}
           />
-          <TipBox className="mt-4" title="Даатгалын зөвлөгөө">
+          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Даатгалын зөвлөгөө">
             <p>Гадаадын иргэн 6 сар дээш оршин суувал Үндэсний эрүүл мэндийн даатгал (국민건강보험) заавал (E-9, D-2 визтэй бол ирсэн даруй). Сар бүр ~₩159,000 төлнө (2026 он).</p>
           </TipBox>
         </section>
@@ -115,7 +109,7 @@ export default function HospitalPage() {
               </div>
             ))}
           </div>
-          <TipBox title="Мэдэх зүйл">
+          <TipBox title="Мэдэх зүйл" className={styles.tip}>
             <p>{undocumentedAccess.warning}</p>
           </TipBox>
         </section>
@@ -123,7 +117,7 @@ export default function HospitalPage() {
         {/* Interpreter Services */}
         <section id="hospital-interpreter">
           <h2 className="text-title text-navy dark:text-sky mb-6">Орчуулга / Тусламж</h2>
-          <TipBox title="1345 дуудах">
+          <TipBox title="1345 дуудах" className={styles.tip}>
             <p>1345 (гадаадын иргэдийн мэдээллийн төв) руу залгаж орчуулга хүсэх боломжтой. 20 хэлээр үйлчилнэ.</p>
           </TipBox>
           <div className="grid sm:grid-cols-2 gap-3 mt-4">
@@ -158,7 +152,7 @@ export default function HospitalPage() {
         {/* Tips */}
         <section id="hospital-tips">
           <h2 className="text-title text-navy dark:text-sky mb-6">Зөвлөгөө</h2>
-          <WarningBox>
+          <WarningBox className={styles.warning}>
             <ul className="space-y-1">
               <li>• Паспорт / 외국인등록증 заавал авчрах</li>
               <li>• Даатгалын карт (건강보험증) авчрах</li>
@@ -174,7 +168,7 @@ export default function HospitalPage() {
         <DonateBanner />
         <ShareButtons />
         <GuideNav currentGuideId="hospital" />
-      </div>
+      </IllustratedGuideBody>
     </main>
     </>
   );

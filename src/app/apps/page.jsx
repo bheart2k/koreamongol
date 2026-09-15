@@ -1,10 +1,13 @@
+import appStyles from './apps.module.css';
+import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
+import styles from '@/components/guide/IllustratedGuide.module.css';
 import Link from 'next/link';
 import {
   Smartphone, ShoppingCart, Bus, Languages, Wrench, Globe,
   Lightbulb, ExternalLink, ArrowRight, AlertTriangle, Download,
 } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, TipBox, WarningBox,
+  GuideNav, TipBox, WarningBox,
   LinkCard, ReportBanner, DonateBanner, ShareButtons, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
@@ -18,8 +21,8 @@ const BASE_URL = 'https://koreamongol.com';
 
 function AppCard({ app }) {
   return (
-    <div className="p-5 rounded-lg border border-border bg-card">
-      <div className="flex items-center justify-between mb-2">
+    <div className={appStyles.appCard}>
+      <div className={appStyles.appHeading}>
         <h3 className="text-lg font-semibold font-heading text-foreground">
           {app.name}
         </h3>
@@ -29,12 +32,12 @@ function AppCard({ app }) {
       </div>
       <p className="text-sm text-muted-foreground mb-3">{app.description}</p>
       {app.tip && (
-        <p className="text-xs text-gold-dark mb-3">
+        <p className={appStyles.appTip}>
           <Lightbulb className="w-3 h-3 inline mr-1" />
           {app.tip}
         </p>
       )}
-      <div className="flex items-center gap-3">
+      <div className={appStyles.appActions}>
         {app.playStore && (
           <a
             href={app.playStore}
@@ -69,19 +72,18 @@ export default function AppsPage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: appsMeta.title, url: `${BASE_URL}/apps` },
       ]} />
-      <main className="min-h-content bg-background">
+      <main className={styles.page}>
         <GuideViewTracker guideId="apps" />
-        <GuideHero
-          title={appsMeta.title}
-          subtitle={appsMeta.subtitle}
-          lastUpdated={appsMeta.lastUpdated}
-          icon={Smartphone}
-          breadcrumbLabel={appsMeta.title}
-        >
-          <GuideTOC sections={appsSections} />
-        </GuideHero>
+        <IllustratedGuideHeader
+        meta={appsMeta}
+        sections={appsSections}
+        quickIds={["apps-essential","apps-translate","apps-tools"]}
+        image="/images/guides/apps-mazaalai-l.png"
+        icon={Smartphone}
+        breadcrumbLabel={appsMeta.title}
+      />
 
-        <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+        <IllustratedGuideBody sections={appsSections}>
           {/* Essential Apps */}
           <section id="apps-essential">
             <h2 className="text-title text-navy dark:text-sky mb-6">
@@ -182,7 +184,7 @@ export default function AppsPage() {
           {/* Tips */}
           <section id="apps-tips">
             <h2 className="text-title text-navy dark:text-sky mb-6">Апп суулгах зөвлөгөө</h2>
-            <TipBox title="Зөвлөгөө">
+            <TipBox title="Зөвлөгөө" className={styles.tip}>
               <ul className="space-y-1">
                 {appTips.map((tip, i) => (
                   <li key={i}>&#8226; {tip}</li>
@@ -190,7 +192,7 @@ export default function AppsPage() {
               </ul>
             </TipBox>
             <div className="mt-4">
-              <WarningBox title="Анхааруулга">
+              <WarningBox title="Анхааруулга" className={styles.warning}>
                 <p>{appWarning}</p>
               </WarningBox>
             </div>
@@ -222,7 +224,7 @@ export default function AppsPage() {
           <DonateBanner />
           <ShareButtons />
           <GuideNav currentGuideId="apps" />
-        </div>
+        </IllustratedGuideBody>
       </main>
     </>
   );

@@ -1,7 +1,9 @@
 import Image from 'next/image';
-import { MapPin, Smartphone, Building2, Phone, FileCheck, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
+import styles from './arrival.module.css';
+import { MapPin, Smartphone, Building2, Phone, FileCheck, ExternalLink, ArrowUpRight, ChevronRight, Home } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, CheckList,
+  GuideTOC, GuideNav, CheckList,
   TipBox, WarningBox, InfoTable, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
@@ -32,34 +34,56 @@ export default function ArrivalPage() {
           { title: '주민센터-д бүртгүүлэх', description: '전입신고 хийх' },
         ]}
       />
-    <main className="min-h-content bg-background">
+    <main className={`${styles.page} min-h-content`}>
       <GuideViewTracker guideId="arrival" />
-      <GuideHero
-        title={arrivalMeta.title}
-        subtitle={arrivalMeta.subtitle}
-        lastUpdated={arrivalMeta.lastUpdated}
-        icon={MapPin}
-        breadcrumbLabel="Ирсний дараа"
-        illustration={(
-          <Image
-            src="/images/guides/arrival-mazaalai.png"
-            alt="Паспорт, тээврийн карт, аяллын чемодантай Солонгост ирсэн Мазаалай"
-            width={1024}
-            height={1536}
-            sizes="(min-width: 1024px) 30vw, 300px"
-            className="h-full w-full object-contain drop-shadow-[0_22px_30px_rgba(27,45,79,0.18)]"
-            priority
-          />
-        )}
-      >
-        <GuideTOC sections={arrivalSections} />
-      </GuideHero>
+      <section className={styles.hero}>
+        <div className={styles.heroInner}>
+          <nav className={styles.breadcrumb} aria-label="breadcrumb">
+            <Link href="/" aria-label="KoreaMongol"><Home aria-hidden="true" /></Link>
+            <ChevronRight aria-hidden="true" />
+            <span aria-current="page">{arrivalMeta.title}</span>
+          </nav>
+          <div className={styles.welcome}>
+            <div className={styles.intro}>
+              <span className={styles.emblem} aria-hidden="true"><MapPin /></span>
+              <h1>{arrivalMeta.title}</h1>
+              <p className={styles.subtitle}>{arrivalMeta.subtitle}</p>
+              <p className={styles.updated}>Сүүлд шинэчилсэн: {arrivalMeta.lastUpdated}</p>
+              <a href="#arrival-day1" className={styles.startLink}>
+                {arrivalTimeline[0].period}<ArrowUpRight aria-hidden="true" />
+              </a>
+            </div>
+            <Image src="/images/guides/arrival-mazaalai-l-transparent.png"
+              alt="Аяллын чемодантай, тээврийн карт үзүүлж буй Мазаалай"
+              width={1024} height={1536} priority
+              sizes="(min-width: 768px) 240px, 150px" className={styles.mascot} />
+          </div>
+          <div className={styles.quickLinks}>
+            <a href="#arrival-alien" className={styles.quickLink}>
+              <Image src="/images/home/visa.png" alt="" width={1254} height={1254} sizes="72px" className={styles.documentArt} />
+              <span>{alienRegistration.title}</span><ArrowUpRight aria-hidden="true" />
+            </a>
+            <a href="#arrival-bank" className={styles.quickLink}>
+              <span className={styles.quickIcon} aria-hidden="true"><Building2 strokeWidth={1.4} /></span>
+              <span>{bankRecommendations.title}</span><ArrowUpRight aria-hidden="true" />
+            </a>
+            <a href="#arrival-phone" className={styles.quickLink}>
+              <span className={styles.quickIcon} aria-hidden="true"><Smartphone strokeWidth={1.4} /></span>
+              <span>{phoneInfo.title}</span><ArrowUpRight aria-hidden="true" />
+            </a>
+          </div>
+        </div>
+      </section>
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+      <div className={styles.layout}>
+        <aside className={styles.sidebar}>
+          <GuideTOC sections={arrivalSections} className={styles.toc} />
+        </aside>
+        <div className={styles.content}>
         {/* Timeline Checklists */}
-        {arrivalTimeline.map((period) => (
-          <section key={period.storageKey} id={period.storageKey}>
-            <h2 className="text-title text-navy dark:text-sky mb-6">{period.period}</h2>
+        {arrivalTimeline.map((period, index) => (
+          <section key={period.storageKey} id={period.storageKey} className={styles.timeline}>
+            <h2 className={styles.periodTitle}><span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{period.period}</h2>
             <CheckList
               items={period.items}
               storageKey={period.storageKey}
@@ -120,7 +144,7 @@ export default function ArrivalPage() {
             </div>
           </div>
 
-          <WarningBox title="Анхаар!">
+          <WarningBox className={styles.warning} title="Анхаар!">
             <p>90 хоногийн дотор бүртгүүлэхгүй бол торгууль ногдуулна. Аль болох эрт бүртгүүлэх!</p>
           </WarningBox>
         </section>
@@ -155,7 +179,7 @@ export default function ArrivalPage() {
             </div>
           </div>
 
-          <TipBox title="Зөвлөгөө">
+          <TipBox className={styles.tip} title="Зөвлөгөө">
             <p>{bankRecommendations.tip}</p>
           </TipBox>
         </section>
@@ -204,7 +228,7 @@ export default function ArrivalPage() {
             </div>
           </div>
 
-          <TipBox title="KT тусгай нөхцөл">
+          <TipBox className={styles.tip} title="KT тусгай нөхцөл">
             <p className="text-sm">{phoneInfo.postpaid.tip}</p>
           </TipBox>
         </section>
@@ -214,7 +238,7 @@ export default function ArrivalPage() {
           <h2 className="text-title text-navy dark:text-sky mb-6">Амьдралын зөвлөгөө</h2>
           <div className="space-y-4">
             {arrivalTips.map((tip) => (
-              <TipBox key={tip.title} title={tip.title}>
+              <TipBox className={styles.tip} key={tip.title} title={tip.title}>
                 <p>{tip.description}</p>
               </TipBox>
             ))}
@@ -249,6 +273,7 @@ export default function ArrivalPage() {
         <DonateBanner />
         <ShareButtons />
         <GuideNav currentGuideId="arrival" />
+        </div>
       </div>
     </main>
     </>

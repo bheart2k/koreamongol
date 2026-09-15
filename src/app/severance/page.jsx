@@ -1,5 +1,8 @@
+import { SupportHeader } from '@/components/guide/SupportHeader';
+import styles from '@/components/guide/SupportPages.module.css';
+import pageStyles from '@/components/guide/IllustratedGuide.module.css';
 import { Calculator } from 'lucide-react';
-import { GuideHero, ReportBanner, DonateBanner, ShareButtons } from '@/components/guide';
+import { ReportBanner, DonateBanner, ShareButtons } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import SeveranceCalculator from './SeveranceCalculator';
 
@@ -12,19 +15,18 @@ export default function SeverancePage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: 'Тэтгэмж тооцоолуур', url: `${BASE_URL}/severance` },
       ]} />
-    <main className="min-h-content bg-background">
-      <GuideHero
+    <main className={pageStyles.page}>
+      <SupportHeader
         title="Тэтгэмж тооцоолуур"
         subtitle="Ажлаас гарах үеийн тэтгэмж тооцоолох"
         icon={Calculator}
-        breadcrumbLabel="Тэтгэмж"
-      />
+      image="/images/guides/severance-mazaalai-l.png" />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-10">
+      <div className={[styles.content, "space-y-10"].join(" ")}>
         <SeveranceCalculator />
 
         {/* Info section */}
-        <div className="max-w-lg mx-auto space-y-4">
+        <div className={[styles.note, " space-y-4"].join(" ")}>
           <div className="p-4 rounded-lg border border-gold/30 bg-gold/5 text-xs text-muted-foreground space-y-2">
             <p className="font-medium text-foreground text-sm">Тэтгэмжийн талаар мэдэх зүйлс</p>
             <ul className="space-y-1.5 list-disc list-inside">

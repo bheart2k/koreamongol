@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Briefcase, GraduationCap, BookOpen } from 'lucide-react';
+import styles from './visa.module.css';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { CheckList, StepList, WarningBox } from '@/components/guide';
 import { visaTypes } from '@/data/guides/visa';
@@ -8,12 +10,30 @@ import { visaTypes } from '@/data/guides/visa';
 export default function VisaTabs() {
   const [activeTab, setActiveTab] = useState('e9');
 
+  useEffect(() => {
+    const selectFromHash = () => {
+      const key = window.location.hash.replace('#visa-', '');
+      if (Object.hasOwn(visaTypes, key)) setActiveTab(key);
+    };
+    selectFromHash();
+    window.addEventListener('hashchange', selectFromHash);
+    return () => window.removeEventListener('hashchange', selectFromHash);
+  }, []);
+
+  const icons = { e9: Briefcase, d2: GraduationCap, d4: BookOpen };
+
   return (
-    <Tabs value={activeTab} onValueChange={setActiveTab}>
-      <TabsList className="w-full justify-start">
-        <TabsTrigger value="e9">E-9</TabsTrigger>
-        <TabsTrigger value="d2">D-2</TabsTrigger>
-        <TabsTrigger value="d4">D-4</TabsTrigger>
+    <Tabs value={activeTab} onValueChange={(key) => {
+      setActiveTab(key);
+      window.history.replaceState(window.history.state, '', `#visa-${key}`);
+    }}>
+      <TabsList className={styles.tabs}>
+        {Object.entries(visaTypes).map(([key, visa]) => {
+          const Icon = icons[key];
+          return <TabsTrigger key={key} id={`visa-${key}`} value={key} className={styles.tab}>
+            <Icon aria-hidden="true" /><span>{visa.label}</span>
+          </TabsTrigger>;
+        })}
       </TabsList>
 
       {Object.entries(visaTypes).map(([key, visa]) => (
@@ -25,7 +45,7 @@ export default function VisaTabs() {
             <p className="text-sm text-muted-foreground">{visa.description}</p>
           </div>
 
-          <div id={`visa-${key}`}>
+          <div>
             <h4 className="text-base font-semibold font-heading text-foreground mb-4">
               Шаардлагатай бичиг баримт
             </h4>
@@ -39,7 +59,7 @@ export default function VisaTabs() {
             <StepList steps={visa.steps} />
           </div>
 
-          <WarningBox>
+          <WarningBox className={styles.warning}>
             <ul className="space-y-1">
               {visa.warnings.map((w, i) => (
                 <li key={i}>• {w}</li>

@@ -1,6 +1,8 @@
+import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
+import styles from '@/components/guide/IllustratedGuide.module.css';
 import { Home, ExternalLink } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, CheckList, StepList,
+  GuideNav, CheckList, StepList,
   InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
@@ -25,19 +27,11 @@ export default function HousingPage() {
         description="Байр хайхаас эхлээд гэрээ байгуулах хүртэлх алхмууд"
         steps={contractSteps}
       />
-    <main className="min-h-content bg-background">
+    <main className={styles.page}>
       <GuideViewTracker guideId="housing" />
-      <GuideHero
-        title={housingMeta.title}
-        subtitle={housingMeta.subtitle}
-        lastUpdated={housingMeta.lastUpdated}
-        icon={Home}
-        breadcrumbLabel="Байр"
-      >
-        <GuideTOC sections={housingSections} />
-      </GuideHero>
+      <IllustratedGuideHeader meta={housingMeta} sections={housingSections} quickIds={["housing-types","housing-cost-system","housing-contract"]} image="/images/guides/housing-mazaalai-l.png" icon={Home} breadcrumbLabel="Байр" />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+      <IllustratedGuideBody sections={housingSections}>
         {/* Housing Types */}
         <section id="housing-types">
           <h2 className="text-title text-navy dark:text-sky mb-6">Байрны төрлүүд</h2>
@@ -98,7 +92,7 @@ export default function HousingPage() {
             </div>
           </div>
 
-          <WarningBox className="mt-4" title="Өвөл анхааруулга">
+          <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Өвөл анхааруулга">
             <p>{costSystem.winterWarning}</p>
           </WarningBox>
         </section>
@@ -135,7 +129,7 @@ export default function HousingPage() {
           <div className="mt-6">
             <CheckList items={housingChecklist} storageKey="housing-contract" />
           </div>
-          <WarningBox className="mt-4" title="Анхааруулга">
+          <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Анхааруулга">
             <ul className="space-y-1">
               {housingContractWarnings.map((w, i) => (
                 <li key={i}>&#8226; {w}</li>
@@ -158,7 +152,7 @@ export default function HousingPage() {
               </div>
             ))}
           </div>
-          <WarningBox>
+          <WarningBox className={styles.warning}>
             <p>{moveInLife.garbageWarning}</p>
           </WarningBox>
 
@@ -171,7 +165,7 @@ export default function HousingPage() {
             </ul>
           </div>
 
-          <TipBox className="mt-6" title="Гарах үед">
+          <TipBox className={[styles.tip, "mt-6"].join(" ")} title="Гарах үед">
             <ul className="space-y-1">
               {moveInLife.movingOutTips.map((t, i) => (
                 <li key={i}>&#8226; {t}</li>
@@ -183,14 +177,14 @@ export default function HousingPage() {
         {/* Scam Warnings */}
         <section id="housing-warnings">
           <h2 className="text-title text-navy dark:text-sky mb-6">Залилан сэрэмжлүүлэг</h2>
-          <WarningBox title="Залилангаас сэргийлэх">
+          <WarningBox title="Залилангаас сэргийлэх" className={styles.warning}>
             <ul className="space-y-1">
               {scamWarnings.map((w, i) => (
                 <li key={i}>&#8226; {w}</li>
               ))}
             </ul>
           </WarningBox>
-          <TipBox className="mt-4" title="Хэмнэх зөвлөгөө">
+          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Хэмнэх зөвлөгөө">
             <ul className="space-y-1">
               {savingTips.map((t, i) => (
                 <li key={i}>&#8226; {t}</li>
@@ -231,7 +225,7 @@ export default function HousingPage() {
         <DonateBanner />
         <ShareButtons />
         <GuideNav currentGuideId="housing" />
-      </div>
+      </IllustratedGuideBody>
     </main>
     </>
   );

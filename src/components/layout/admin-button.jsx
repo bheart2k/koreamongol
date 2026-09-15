@@ -1,5 +1,7 @@
 'use client';
 
+import styles from './header.module.css';
+
 import { useSession } from 'next-auth/react';
 import { useEffect } from 'react';
 import Link from 'next/link';
@@ -26,9 +28,9 @@ export function AdminButton() {
   return (
     <Link
       href="/admin"
+      aria-label="Админ"
       className={cn(
-        "flex items-center justify-center w-9 h-9 rounded-lg transition-colors",
-        "text-hanji-300 hover:text-hanji-100 hover:bg-ink-800",
+        styles.iconButton,
         !shouldShow && "hidden"
       )}
     >

@@ -1,6 +1,8 @@
+import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
+import styles from '@/components/guide/IllustratedGuide.module.css';
 import { Banknote, ThumbsUp, ThumbsDown, ExternalLink, Building2, CreditCard, Landmark, ShieldCheck, AlertTriangle, CircleDollarSign } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, InfoTable,
+  GuideNav, InfoTable,
   WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
@@ -29,19 +31,18 @@ export default function MoneyPage() {
           { title: 'Мөнгө шилжүүлэх', description: 'Дүн оруулж, ханш шалгаад шилжүүлэг хийх' },
         ]}
       />
-    <main className="min-h-content bg-background">
+    <main className={styles.page}>
       <GuideViewTracker guideId="money" />
-      <GuideHero
-        title={moneyMeta.title}
-        subtitle={moneyMeta.subtitle}
-        lastUpdated={moneyMeta.lastUpdated}
+      <IllustratedGuideHeader
+        meta={moneyMeta}
+        sections={moneySections}
+        quickIds={["money-comparison","money-finance","money-warnings"]}
+        image="/images/guides/money-mazaalai-l.png"
         icon={Banknote}
-        breadcrumbLabel="Мөнгө ба санхүү"
-      >
-        <GuideTOC sections={moneySections} />
-      </GuideHero>
+        breadcrumbLabel={moneyMeta.title}
+      />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+      <IllustratedGuideBody sections={moneySections}>
         {/* Comparison Table */}
         <section id="money-comparison">
           <h2 className="text-title text-navy dark:text-sky mb-6">Шилжүүлгийн арга харьцуулалт</h2>
@@ -185,13 +186,13 @@ export default function MoneyPage() {
                   <li key={i} className="text-sm text-muted-foreground">&#8226; {item}</li>
                 ))}
               </ul>
-              <TipBox title="Үнэгүй ATM">
+              <TipBox title="Үнэгүй ATM" className={styles.tip}>
                 <p className="text-sm">{financeBasics.atm.freeAtmTip}</p>
               </TipBox>
             </div>
 
             {/* Tugrik Warning */}
-            <WarningBox title={financeBasics.tugrikWarning.title}>
+            <WarningBox title={financeBasics.tugrikWarning.title} className={styles.warning}>
               <ul className="space-y-1">
                 {financeBasics.tugrikWarning.items.map((item, i) => (
                   <li key={i}>&#8226; {item}</li>
@@ -237,7 +238,7 @@ export default function MoneyPage() {
                 </li>
               ))}
             </ol>
-            <WarningBox title="Анхаар!">
+            <WarningBox title="Анхаар!" className={styles.warning}>
               <p>{insuranceInfo.refund.warning}</p>
             </WarningBox>
           </div>
@@ -247,7 +248,7 @@ export default function MoneyPage() {
         <section id="money-warnings">
           <h2 className="text-title text-navy dark:text-sky mb-6">Анхааруулга</h2>
           {financeWarnings.map((warning) => (
-            <WarningBox key={warning.title} title={warning.title}>
+            <WarningBox key={warning.title} title={warning.title} className={styles.warning}>
               <ul className="space-y-1">
                 {warning.items.map((item, i) => (
                   <li key={i}>&#8226; {item}</li>
@@ -260,7 +261,7 @@ export default function MoneyPage() {
         {/* Tips */}
         <section id="money-tips">
           <h2 className="text-title text-navy dark:text-sky mb-6">Зөвлөгөө</h2>
-          <TipBox title="Ханшийн зөвлөгөө">
+          <TipBox title="Ханшийн зөвлөгөө" className={styles.tip}>
             <ul className="space-y-1">
               {exchangeTips.map((tip, i) => (
                 <li key={i}>&#8226; {tip}</li>
@@ -285,7 +286,7 @@ export default function MoneyPage() {
         <DonateBanner />
         <ShareButtons />
         <GuideNav currentGuideId="money" />
-      </div>
+      </IllustratedGuideBody>
     </main>
     </>
   );

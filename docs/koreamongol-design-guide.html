@@ -212,6 +212,34 @@
 
 <div class="doc-body">
 
+<section class="section" id="design-direction-20260915">
+  <h2 class="section-title">확정 디자인 방향 · 2026-09-15</h2>
+  <p class="section-desc">사용자와 검토 후 확정한 기준입니다. 아래 초기 가이드와 충돌하는 마스코트·메인 색감·삽화 관련 사항은 이 결정을 우선합니다.</p>
+  <div class="concept-card">
+    <h3>남색·하늘색의 정체성 + L의 손그림 온기</h3>
+    <p>서정적인 그림은 유지하고, 주요 정보 영역에서 기존 파란색 계열의 존재감을 살립니다.</p>
+  </div>
+  <table class="var-table">
+    <thead><tr><th>대상</th><th>확정 규칙</th></tr></thead>
+    <tbody>
+      <tr><td>캐릭터</td><td>L 색연필형 마자알라이를 기준으로 합니다. 자연스러운 곰의 얼굴과 체형, 손그림 질감을 유지합니다. 참고 원본: public/images/mascot-preview/mazaalai-l.png.</td></tr>
+      <tr><td>페이지별 캐릭터 활용</td><td>L은 고정 이미지가 아닌 캐릭터입니다. 페이지 상황에 맞는 새 포즈·각도·구도를 제작하며 동일 전신 이미지를 반복 배치하지 않습니다. 개별 캐릭터는 실제 투명 PNG로 저장하고 페이지에 연결합니다. 전체 작업 기록: <a href="design-work-2026-09-15.md">2026-09-15 디자인 작업</a>.</td></tr>
+      <tr><td>메인 삽화</td><td>L을 바탕으로 만든 한국 동네 풍경과 아이보리 배경을 유지합니다. 실제 적용 자산: public/images/home/mazaalai-neighborhood.png. 이미지 네 가장자리는 부드럽게 페이드 처리하여 사각 경계를 없앱니다.</td></tr>
+      <tr><td>색상 역할</td><td>남색 #1B2D4F는 제목과 정보의 중심색, 하늘색 #E8F0FE는 상황별 버튼·안내 영역의 배경입니다. 아이보리 #FAF6F0는 그림 주변과 페이지 바탕에 사용합니다. 테라코타는 주요 행동 버튼 등에 제한적으로 사용합니다.</td></tr>
+      <tr><td>색상 균형</td><td>베이지·갈색만으로 화면 전체를 채우지 않습니다. 상황별 바로가기, 안내 아이콘, 환율 카드, 소개 영역에서 파란색 계열을 반복합니다. 그림 자체를 파랗게 착색하거나 따뜻한 질감을 제거하지 않습니다.</td></tr>
+      <tr><td>한국적인 표현</td><td>주 타깃은 몽골 사용자입니다. 한국의 일상 풍경을 배경에 담고, 몽골어 정보가 중심이 되게 합니다.</td></tr>
+      <tr><td>구현</td><td>메인 전용 색상은 src/app/HomeContent.module.css의 CSS 변수로 관리합니다. 다크 모드에서도 글자 대비와 이미지 가장자리 처리를 유지합니다.</td></tr>
+    </tbody>
+  </table>
+  <h3 style="margin-top:24px; color:var(--navy);">조사 근거와 해석 범위</h3>
+  <ul style="padding-left:20px; margin-top:12px;">
+    <li><a href="https://www.etsy.com/shop/ZoloartsMN">ZoloArts</a>의 가족·추억·수채화 작품과 <a href="https://www.yaay.mn/">몽골 현지 Yaay 협업</a>, <a href="https://ergelt.mn/news/123/single/35561">Ergelt의 생활 기사 삽화</a>에서 감성적인 그림의 실제 활용을 확인했습니다. 서정적인 표현을 유지할 참고 근거이며, 다수의 선호를 입증하는 조사는 아닙니다.</li>
+    <li><a href="https://mrt.gov.mn/up/news/MongoldZochloh/Reels/_WelcomeToMongolia_BrandGuide_compressed%20%281%29.pdf">2022 Welcome to Mongolia 브랜드 가이드</a>의 파랑·흰색 중심 팔레트를 참고했습니다. 국가 관광 브랜드의 선택이며 국민 선호도 조사로 해석하지 않습니다.</li>
+    <li><a href="https://scholarworks.gnu.ac.kr/item/e70e7ebe-1560-4bd1-b807-ed13d7da9694">2014년 색채·패션이미지 연구</a>는 2012년 울란바토르 여대생 267명을 조사했습니다. <a href="https://kjournal.co.kr/_common/do.php?a=full&amp;aidx=32339&amp;b=12&amp;bidx=2867">후속 논문의 인용</a>에서 빨강보다 파랑을 선호했다는 결과를 확인했습니다. 현재 전체 몽골 사용자나 웹사이트의 베이지 대 파랑 선호로 확대하지 않습니다.</li>
+  </ul>
+  <p style="margin-top:20px;"><strong>향후 판단:</strong> 새로운 사용자 피드백이나 구체적인 근거가 없는 한, 같은 문화적 수용성 우려만으로 L과 이 색상 방향을 재검토하거나 되돌리지 않습니다. 사용자 질문은 실제로 말한 색감·분위기의 범위에서 해석하며, 전반적인 경향에 관한 질문을 절대적인 주장으로 바꾸거나 언급하지 않은 의도를 덧붙이지 않습니다. 이 문서의 기록은 요청하지 않은 다른 화면의 변경 승인이 아닙니다.</p>
+</section>
+
 <!-- 1. CONCEPT -->
 <div class="section">
   <div class="section-title"><span class="emoji">🎯</span> 컨셉</div>

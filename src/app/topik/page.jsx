@@ -1,6 +1,8 @@
+import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
+import styles from '@/components/guide/IllustratedGuide.module.css';
 import { GraduationCap } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, StepList,
+  GuideNav, StepList,
   InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
@@ -14,6 +16,8 @@ import {
   studyResources, studyTips,
   topikContacts, topikLinks,
 } from '@/data/guides/topik';
+
+const pageSections = topikSections.map((section) => ({ ...section, title: section.label }));
 
 const BASE_URL = 'https://koreamongol.com';
 
@@ -29,19 +33,18 @@ export default function TopikPage() {
         description="EPS-TOPIK шалгалтанд бүртгүүлэх алхмууд"
         steps={epsRegistrationSteps}
       />
-    <main className="min-h-content bg-background">
+    <main className={styles.page}>
       <GuideViewTracker guideId="topik" />
-      <GuideHero
-        title={topikMeta.title}
-        subtitle={topikMeta.subtitle}
-        lastUpdated={topikMeta.lastUpdated}
+      <IllustratedGuideHeader
+        meta={topikMeta}
+        sections={pageSections}
+        quickIds={["topik-which-test","topik-register","topik-study"]}
+        image="/images/guides/topik-mazaalai-l.png"
         icon={GraduationCap}
-        breadcrumbLabel="TOPIK"
-      >
-        <GuideTOC sections={topikSections} />
-      </GuideHero>
+        breadcrumbLabel={topikMeta.title}
+      />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+      <IllustratedGuideBody sections={pageSections}>
         {/* Which Test */}
         <section id="topik-which-test">
           <h2 className="text-title text-navy dark:text-sky mb-6">Аль шалгалт надад хэрэгтэй вэ?</h2>
@@ -49,7 +52,7 @@ export default function TopikPage() {
             headers={whichTestTable.headers}
             rows={whichTestTable.rows}
           />
-          <TipBox className="mt-4" title="Чухал ялгаа">
+          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Чухал ялгаа">
             <p>{whichTestTip}</p>
           </TipBox>
         </section>
@@ -80,7 +83,7 @@ export default function TopikPage() {
             </ul>
           </div>
 
-          <WarningBox className="mt-4" title="Анхааруулга">
+          <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Анхааруулга">
             <ul className="space-y-1">
               {epsTopikWarnings.map((w, i) => (
                 <li key={i}>&#8226; {w}</li>
@@ -136,7 +139,7 @@ export default function TopikPage() {
           <h3 className="text-base font-semibold font-heading mt-8 mb-3">TOPIK бүртгэл</h3>
           <StepList steps={topikRegistrationSteps} />
 
-          <TipBox className="mt-4" title="Монголд бүртгүүлэх">
+          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Монголд бүртгүүлэх">
             <p>{registrationNote}</p>
           </TipBox>
         </section>
@@ -158,7 +161,7 @@ export default function TopikPage() {
             ))}
           </div>
 
-          <WarningBox className="mt-4" title="Анхааруулга">
+          <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Анхааруулга">
             <ul className="space-y-1">
               {afterPassWarnings.map((w, i) => (
                 <li key={i}>&#8226; {w}</li>
@@ -175,7 +178,7 @@ export default function TopikPage() {
               <LinkCard key={resource.href} {...resource} />
             ))}
           </div>
-          <TipBox title="Бэлтгэлийн зөвлөгөө">
+          <TipBox title="Бэлтгэлийн зөвлөгөө" className={styles.tip}>
             <ul className="space-y-1">
               {studyTips.map((tip, i) => (
                 <li key={i}>&#8226; {tip}</li>
@@ -214,7 +217,7 @@ export default function TopikPage() {
         <DonateBanner />
         <ShareButtons />
         <GuideNav currentGuideId="topik" />
-      </div>
+      </IllustratedGuideBody>
     </main>
     </>
   );

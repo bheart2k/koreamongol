@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'motion/react';
+import { motion, MotionConfig } from 'motion/react';
+import styles from './HomeContent.module.css';
 import { ArrowRight, FileText, MapPin, Heart, Banknote, BookOpen, Users, Coffee, Briefcase, Home, GraduationCap, Calculator, Train, Phone, Smartphone, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ExchangeMiniCard } from '@/components/home/ExchangeMiniCard';
@@ -131,255 +132,131 @@ const situations = [
   { emoji: '⚡', label: 'Түргэн хариулт', href: '/tips' },
 ];
 
+const featuredTones = { visa: 'peach', arrival: 'sky', hospital: 'sage' };
+
 export default function HomeContent({ recentUpdates = [] }) {
   return (
-    <main className="min-h-content bg-background">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-sky to-background">
-        <div
-          aria-hidden="true"
-          className="absolute -left-24 top-16 h-64 w-64 rounded-full bg-gold/10 blur-3xl"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-terracotta/10 blur-3xl"
-        />
-
-        <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-8 px-6 py-14 md:py-20 lg:grid-cols-[minmax(0,1fr)_minmax(360px,0.82fr)] lg:gap-10 lg:py-24">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-center lg:text-left"
-          >
-            <p className="mb-4 text-4xl">🇰🇷 🇲🇳</p>
-            <h1 className="text-display text-navy dark:text-sky mb-4">
-              Солонгост тавтай морил!
-            </h1>
-            <p className="mx-auto mb-8 max-w-2xl text-body-lg text-muted-foreground lg:mx-0">
-              Виз, банк, эмнэлэг, цалин, мөнгөн шилжүүлэг — Солонгост амьдрахад
-              хэрэгтэй бүх мэдээлэл монгол хэлээр, үнэ төлбөргүй.
-            </p>
-
-            <p className="text-sm font-medium text-navy dark:text-sky mb-3">
-              Яг одоо танд юу хэрэгтэй вэ?
-            </p>
-            <div className="mb-8 flex flex-wrap justify-center gap-2 lg:justify-start">
-              {situations.map((s) => (
-                <Link
-                  key={s.href + s.label}
-                  href={s.href}
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-border bg-card text-sm text-foreground hover:border-gold/50 hover:shadow-sm transition-all"
-                >
-                  <span>{s.emoji}</span>
-                  {s.label}
-                </Link>
-              ))}
+    <MotionConfig reducedMotion="user">
+      <main className={`${styles.home} min-h-content`}>
+        <section className={styles.hero} aria-labelledby="home-title">
+          <div className={styles.heroGrid}>
+            <div className={styles.intro}>
+              <p className={styles.eyebrow}><span aria-hidden="true" /> KoreaMongol</p>
+              <h1 id="home-title" className={styles.title}>Солонгост<br />тавтай морил!</h1>
+              <p className={styles.lead}>
+                Виз, банк, эмнэлэг, цалин, мөнгөн шилжүүлэг — Солонгост амьдрахад
+                хэрэгтэй бүх мэдээлэл монгол хэлээр, үнэ төлбөргүй.
+              </p>
+              <Button asChild variant="terracotta" size="lg" className={styles.primaryButton}>
+                <Link href="#guides">Бүх гарын авлага үзэх<ArrowRight aria-hidden="true" /></Link>
+              </Button>
             </div>
 
-            <Button asChild variant="terracotta" size="lg">
-              <Link href="#guides">
-                Бүх гарын авлага үзэх
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Link>
-            </Button>
-          </motion.div>
+            <motion.div className={styles.art} initial={false} animate={{ opacity: 1 }}>
+              <Image
+                src="/images/home/mazaalai-neighborhood.png"
+                alt="Солонгосын гудамжинд гараа даллан мэндчилж буй Мазаалай"
+                width={1448} height={1086} priority
+                sizes="(min-width: 1280px) 650px, (min-width: 1024px) 55vw, (min-width: 640px) 520px, 92vw"
+                className={styles.heroImage}
+              />
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="relative mx-auto w-full max-w-[420px] lg:max-w-[460px]"
-          >
-            <div
-              aria-hidden="true"
-              className="absolute inset-x-[12%] bottom-[5%] h-[18%] rounded-full bg-navy/10 blur-2xl dark:bg-black/30"
-            />
-            <Image
-              src="/images/mascot-preview/mazaalai-j.png"
-              alt="Солонгосын аяллын газрын зураг барьсан Мазаалай баавгай"
-              width={1024}
-              height={1536}
-              priority
-              sizes="(min-width: 1024px) 460px, (min-width: 640px) 420px, 88vw"
-              className="relative h-auto w-full drop-shadow-[0_24px_32px_rgba(27,45,79,0.16)]"
-            />
-          </motion.div>
-        </div>
-      </section>
+            <div className={styles.situations}>
+              <h2>Яг одоо танд юу хэрэгтэй вэ?</h2>
+              <div className={styles.situationGrid}>
+                {situations.map((s) => (
+                  <Link key={s.href + s.label} href={s.href} className={styles.situation}>
+                    <span className={styles.situationIcon} aria-hidden="true">{s.emoji}</span>
+                    <span>{s.label}</span>
+                    <ArrowRight className={styles.situationArrow} aria-hidden="true" />
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
 
-      {/* Emergency Banner */}
-      <section className="bg-terracotta text-white py-4 px-6">
-        <div className="max-w-4xl mx-auto flex justify-center gap-8 flex-wrap text-sm font-semibold font-heading">
-          <span>🚑 Яаралтай: 119</span>
-          <span>🚔 Цагдаа: 112</span>
-          <span>📞 Гадаадын иргэн: 1345</span>
-        </div>
-      </section>
+        <section className={styles.emergency} aria-label="Яаралтай утасны дугаарууд">
+          <div className={styles.emergencyInner}>
+            <span><span aria-hidden="true">🚑</span> Яаралтай: <strong>119</strong></span>
+            <span><span aria-hidden="true">🚔</span> Цагдаа: <strong>112</strong></span>
+            <span><span aria-hidden="true">📞</span> Гадаадын иргэн: <strong>1345</strong></span>
+          </div>
+        </section>
 
-      {/* Recent Updates + Exchange */}
-      {recentUpdates.length > 0 && (
-        <section className="py-12 px-6">
-          <div className="max-w-4xl mx-auto grid md:grid-cols-[1fr_260px] gap-5 items-stretch">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="rounded-2xl border border-border bg-card p-6"
-            >
-              <h2 className="flex items-center gap-2 text-base font-semibold font-heading text-navy dark:text-sky mb-4">
-                <RefreshCw className="w-4 h-4 text-gold" />
-                Сүүлийн шинэчлэл
-              </h2>
-              <ul className="space-y-2.5">
+        <section id="guides" className={styles.guides} aria-labelledby="guides-title">
+          <div className={styles.sectionHeading}>
+            <div>
+              <p className={styles.sectionMark} aria-hidden="true"><BookOpen /></p>
+              <h2 id="guides-title">Гарын авлага</h2>
+            </div>
+            <p>Солонгост амьдрахад хэрэгтэй бүх мэдээлэл</p>
+          </div>
+          <div className={styles.guideGrid}>
+            {guides.map((guide) => {
+              const Icon = guide.icon;
+              const tone = featuredTones[guide.id];
+              return (
+                <Link href={guide.href} key={guide.id}
+                  className={`${styles.guideCard} ${tone ? styles.featured : ''}`}
+                  data-tone={tone}>
+                  <div className={styles.guideTop}>
+                    {tone ? (
+                      <Image src={`/images/home/${guide.id}.png`} alt="" width={1254} height={1254}
+                        sizes="(max-width: 639px) 62px, 110px" className={styles.guideArt} />
+                    ) : (
+                      <span className={styles.guideIcon}><Icon aria-hidden="true" strokeWidth={1.5} /></span>
+                    )}
+                    <ArrowRight className={styles.cardArrow} aria-hidden="true" />
+                  </div>
+                  <h3>{guide.title}</h3>
+                  <p>{guide.desc}</p>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+
+        {recentUpdates.length > 0 && (
+          <section className={styles.updates}>
+            <div className={styles.updateCard}>
+              <h2><RefreshCw aria-hidden="true" />Сүүлийн шинэчлэл</h2>
+              <ul>
                 {recentUpdates.map((item) => (
                   <li key={item.href}>
-                    <Link
-                      href={item.href}
-                      className="group flex items-baseline justify-between gap-3"
-                    >
-                      <span className="text-sm text-foreground group-hover:text-gold-dark transition-colors truncate">
-                        {item.title}
-                      </span>
-                      <span className="text-xs text-muted-foreground shrink-0">
-                        {item.lastUpdated}
-                      </span>
+                    <Link href={item.href}>
+                      <span>{item.title}</span>
+                      <time dateTime={item.lastUpdated}>{item.lastUpdated}</time>
                     </Link>
                   </li>
                 ))}
               </ul>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <ExchangeMiniCard />
-            </motion.div>
+            </div>
+            <div className={styles.exchange}><ExchangeMiniCard /></div>
+          </section>
+        )}
+
+        <section className={styles.about}>
+          <div className={styles.aboutInner}>
+            <div className={styles.aboutTitle}>
+              <span className={styles.aboutIcon} aria-hidden="true"><Heart strokeWidth={1.3} /></span>
+              <h2>KoreaMongol</h2>
+            </div>
+            <div>
+              <p>Солонгост амьдарч буй Монгол иргэдэд зориулсан платформ. Визний мэдээлэл, банк нээх, эмнэлэг хандах зэрэг бодит амьдралын гарын авлагыг нэг дороос олоорой.</p>
+              <p>Нутаг — таны Солонгос амьдралын найдвартай хөтөч.</p>
+              <Link href="/about" className={styles.textLink}>Дэлгэрэнгүй<ArrowRight aria-hidden="true" /></Link>
+            </div>
           </div>
         </section>
-      )}
 
-      {/* Guide Cards */}
-      <section id="guides" className="py-16 md:py-24 px-6 scroll-mt-16">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-headline text-navy dark:text-sky mb-4">
-              Гарын авлага
-            </h2>
-            <p className="text-body text-muted-foreground">
-              Солонгост амьдрахад хэрэгтэй бүх мэдээлэл
-            </p>
-          </motion.div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {guides.map((guide, index) => {
-              const Icon = guide.icon;
-              return (
-                <motion.div
-                  key={guide.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.08 }}
-                >
-                  {guide.available ? (
-                    <Link
-                      href={guide.href}
-                      className="group block h-full bg-card border border-border rounded-2xl p-6 hover:shadow-lg hover:border-gold/40 transition-all duration-300"
-                    >
-                      <div className="w-11 h-11 rounded-lg bg-sky dark:bg-navy-light flex items-center justify-center mb-4 group-hover:bg-gold/10 transition-colors">
-                        <Icon className="w-5 h-5 text-navy dark:text-gold" />
-                      </div>
-                      <h3 className="text-title text-navy dark:text-sky mb-1 text-base font-semibold">
-                        {guide.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{guide.desc}</p>
-                    </Link>
-                  ) : (
-                    <div className="h-full bg-card border border-border rounded-2xl p-6 opacity-60">
-                      <div className="w-11 h-11 rounded-lg bg-sky dark:bg-navy-light flex items-center justify-center mb-4">
-                        <Icon className="w-5 h-5 text-navy dark:text-gold" />
-                      </div>
-                      <h3 className="text-base font-semibold text-navy dark:text-sky mb-1">
-                        {guide.title}
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{guide.desc}</p>
-                      <span className="inline-block mt-3 text-xs text-muted-foreground">
-                        Удахгүй нээгдэнэ
-                      </span>
-                    </div>
-                  )}
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section className="py-16 md:py-24 px-6 bg-warm dark:bg-navy/30">
-        <div className="max-w-3xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h2 className="text-headline text-navy dark:text-sky mb-6">
-              KoreaMongol
-            </h2>
-            <p className="text-body text-muted-foreground mb-4">
-              Солонгост амьдарч буй Монгол иргэдэд зориулсан платформ. Визний мэдээлэл, банк нээх, эмнэлэг хандах зэрэг бодит амьдралын гарын авлагыг нэг дороос олоорой.
-            </p>
-            <p className="text-body text-muted-foreground">
-              Нутаг — таны Солонгос амьдралын найдвартай хөтөч.
-            </p>
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-2 text-terracotta font-medium mt-6 hover:gap-3 transition-all"
-            >
-              Дэлгэрэнгүй
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Donate Section */}
-      <section className="py-10 px-6">
-        <div className="max-w-3xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="rounded-xl border border-gold/40 bg-gold/5 px-6 py-4 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-              <Coffee className="w-6 h-6 text-gold shrink-0" />
-              <p className="text-sm text-muted-foreground text-center sm:text-left flex-1">
-                <span className="font-medium text-foreground">Нэг аяга кофегоор дэмжээрэй.</span>{' '}
-                Сайтын тогтвортой үйл ажиллагаанд тусална.
-              </p>
-              <Link
-                href="/donate"
-                className="shrink-0 inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-gold text-navy font-semibold hover:bg-gold/90 transition-colors text-sm"
-              >
-                <Heart className="w-3.5 h-3.5" />
-                Дэмжих
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-    </main>
+        <section className={styles.donate}>
+          <Coffee aria-hidden="true" />
+          <p><strong>Нэг аяга кофегоор дэмжээрэй.</strong>{' '}Сайтын тогтвортой үйл ажиллагаанд тусална.</p>
+          <Link href="/donate" className={styles.donateLink}><Heart aria-hidden="true" />Дэмжих</Link>
+        </section>
+      </main>
+    </MotionConfig>
   );
 }

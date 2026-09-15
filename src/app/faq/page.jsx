@@ -1,3 +1,6 @@
+import { SupportHeader } from '@/components/guide/SupportHeader';
+import styles from '@/components/guide/SupportPages.module.css';
+import pageStyles from '@/components/guide/IllustratedGuide.module.css';
 import { HelpCircle } from 'lucide-react';
 import { faqData, faqCategories } from '@/data/faq';
 import { FAQAccordion } from '@/components/faq/FAQAccordion';
@@ -41,30 +44,22 @@ export default function FAQPage() {
         { name: 'Түгээмэл асуултууд', url: `${BASE_URL}/faq` },
       ]} />
       <FAQPageJsonLd faqs={faqData} />
-      <main className="min-h-content bg-background">
+      <main className={pageStyles.page}>
         {/* Hero Section */}
-        <section className="py-12 md:py-16 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="w-16 h-16 rounded-2xl bg-accent/10 flex items-center justify-center mx-auto mb-6">
-              <HelpCircle className="w-8 h-8 text-accent" />
-            </div>
-            <h1 className="text-display mb-4">Түгээмэл асуултууд</h1>
-            <p className="text-body text-muted-foreground max-w-xl mx-auto">
-              Солонгост амьдрахтай холбоотой түгээмэл асуулт, хариултыг
-              эндээс олно уу.
-            </p>
-          </div>
-        </section>
+        <SupportHeader title="Түгээмэл асуултууд" subtitle="Солонгост амьдрахтай холбоотой түгээмэл асуулт, хариултыг эндээс олно уу." icon={HelpCircle} image="/images/guides/faq-mazaalai-l.png" />
 
         {/* FAQ Content */}
-        <section className="px-6 pb-20">
+        <section className={styles.content}>
+          <nav aria-label="Агуулга" className={styles.categories}>
+            {groupedFaqs.map((group) => <a key={group.category} href={`#faq-${group.category}`}>{group.label}</a>)}
+          </nav>
           <div className="max-w-4xl mx-auto space-y-12">
             {groupedFaqs.map((group) => (
-              <div key={group.category}>
+              <div key={group.category} id={`faq-${group.category}`} className={styles.group}>
                 <h2 className="text-title font-semibold mb-4 text-accent">
                   {group.label}
                 </h2>
-                <div className="bg-card border border-border rounded-xl overflow-hidden">
+                <div className="overflow-hidden">
                   <FAQAccordion items={group.items} />
                 </div>
               </div>

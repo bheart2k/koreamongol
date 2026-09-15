@@ -1,5 +1,7 @@
 'use client';
 
+import styles from '@/components/guide/SupportPages.module.css';
+
 import { useState, useCallback } from 'react';
 import { Calculator, Calendar, Wallet, Gift, Coins, RotateCcw, AlertTriangle, ExternalLink } from 'lucide-react';
 import { analytics } from '@/lib/analytics-events';
@@ -112,17 +114,18 @@ export default function SeveranceCalculator() {
   };
 
   return (
-    <div className="max-w-lg mx-auto space-y-6">
+    <div className={[styles.calculator, "space-y-6"].join(" ")}>
       {/* Input Form */}
-      <div className="p-6 rounded-2xl border border-border bg-card shadow-sm space-y-5">
+      <div className={[styles.form, "space-y-5"].join(" ")}>
         {/* Dates */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className={styles.dates}>
           <div>
-            <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
+            <label htmlFor="severance-start" className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
               <Calendar className="w-3.5 h-3.5" />
               Ажилд орсон өдөр
             </label>
-            <input
+            <input id="severance-start"
+
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
@@ -130,11 +133,12 @@ export default function SeveranceCalculator() {
             />
           </div>
           <div>
-            <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
+            <label htmlFor="severance-end" className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
               <Calendar className="w-3.5 h-3.5" />
               Гарсан (гарах) өдөр
             </label>
-            <input
+            <input id="severance-end"
+
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
@@ -145,12 +149,13 @@ export default function SeveranceCalculator() {
 
         {/* Monthly Salary */}
         <div>
-          <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
+          <label htmlFor="severance-salary" className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
             <Wallet className="w-3.5 h-3.5" />
             Сарын үндсэн цалин
           </label>
           <div className="relative">
-            <input
+            <input id="severance-salary"
+
               type="text"
               inputMode="numeric"
               value={salary}
@@ -169,7 +174,7 @@ export default function SeveranceCalculator() {
         <button
           type="button"
           onClick={() => setShowAdvanced(!showAdvanced)}
-          className="text-xs text-gold hover:text-gold-dark transition-colors cursor-pointer"
+          className={styles.advanced} aria-expanded={showAdvanced}
         >
           {showAdvanced ? '▲ Нэмэлт сонголтыг хаах' : '▼ Нэмэлт: урамшуулал, тогтмол тэтгэмж'}
         </button>
@@ -177,12 +182,13 @@ export default function SeveranceCalculator() {
         {showAdvanced && (
           <div className="space-y-4 pt-1">
             <div>
-              <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
+              <label htmlFor="severance-bonus" className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
                 <Gift className="w-3.5 h-3.5" />
                 Жилийн урамшуулал (шинэ жил, чусок г.м.)
               </label>
               <div className="relative">
-                <input
+                <input id="severance-bonus"
+
                   type="text"
                   inputMode="numeric"
                   value={bonus}
@@ -194,12 +200,13 @@ export default function SeveranceCalculator() {
               </div>
             </div>
             <div>
-              <label className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
+              <label htmlFor="severance-allowance" className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground mb-1.5">
                 <Coins className="w-3.5 h-3.5" />
                 Сарын тогтмол тэтгэмж (хоол, зорчих г.м.)
               </label>
               <div className="relative">
-                <input
+                <input id="severance-allowance"
+
                   type="text"
                   inputMode="numeric"
                   value={allowance}
@@ -241,7 +248,7 @@ export default function SeveranceCalculator() {
 
       {/* Result */}
       {result && (
-        <div className="p-6 rounded-2xl border-2 border-gold/40 bg-gold/5 space-y-5">
+        <div className={[styles.result, "space-y-5"].join(" ")} aria-live="polite">
           {result.isUnderOneYear && (
             <div className="flex items-start gap-2 p-3 rounded-lg bg-terracotta/10 text-sm text-terracotta">
               <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />

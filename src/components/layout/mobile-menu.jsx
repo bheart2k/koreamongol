@@ -1,5 +1,7 @@
 'use client';
 
+import styles from './header.module.css';
+
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { X, MessageSquareHeart } from 'lucide-react';
@@ -36,30 +38,30 @@ export function MobileMenu({ isOpen, onClose }) {
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -8, scale: 0.96 }}
           transition={{ duration: 0.15, ease: 'easeOut' }}
-          className="absolute top-full right-0 mt-2 w-64 bg-navy border border-navy-light rounded-xl shadow-xl shadow-black/20"
+          id="header-menu" className={styles.mobilePanel}
         >
           {/* 헤더 */}
-          <div className="flex items-center justify-between p-3 border-b border-navy-light">
-            <span className="font-heading font-bold text-base text-sky">
+          <div className={styles.panelHeading}>
+            <span className="font-heading font-semibold text-base">
               Цэс
             </span>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-sky/70 hover:bg-navy-light hover:text-sky transition-colors cursor-pointer"
+              className={styles.closeButton} aria-label="Цэс хаах"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
           {/* 메뉴 목록 */}
-          <nav className="p-2 space-y-1 max-h-[70vh] overflow-y-auto">
+          <nav className={styles.mobileNav}>
             {navItems.map((item, index) => (
               item.type === 'link' ? (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={onClose}
-                  className="block px-3 py-2.5 text-sm text-sky/70 hover:text-sky hover:bg-navy-light rounded-lg transition-colors"
+                  className={styles.mobileLink}
                 >
                   {getLabel(item)}
                 </Link>
@@ -73,9 +75,9 @@ export function MobileMenu({ isOpen, onClose }) {
               )
             ))}
 
-            <div className="my-2 border-t border-navy-light" />
+            <div className={styles.divider} />
 
-            <p className="px-3 py-1 text-xs text-sky/40">
+            <p className={styles.sectionLabel}>
               Дэлгэрэнгүй
             </p>
             {secondaryNavItems.map((item) => {
@@ -85,9 +87,9 @@ export function MobileMenu({ isOpen, onClose }) {
                   key={item.href}
                   href={item.href}
                   onClick={onClose}
-                  className="flex items-center gap-3 px-3 py-2.5 text-sm text-sky/70 hover:text-sky hover:bg-navy-light rounded-lg transition-colors"
+                  className={styles.mobileLink}
                 >
-                  {Icon && <Icon className="w-4 h-4 text-sky/50" />}
+                  {Icon && <Icon className="w-4 h-4 shrink-0" />}
                   {getLabel(item)}
                 </Link>
               );
@@ -97,7 +99,7 @@ export function MobileMenu({ isOpen, onClose }) {
             <Link
               href="/feedback"
               onClick={onClose}
-              className="flex items-center gap-3 px-3 py-2.5 mt-2 text-sm font-medium text-gold border border-gold/40 bg-gold/10 rounded-lg hover:bg-gold/20 transition-colors"
+              className={styles.feedbackLink}
             >
               <MessageSquareHeart className="w-4 h-4" />
               Санал хүсэлт үлдээх
@@ -112,10 +114,10 @@ export function MobileMenu({ isOpen, onClose }) {
 function MenuSection({ item, onClose, isFirst }) {
   return (
     <div className={cn(
-      "pt-2 mt-2 border-t border-navy-light",
+      styles.menuSection,
       isFirst && "pt-2 mt-2"
     )}>
-      <p className="px-3 py-1 text-xs text-sky/40">
+      <p className={styles.sectionLabel}>
         {getLabel(item)}
       </p>
       {item.children.map((child) => (
@@ -123,7 +125,7 @@ function MenuSection({ item, onClose, isFirst }) {
           key={child.href}
           href={child.href}
           onClick={onClose}
-          className="block px-3 py-2 pl-5 text-sm text-sky/60 hover:text-sky hover:bg-navy-light rounded-lg transition-colors"
+          className={styles.mobileLink}
         >
           {getLabel(child)}
         </Link>

@@ -1,7 +1,9 @@
 'use client';
 
+import styles from './header.module.css';
+
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { Menu, Sun, Moon, Search } from 'lucide-react';
@@ -30,10 +32,10 @@ function NavLink({ item, pathname, index }) {
     <NavigationMenuItem>
       <NavigationMenuLink asChild className={cn(
         navigationMenuTriggerStyle(),
-        "bg-transparent text-sky/70 hover:text-sky hover:bg-navy-light transition-all duration-200",
-        isActive && "text-sky bg-navy-light"
+        styles.navTrigger,
+        isActive && styles.active
       )}>
-        <Link href={item.href}>
+        <Link href={item.href} data-selected={isActive} aria-current={isActive ? 'page' : undefined}>
           {getLabel(item)}
         </Link>
       </NavigationMenuLink>
@@ -41,8 +43,10 @@ function NavLink({ item, pathname, index }) {
   );
 }
 
-function DropdownMenu({ item, index }) {
+function DropdownMenu({ item, index, pathname }) {
+  const router = useRouter();
   const { children, align = 'left' } = item;
+  const isActive = children.some((child) => pathname === child.href || pathname.startsWith(`${child.href}/`));
 
   const alignClass = {
     left: '',
@@ -52,10 +56,16 @@ function DropdownMenu({ item, index }) {
 
   return (
     <NavigationMenuItem>
-      <NavigationMenuTrigger className="bg-transparent text-sky/70 hover:text-sky hover:bg-navy-light data-[state=open]:bg-navy-light data-[state=open]:text-sky transition-all duration-200">
+      <NavigationMenuTrigger
+        className={styles.navTrigger}
+        data-selected={isActive}
+        onClick={() => {
+          if (children[0]?.href) router.push(children[0].href);
+        }}
+      >
         {getLabel(item)}
       </NavigationMenuTrigger>
-      <NavigationMenuContent className={cn("min-w-[280px]", alignClass)}>
+      <NavigationMenuContent className={cn(styles.dropdown, alignClass)}>
         <div className="p-2 space-y-1">
           {children.map((child) => {
             const Icon = child.icon;
@@ -63,9 +73,9 @@ function DropdownMenu({ item, index }) {
               <NavigationMenuLink asChild key={child.href}>
                 <Link
                   href={child.href}
-                  className="group flex items-start gap-4 select-none rounded-xl p-4 leading-none no-underline outline-none transition-all hover:bg-accent/5 focus:bg-accent/5 border border-transparent hover:border-accent/10"
+                  className={styles.dropdownLink}
                 >
-                  <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-sky/50 text-navy group-hover:bg-gold/10 transition-colors">
+                  <div className={styles.dropdownIcon}>
                     <Icon className="h-5 w-5" />
                   </div>
                   <div>
@@ -95,7 +105,7 @@ function ThemeToggle({ className }) {
   }, []);
 
   if (!mounted) {
-    return <div className={cn("w-9 h-9 rounded-lg", className)} />;
+    return <div className={cn(styles.iconPlaceholder, className)} />;
   }
 
   const isDark = theme === 'dark';
@@ -104,8 +114,7 @@ function ThemeToggle({ className }) {
     <button
       onClick={() => setTheme(isDark ? 'light' : 'dark')}
       className={cn(
-        "flex items-center justify-center w-9 h-9 rounded-lg transition-colors cursor-pointer",
-        "text-sky/70 hover:text-sky hover:bg-navy-light",
+        styles.iconButton,
         className
       )}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
@@ -142,40 +151,41 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-40 bg-navy border-b border-navy-light/50 backdrop-blur-md">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
-          <Logo variant="dark" size="sm" href="/" className="hover:opacity-90 transition-opacity" />
+    <header className={styles.header}>
+      <div className={styles.container}>
+        <div className={styles.bar}>
+          <Logo variant="dark" size="sm" href="/" className={styles.logo} />
 
-          <NavigationMenu viewport={false} className="hidden lg:flex">
-            <NavigationMenuList>
+          <NavigationMenu viewport={false} className="hidden xl:flex">
+            <NavigationMenuList className={styles.navList}>
               {navItems.map((item, index) => (
                 item.type === 'link' ? (
                   <NavLink key={item.href} item={item} pathname={pathname} index={index} />
                 ) : (
-                  <DropdownMenu key={item.label} item={item} index={index} />
+                  <DropdownMenu key={item.label} item={item} index={index} pathname={pathname} />
                 )
               ))}
             </NavigationMenuList>
           </NavigationMenu>
 
-          <div className="flex items-center gap-1 lg:gap-1">
+          <div className={styles.actions}>
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center justify-center w-9 h-9 rounded-lg transition-colors cursor-pointer text-sky/70 hover:text-sky hover:bg-navy-light"
+              className={styles.iconButton}
               aria-label="Хайх"
             >
               <Search className="w-5 h-5" />
             </button>
             <ThemeToggle />
-            <div className="flex items-center gap-1">
+            <div className={styles.accountActions}>
               <AdminButton />
               <UserMenu />
             </div>
             <div className="relative">
               <button
                 onClick={() => setIsMenuOpen(prev => !prev)}
-                className="flex items-center justify-center w-9 h-9 text-sky/70 rounded-lg hover:bg-navy-light hover:text-sky transition-colors cursor-pointer"
+                className={cn(styles.iconButton, isMenuOpen && styles.active)}
+                aria-label="Цэс" aria-expanded={isMenuOpen} aria-controls="header-menu"
               >
                 <Menu className="w-5 h-5" />
               </button>

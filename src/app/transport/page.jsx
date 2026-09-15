@@ -1,9 +1,11 @@
+import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
+import styles from '@/components/guide/IllustratedGuide.module.css';
 import {
   Train, CreditCard, Bus, Car, Zap, Smartphone, Lightbulb,
   ExternalLink, Download, Clock, MapPin,
 } from 'lucide-react';
 import {
-  GuideHero, GuideTOC, GuideNav, InfoTable,
+  GuideNav, InfoTable,
   WarningBox, TipBox, StepList, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
@@ -32,19 +34,18 @@ export default function TransportPage() {
           { title: 'Такси дуудах', description: 'Kakao T эсвэл TABA апп ашиглан такси захиалах' },
         ]}
       />
-    <main className="min-h-content bg-background">
+    <main className={styles.page}>
       <GuideViewTracker guideId="transport" />
-      <GuideHero
-        title={transportMeta.title}
-        subtitle={transportMeta.subtitle}
-        lastUpdated={transportMeta.lastUpdated}
+      <IllustratedGuideHeader
+        meta={transportMeta}
+        sections={transportSections}
+        quickIds={["tr-card","tr-metro","tr-bus"]}
+        image="/images/guides/transport-mazaalai-l.png"
         icon={Train}
-        breadcrumbLabel="Тээвэр"
-      >
-        <GuideTOC sections={transportSections} />
-      </GuideHero>
+        breadcrumbLabel={transportMeta.title}
+      />
 
-      <div className="max-w-4xl mx-auto px-6 py-10 space-y-12">
+      <IllustratedGuideBody sections={transportSections}>
 
         <div className="text-xs text-muted-foreground text-right">
           <Clock className="w-3 h-3 inline mr-1" />
@@ -83,7 +84,7 @@ export default function TransportPage() {
             </ul>
           </div>
 
-          <TipBox title="T-money давуу тал">
+          <TipBox title="T-money давуу тал" className={styles.tip}>
             <ul className="space-y-1">
               {tmoney.benefits.map((b, i) => (
                 <li key={i}>&#8226; {b}</li>
@@ -141,7 +142,7 @@ export default function TransportPage() {
             <StepList steps={bus.howTo} />
           </div>
 
-          <WarningBox title="Буухдаа карт уншуул!">
+          <WarningBox title="Буухдаа карт уншуул!" className={styles.warning}>
             <p>Автобуснаас буухдаа заавал карт уншуулаарай. Уншуулахгүй бол дараагийн тээвэрт шилжих хөнгөлөлт авахгүй.</p>
           </WarningBox>
         </section>
@@ -192,7 +193,7 @@ export default function TransportPage() {
             </div>
           </div>
 
-          <TipBox title="Такси зөвлөгөө">
+          <TipBox title="Такси зөвлөгөө" className={styles.tip}>
             <ul className="space-y-1">
               {taxi.tips.map((t, i) => (
                 <li key={i}>&#8226; {t}</li>
@@ -219,7 +220,7 @@ export default function TransportPage() {
             <StepList steps={ktx.booking} />
           </div>
 
-          <TipBox title="KTX зөвлөгөө">
+          <TipBox title="KTX зөвлөгөө" className={styles.tip}>
             <ul className="space-y-1">
               {ktx.tips.map((t, i) => (
                 <li key={i}>&#8226; {t}</li>
@@ -255,7 +256,7 @@ export default function TransportPage() {
             <Lightbulb className="w-6 h-6" />
             Зөвлөгөө
           </h2>
-          <TipBox title="Тээврийн зөвлөгөө">
+          <TipBox title="Тээврийн зөвлөгөө" className={styles.tip}>
             <ul className="space-y-1">
               {transportTips.map((t, i) => (
                 <li key={i}>&#8226; {t}</li>
@@ -280,7 +281,7 @@ export default function TransportPage() {
         <DonateBanner />
         <ShareButtons />
         <GuideNav currentGuideId="transport" />
-      </div>
+      </IllustratedGuideBody>
     </main>
     </>
   );
