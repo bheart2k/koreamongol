@@ -12,10 +12,10 @@ export function ReportBanner({ pageUrl }) {
 
   return (
     <>
-      <div className="mt-12 mb-4 p-5 rounded-lg border-2 border-gold/40 bg-gold/5">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <div className="mt-6 py-5 border-t border-border">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-wrap">
           <div className="flex items-start gap-3 flex-1">
-            <AlertCircle className="w-5 h-5 text-gold-dark shrink-0 mt-0.5" />
+            <AlertCircle className="w-5 h-5 text-muted-foreground shrink-0 mt-0.5" />
             <div>
               <p className="text-sm font-medium text-foreground mb-1">
                 Хамтдаа бүтээе!
@@ -25,12 +25,12 @@ export function ReportBanner({ pageUrl }) {
               </p>
             </div>
           </div>
-          <div className="flex flex-wrap gap-2 shrink-0">
+          <div className="flex flex-wrap gap-2 min-w-0">
             <Button
               variant="outline"
               size="sm"
               onClick={() => setAskOpen(true)}
-              className="border-gold/40 text-gold-dark hover:bg-gold/10"
+              className="min-h-11 border-border text-foreground hover:bg-secondary hover:text-secondary-foreground"
             >
               <MessageCircleQuestion className="w-4 h-4 mr-1.5" />
               Асуулт асуух
@@ -39,7 +39,7 @@ export function ReportBanner({ pageUrl }) {
               variant="outline"
               size="sm"
               onClick={() => setOpen(true)}
-              className="border-gold/40 text-gold-dark hover:bg-gold/10"
+              className="min-h-11 border-border text-foreground hover:bg-secondary hover:text-secondary-foreground"
             >
               Мэдээлэл засах
             </Button>

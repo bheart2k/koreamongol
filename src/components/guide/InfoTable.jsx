@@ -1,16 +1,18 @@
 import { cn } from '@/lib/utils';
+import { TableScroll } from './TableScroll';
 
 export function InfoTable({ headers = [], rows = [], className }) {
   if (headers.length === 0 || rows.length === 0) return null;
 
   return (
-    <div className={cn('overflow-x-auto rounded-lg border border-border', className)}>
-      <table className="w-full text-sm">
+    <TableScroll className={className}>
+      <table className="w-full text-sm" style={{ '--table-min-width': `${Math.max(24, headers.length * 10)}rem` }}>
         <thead>
           <tr className="bg-navy dark:bg-navy-light text-white">
             {headers.map((header, i) => (
               <th
                 key={i}
+                scope="col"
                 className="px-4 py-3 text-left font-semibold font-heading whitespace-nowrap"
               >
                 {header}
@@ -47,6 +49,6 @@ export function InfoTable({ headers = [], rows = [], className }) {
           ))}
         </tbody>
       </table>
-    </div>
+    </TableScroll>
   );
 }

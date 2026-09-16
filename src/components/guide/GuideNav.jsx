@@ -20,7 +20,7 @@ export function GuideNav({ currentGuideId, className }) {
       {prev ? (
         <Link
           href={prev.href}
-          className="group flex-1 flex items-center gap-3 p-4 rounded-lg border border-border hover:border-gold/40 hover:shadow-sm transition-all"
+          className="group min-w-0 flex-1 flex items-center gap-3 p-4 rounded-lg border border-border hover:border-gold/40 hover:shadow-sm transition-all"
         >
           <ChevronLeft className="w-5 h-5 text-muted-foreground group-hover:text-gold shrink-0" />
           <div className="min-w-0">
@@ -36,7 +36,7 @@ export function GuideNav({ currentGuideId, className }) {
       {next ? (
         <Link
           href={next.href}
-          className="group flex-1 flex items-center justify-end gap-3 p-4 rounded-lg border border-border hover:border-gold/40 hover:shadow-sm transition-all text-right"
+          className="group min-w-0 flex-1 flex items-center justify-end gap-3 p-4 rounded-lg border border-border hover:border-gold/40 hover:shadow-sm transition-all text-right"
         >
           <div className="min-w-0">
             <span className="text-xs text-muted-foreground">Дараах</span>

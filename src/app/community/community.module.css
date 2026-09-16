@@ -1,0 +1,32 @@
+.community main { background: var(--paper); color: var(--ink); }
+.community main > section { padding-inline: 24px; }
+.community h1 { font-weight: 700; font-size: clamp(25px, 3.4vw, 38px); line-height: 1.4; letter-spacing: -.02em; }
+.community p { line-height: 1.8; }
+.community :global(.bg-card) { background: var(--surface); border-color: var(--line); }
+.community input, .community textarea { min-height: 44px; font-size: 16px; border-radius: 10px; background: var(--surface); }
+.community a:focus-visible, .community button:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 3px; }
+.community article { padding: 32px 24px; }
+.community article > div { padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+.community :global(.prose) { line-height: 1.85; overflow-wrap: anywhere; }
+.community :global(.prose) img { max-width: 100%; height: auto; }
+.community :global(.prose) a { text-decoration: underline; text-underline-offset: 3px; }
+.community :global(.prose) pre { max-width: 100%; overflow-x: auto; }
+.hero { max-width: 1000px; margin: auto; padding-block: 40px 28px; }
+.hero p { max-width: 640px; margin-top: 16px; color: var(--copy); }
+.boards { max-width: 1000px; margin: auto; padding-bottom: 48px; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+.board { display: flex; gap: 16px; align-items: flex-start; padding: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+.board:hover { background: var(--guide-sky); }
+.board > svg { width: 20px; height: 20px; flex-shrink: 0; color: var(--copy); }
+.board > div { flex: 1; min-width: 0; }
+.board h2 { font-size: 17px; font-weight: 600; line-height: 1.5; }
+.board p { font-size: 13px; color: var(--copy); margin-top: 8px; }
+.writeForm { padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+@media(max-width:639px) {
+  .community main > section { padding-inline: 20px; }
+  .community article { padding: 20px; }
+  .community article > div, .writeForm { padding: 18px 14px; }
+  .boards { grid-template-columns: 1fr; }
+  .board { padding: 20px 16px; }
+  .community :global(.w-30) { width: 72px; }
+  .community :global(.h-30) { height: 72px; }
+}

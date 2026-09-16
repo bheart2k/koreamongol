@@ -1,3 +1,4 @@
+import { GuideSection } from '@/components/guide/GuideSection';
 import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
 import styles from '@/components/guide/IllustratedGuide.module.css';
 import { Banknote, ThumbsUp, ThumbsDown, ExternalLink, Building2, CreditCard, Landmark, ShieldCheck, AlertTriangle, CircleDollarSign } from 'lucide-react';
@@ -44,16 +45,16 @@ export default function MoneyPage() {
 
       <IllustratedGuideBody sections={moneySections}>
         {/* Comparison Table */}
-        <section id="money-comparison">
+        <GuideSection id="money-comparison">
           <h2 className="text-title text-navy dark:text-sky mb-6">Шилжүүлгийн арга харьцуулалт</h2>
           <InfoTable
             headers={remittanceComparison.headers}
             rows={remittanceComparison.rows}
           />
-        </section>
+        </GuideSection>
 
         {/* Method Details */}
-        <section id="money-methods">
+        <GuideSection id="money-methods">
           <h2 className="text-title text-navy dark:text-sky mb-6">Арга бүрийн дэлгэрэнгүй</h2>
           <div className="space-y-6">
             {remittanceMethods.map((method) => (
@@ -105,10 +106,10 @@ export default function MoneyPage() {
               </div>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Financial Basics */}
-        <section id="money-finance">
+        <GuideSection id="money-finance">
           <h2 className="text-title text-navy dark:text-sky mb-6">
             <CircleDollarSign className="w-6 h-6 inline mr-2" />
             Санхүүгийн үндсэн мэдлэг
@@ -200,10 +201,10 @@ export default function MoneyPage() {
               </ul>
             </WarningBox>
           </div>
-        </section>
+        </GuideSection>
 
         {/* Insurance */}
-        <section id="money-insurance">
+        <GuideSection id="money-insurance">
           <h2 className="text-title text-navy dark:text-sky mb-6">
             <ShieldCheck className="w-6 h-6 inline mr-2" />
             {insuranceInfo.title}
@@ -242,10 +243,10 @@ export default function MoneyPage() {
               <p>{insuranceInfo.refund.warning}</p>
             </WarningBox>
           </div>
-        </section>
+        </GuideSection>
 
         {/* Warnings */}
-        <section id="money-warnings">
+        <GuideSection id="money-warnings">
           <h2 className="text-title text-navy dark:text-sky mb-6">Анхааруулга</h2>
           {financeWarnings.map((warning) => (
             <WarningBox key={warning.title} title={warning.title} className={styles.warning}>
@@ -256,10 +257,10 @@ export default function MoneyPage() {
               </ul>
             </WarningBox>
           ))}
-        </section>
+        </GuideSection>
 
         {/* Tips */}
-        <section id="money-tips">
+        <GuideSection id="money-tips">
           <h2 className="text-title text-navy dark:text-sky mb-6">Зөвлөгөө</h2>
           <TipBox title="Ханшийн зөвлөгөө" className={styles.tip}>
             <ul className="space-y-1">
@@ -268,17 +269,17 @@ export default function MoneyPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Links */}
-        <section id="money-links">
+        <GuideSection id="money-links">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линкүүд</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {moneyLinks.map((link) => (
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         <RelatedTips slugs={['send-money-to-mongolia', 'open-bank-account', 'pension-refund']} />
 

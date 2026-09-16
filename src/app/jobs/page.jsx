@@ -1,3 +1,4 @@
+import { GuideSection } from '@/components/guide/GuideSection';
 import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
 import styles from '@/components/guide/IllustratedGuide.module.css';
 import { Briefcase, ExternalLink } from 'lucide-react';
@@ -34,7 +35,7 @@ export default function JobsPage() {
 
       <IllustratedGuideBody sections={jobsSections}>
         {/* Visa Work Conditions */}
-        <section id="jobs-visa-conditions">
+        <GuideSection id="jobs-visa-conditions">
           <h2 className="text-title text-navy dark:text-sky mb-6">Визээр ажлын нөхцөл</h2>
           <InfoTable
             headers={visaWorkConditions.comparison.headers}
@@ -59,10 +60,10 @@ export default function JobsPage() {
               ))}
             </ul>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* Student Part-time Permit */}
-        <section id="jobs-parttime">
+        <GuideSection id="jobs-parttime">
           <h2 className="text-title text-navy dark:text-sky mb-6">Оюутны цагийн ажил (알바) — зөвшөөрөл</h2>
           <p className="text-sm text-muted-foreground mb-4">{parttimePermit.intro}</p>
           <InfoTable
@@ -86,10 +87,10 @@ export default function JobsPage() {
           <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Анхаар!">
             <p>{parttimePermit.warning}</p>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* Salary */}
-        <section id="jobs-salary">
+        <GuideSection id="jobs-salary">
           <h2 className="text-title text-navy dark:text-sky mb-6">Цалин / Хамгийн бага цалин ({salaryInfo.year})</h2>
 
           <div className="grid sm:grid-cols-2 gap-4 mb-6">
@@ -137,10 +138,10 @@ export default function JobsPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Contract Checklist */}
-        <section id="jobs-contract">
+        <GuideSection id="jobs-contract">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хөдөлмөрийн гэрээ шалгах</h2>
           <CheckList items={contractChecklist} storageKey="jobs-contract" />
           <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Анхааруулга">
@@ -150,10 +151,10 @@ export default function JobsPage() {
               ))}
             </ul>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* Job Search Methods */}
-        <section id="jobs-how-to-find">
+        <GuideSection id="jobs-how-to-find">
           <h2 className="text-title text-navy dark:text-sky mb-6">Ажил хайх арга</h2>
           <div className="space-y-3">
             {jobSearchMethods.map((method) => (
@@ -180,10 +181,10 @@ export default function JobsPage() {
               </div>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Daily Work Safety */}
-        <section id="jobs-daily">
+        <GuideSection id="jobs-daily">
           <h2 className="text-title text-navy dark:text-sky mb-6">Өдрийн ажил (일용직) — өөрийгөө хамгаалах</h2>
           <p className="text-sm text-muted-foreground mb-4">{dailyWorkSafety.intro}</p>
 
@@ -215,10 +216,10 @@ export default function JobsPage() {
               </div>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Labor Rights */}
-        <section id="jobs-rights">
+        <GuideSection id="jobs-rights">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хөдөлмөрийн эрхийн хамгаалалт</h2>
 
           <div className="p-4 rounded-lg border border-border bg-card mb-6">
@@ -246,10 +247,10 @@ export default function JobsPage() {
               </div>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Contacts & Links */}
-        <section id="jobs-links">
+        <GuideSection id="jobs-links">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй утас / Линк</h2>
           <div className="grid sm:grid-cols-2 gap-3 mb-6">
             {jobsContacts.map((contact) => (
@@ -272,7 +273,7 @@ export default function JobsPage() {
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         <RelatedTips slugs={['student-part-time', 'unpaid-wages', 'minimum-wage-2026', 'work-injury']} />
 

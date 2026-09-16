@@ -1,3 +1,4 @@
+import { GuideSection } from '@/components/guide/GuideSection';
 import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
 import styles from '@/components/guide/IllustratedGuide.module.css';
 import { GraduationCap } from 'lucide-react';
@@ -46,7 +47,7 @@ export default function TopikPage() {
 
       <IllustratedGuideBody sections={pageSections}>
         {/* Which Test */}
-        <section id="topik-which-test">
+        <GuideSection id="topik-which-test">
           <h2 className="text-title text-navy dark:text-sky mb-6">Аль шалгалт надад хэрэгтэй вэ?</h2>
           <InfoTable
             headers={whichTestTable.headers}
@@ -55,10 +56,10 @@ export default function TopikPage() {
           <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Чухал ялгаа">
             <p>{whichTestTip}</p>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* EPS-TOPIK */}
-        <section id="topik-eps-overview">
+        <GuideSection id="topik-eps-overview">
           <h2 className="text-title text-navy dark:text-sky mb-6">EPS-TOPIK гэж юу вэ?</h2>
           <p className="text-sm text-muted-foreground mb-6">{epsTopikOverview.description}</p>
 
@@ -90,10 +91,10 @@ export default function TopikPage() {
               ))}
             </ul>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* TOPIK General */}
-        <section id="topik-general-overview">
+        <GuideSection id="topik-general-overview">
           <h2 className="text-title text-navy dark:text-sky mb-6">TOPIK шалгалт гэж юу вэ?</h2>
           <p className="text-sm text-muted-foreground mb-6">{topikOverview.description}</p>
 
@@ -127,10 +128,10 @@ export default function TopikPage() {
             headers={topikVsEpsTopik.headers}
             rows={topikVsEpsTopik.rows}
           />
-        </section>
+        </GuideSection>
 
         {/* Registration */}
-        <section id="topik-register">
+        <GuideSection id="topik-register">
           <h2 className="text-title text-navy dark:text-sky mb-6">Шалгалтанд бүртгүүлэх</h2>
 
           <h3 className="text-base font-semibold font-heading mb-3">EPS-TOPIK бүртгэл</h3>
@@ -142,10 +143,10 @@ export default function TopikPage() {
           <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Монголд бүртгүүлэх">
             <p>{registrationNote}</p>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* After Pass */}
-        <section id="topik-after-pass">
+        <GuideSection id="topik-after-pass">
           <h2 className="text-title text-navy dark:text-sky mb-6">Тэнцсэний дараа</h2>
 
           <h3 className="text-base font-semibold font-heading mb-3">EPS-TOPIK тэнцсэний дараа</h3>
@@ -168,10 +169,10 @@ export default function TopikPage() {
               ))}
             </ul>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* Study Resources */}
-        <section id="topik-study">
+        <GuideSection id="topik-study">
           <h2 className="text-title text-navy dark:text-sky mb-6">Бэлтгэл ба сурах материал</h2>
           <div className="grid sm:grid-cols-2 gap-3 mb-6">
             {studyResources.map((resource) => (
@@ -185,10 +186,10 @@ export default function TopikPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Links */}
-        <section id="topik-links">
+        <GuideSection id="topik-links">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй утас / Линк</h2>
           <div className="grid sm:grid-cols-2 gap-3 mb-6">
             {topikContacts.map((contact) => (
@@ -211,7 +212,7 @@ export default function TopikPage() {
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         <ReportBanner pageUrl="/topik" />
         <DonateBanner />

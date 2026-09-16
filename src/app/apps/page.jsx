@@ -1,3 +1,4 @@
+import { GuideSection } from '@/components/guide/GuideSection';
 import appStyles from './apps.module.css';
 import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
 import styles from '@/components/guide/IllustratedGuide.module.css';
@@ -85,7 +86,7 @@ export default function AppsPage() {
 
         <IllustratedGuideBody sections={appsSections}>
           {/* Essential Apps */}
-          <section id="apps-essential">
+          <GuideSection id="apps-essential">
             <h2 className="text-title text-navy dark:text-sky mb-6">
               <Smartphone className="w-6 h-6 inline mr-2" />
               Заавал суулгах апп
@@ -95,10 +96,10 @@ export default function AppsPage() {
                 <AppCard key={app.name} app={app} />
               ))}
             </div>
-          </section>
+          </GuideSection>
 
           {/* Shopping & Delivery */}
-          <section id="apps-shopping">
+          <GuideSection id="apps-shopping">
             <h2 className="text-title text-navy dark:text-sky mb-6">
               <ShoppingCart className="w-6 h-6 inline mr-2" />
               Худалдаа & хүргэлт
@@ -108,10 +109,10 @@ export default function AppsPage() {
                 <AppCard key={app.name} app={app} />
               ))}
             </div>
-          </section>
+          </GuideSection>
 
           {/* Transport & Maps */}
-          <section id="apps-transport">
+          <GuideSection id="apps-transport">
             <h2 className="text-title text-navy dark:text-sky mb-6">
               <Bus className="w-6 h-6 inline mr-2" />
               Тээвэр & газрын зураг
@@ -121,10 +122,10 @@ export default function AppsPage() {
                 <AppCard key={app.name} app={app} />
               ))}
             </div>
-          </section>
+          </GuideSection>
 
           {/* Translation & Dictionary */}
-          <section id="apps-translate">
+          <GuideSection id="apps-translate">
             <h2 className="text-title text-navy dark:text-sky mb-6">
               <Languages className="w-6 h-6 inline mr-2" />
               Орчуулга & толь бичиг
@@ -134,10 +135,10 @@ export default function AppsPage() {
                 <AppCard key={app.name} app={app} />
               ))}
             </div>
-          </section>
+          </GuideSection>
 
           {/* Tools & Calculators */}
-          <section id="apps-tools">
+          <GuideSection id="apps-tools">
             <h2 className="text-title text-navy dark:text-sky mb-6">
               <Wrench className="w-6 h-6 inline mr-2" />
               Тооцоолуур & хэрэгсэл
@@ -166,10 +167,10 @@ export default function AppsPage() {
                 )
               ))}
             </div>
-          </section>
+          </GuideSection>
 
           {/* Useful Websites */}
-          <section id="apps-websites">
+          <GuideSection id="apps-websites">
             <h2 className="text-title text-navy dark:text-sky mb-6">
               <Globe className="w-6 h-6 inline mr-2" />
               Хэрэгтэй вэбсайтууд
@@ -179,10 +180,10 @@ export default function AppsPage() {
                 <LinkCard key={site.href} href={site.href} title={site.title} description={site.description} icon={Globe} />
               ))}
             </div>
-          </section>
+          </GuideSection>
 
           {/* Tips */}
-          <section id="apps-tips">
+          <GuideSection id="apps-tips">
             <h2 className="text-title text-navy dark:text-sky mb-6">Апп суулгах зөвлөгөө</h2>
             <TipBox title="Зөвлөгөө" className={styles.tip}>
               <ul className="space-y-1">
@@ -196,7 +197,7 @@ export default function AppsPage() {
                 <p>{appWarning}</p>
               </WarningBox>
             </div>
-          </section>
+          </GuideSection>
 
           {/* Related Guides */}
           <section>

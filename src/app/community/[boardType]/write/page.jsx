@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { useSession } from 'next-auth/react';
-import { motion } from 'motion/react';
+import styles from '../../community.module.css';
 import {
   ChevronLeft,
   Save,
@@ -22,15 +22,15 @@ import { Textarea } from '@/components/ui/textarea';
 import { v4 as uuidv4 } from 'uuid';
 
 const boardTitles = {
-  blog: { ko: '한글 블로그', en: 'Hangul Blog' },
-  free: { ko: '자유게시판', en: 'Free Board' },
-  notice: { ko: '공지 & FAQ', en: 'Notice & FAQ' },
-  expression: { ko: '표현 질문', en: 'Expression Q&A' },
+  blog: { mn: 'Блог', en: 'Hangul Blog' },
+  free: { mn: 'Чөлөөт самбар', en: 'Free Board' },
+  notice: { mn: 'Мэдэгдэл & FAQ', en: 'Notice & FAQ' },
+  expression: { mn: 'Хэллэгийн асуулт', en: 'Expression Q&A' },
 };
 
 export default function WritePostPage({ params }) {
   const { boardType } = use(params);
-  const isKo = true;
+  const isMn = true;
   const router = useRouter();
   const searchParams = useSearchParams();
   const editId = searchParams.get('edit');
@@ -65,7 +65,7 @@ export default function WritePostPage({ params }) {
           setError(data.error);
         }
       } catch (err) {
-        setError('게시글을 불러오는 중 오류가 발생했습니다.');
+        setError('Нийтлэлийг ачаалахад алдаа гарлаа.');
       } finally {
         setLoadingPost(false);
       }
@@ -91,17 +91,17 @@ export default function WritePostPage({ params }) {
             <LogIn className="w-8 h-8 text-muted-foreground" />
           </div>
           <h1 className="text-headline mb-2">
-            {isKo ? '로그인이 필요합니다' : 'Login Required'}
+            {isMn ? 'Нэвтрэх шаардлагатай' : 'Login Required'}
           </h1>
           <p className="text-muted-foreground mb-6">
-            {isKo
-              ? '글을 작성하려면 먼저 로그인해주세요.'
+            {isMn
+              ? 'Нийтлэл бичихийн тулд эхлээд нэвтэрнэ үү.'
               : 'Please log in to write a post.'}
           </p>
           <Button asChild>
             <Link href={`/community/${boardType}`}>
               <ChevronLeft className="w-4 h-4 mr-2" />
-              {isKo ? '돌아가기' : 'Go Back'}
+              {isMn ? 'Буцах' : 'Go Back'}
             </Link>
           </Button>
         </div>
@@ -119,17 +119,17 @@ export default function WritePostPage({ params }) {
             <AlertTriangle className="w-8 h-8 text-destructive" />
           </div>
           <h1 className="text-headline mb-2">
-            {isKo ? '권한이 없습니다' : 'Access Denied'}
+            {isMn ? 'Хандах эрхгүй' : 'Access Denied'}
           </h1>
           <p className="text-muted-foreground mb-6">
-            {isKo
-              ? '공지사항은 관리자만 작성할 수 있습니다.'
+            {isMn
+              ? 'Зөвхөн админ мэдэгдэл бичих боломжтой.'
               : 'Only administrators can write announcements.'}
           </p>
           <Button asChild>
             <Link href={`/community/${boardType}`}>
               <ChevronLeft className="w-4 h-4 mr-2" />
-              {isKo ? '돌아가기' : 'Go Back'}
+              {isMn ? 'Буцах' : 'Go Back'}
             </Link>
           </Button>
         </div>
@@ -144,11 +144,11 @@ export default function WritePostPage({ params }) {
         <div className="text-center">
           <h1 className="text-headline mb-4">404</h1>
           <p className="text-muted-foreground mb-6">
-            {isKo ? '존재하지 않는 게시판입니다.' : 'Board not found.'}
+            {isMn ? 'Самбар олдсонгүй.' : 'Board not found.'}
           </p>
           <Button asChild>
             <Link href="/community">
-              {isKo ? '커뮤니티로 돌아가기' : 'Back to Community'}
+              {isMn ? 'Нийгэмлэг рүү буцах' : 'Back to Community'}
             </Link>
           </Button>
         </div>
@@ -161,17 +161,17 @@ export default function WritePostPage({ params }) {
     setError('');
 
     if (!title.trim()) {
-      setError(isKo ? '제목을 입력해주세요.' : 'Please enter a title.');
+      setError(isMn ? 'Гарчиг оруулна уу.' : 'Please enter a title.');
       return;
     }
 
     if (boardType === 'expression') {
       if (!content || content.trim().length === 0) {
-        setError(isKo ? '내용을 입력해주세요.' : 'Please enter content.');
+        setError(isMn ? 'Агуулга оруулна уу.' : 'Please enter content.');
         return;
       }
     } else if (!content || content === '{}' || content === '{"root":{"children":[],"direction":null,"format":"","indent":0,"type":"root","version":1}}') {
-      setError(isKo ? '내용을 입력해주세요.' : 'Please enter content.');
+      setError(isMn ? 'Агуулга оруулна уу.' : 'Please enter content.');
       return;
     }
 
@@ -206,10 +206,10 @@ export default function WritePostPage({ params }) {
         const postId = isEdit ? editId : data.data.id;
         router.push(`/community/${boardType}/${postId}`);
       } else {
-        setError(data.error || (isKo ? '저장에 실패했습니다.' : 'Failed to save.'));
+        setError(data.error || (isMn ? 'Хадгалж чадсангүй.' : 'Failed to save.'));
       }
     } catch (err) {
-      setError(isKo ? '저장 중 오류가 발생했습니다.' : 'An error occurred while saving.');
+      setError(isMn ? 'Хадгалахад алдаа гарлаа.' : 'An error occurred while saving.');
     } finally {
       setLoading(false);
     }
@@ -233,7 +233,7 @@ export default function WritePostPage({ params }) {
       <section className="py-4 px-6 border-b border-border">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <Link
                 href={`/community/${boardType}`}
                 className="text-muted-foreground hover:text-foreground transition-colors"
@@ -242,15 +242,15 @@ export default function WritePostPage({ params }) {
               </Link>
               <h1 className="text-title font-semibold">
                 {isEdit
-                  ? isKo
-                    ? '글 수정'
+                  ? isMn
+                    ? 'Нийтлэл засах'
                     : 'Edit Post'
-                  : isKo
-                  ? '글 작성'
+                  : isMn
+                  ? 'Нийтлэл бичих'
                   : 'Write Post'}
               </h1>
               <span className="text-sm text-muted-foreground">
-                · {isKo ? boardTitle.ko : boardTitle.en}
+                · {isMn ? boardTitle.mn : boardTitle.en}
               </span>
             </div>
           </div>
@@ -260,12 +260,9 @@ export default function WritePostPage({ params }) {
       {/* Form */}
       <section className="pt-6">
         <div className="max-w-4xl mx-auto">
-          <motion.form
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+          <form
             onSubmit={handleSubmit}
-            className="space-y-6"
+            className={`${styles.writeForm} space-y-6`}
           >
             {/* Error */}
             {error && (
@@ -278,14 +275,14 @@ export default function WritePostPage({ params }) {
             {/* Title */}
             <div className="space-y-2">
               <Label htmlFor="title">
-                {isKo ? '제목' : 'Title'} <span className="text-destructive">*</span>
+                {isMn ? 'Гарчиг' : 'Title'} <span className="text-destructive">*</span>
               </Label>
               <Input
                 id="title"
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder={isKo ? '제목을 입력하세요' : 'Enter title'}
+                placeholder={isMn ? 'Гарчиг оруулна уу' : 'Enter title'}
                 maxLength={100}
                 className="text-lg"
               />
@@ -294,7 +291,7 @@ export default function WritePostPage({ params }) {
             {/* Content */}
             <div className="space-y-2">
               <Label>
-                {isKo ? '내용' : 'Content'} <span className="text-destructive">*</span>
+                {isMn ? 'Агуулга' : 'Content'} <span className="text-destructive">*</span>
               </Label>
               {boardType === 'expression' ? (
                 <div>
@@ -314,7 +311,7 @@ export default function WritePostPage({ params }) {
                 <LexicalEditor
                   value={content}
                   onChange={setContent}
-                  placeholder={isKo ? '내용을 입력하세요' : 'Enter content'}
+                  placeholder={isMn ? 'Агуулга оруулна уу' : 'Enter content'}
                   minHeight={500}
                   maxHeight={670}
                   onError={handleEditorError}
@@ -328,9 +325,9 @@ export default function WritePostPage({ params }) {
             {/* Tags */}
             <div className="space-y-2">
               <Label htmlFor="tags">
-                {isKo ? '태그' : 'Tags'}
+                {isMn ? 'Шошго' : 'Tags'}
                 <span className="text-muted-foreground font-normal ml-2">
-                  ({isKo ? '쉼표로 구분' : 'comma separated'})
+                  ({isMn ? 'таслалаар тусгаарлана' : 'comma separated'})
                 </span>
               </Label>
               <Input
@@ -338,7 +335,7 @@ export default function WritePostPage({ params }) {
                 type="text"
                 value={tags}
                 onChange={(e) => setTags(e.target.value)}
-                placeholder={isKo ? '한글, 학습, 팁' : 'hangul, learning, tips'}
+                placeholder={isMn ? 'солонгос хэл, суралцах, зөвлөгөө' : 'hangul, learning, tips'}
               />
             </div>
 
@@ -351,7 +348,7 @@ export default function WritePostPage({ params }) {
                 disabled={loading}
               >
                 <X className="w-4 h-4 mr-2" />
-                {isKo ? '취소' : 'Cancel'}
+                {isMn ? 'Болих' : 'Cancel'}
               </Button>
               <Button type="submit" disabled={loading}>
                 {loading ? (
@@ -360,15 +357,15 @@ export default function WritePostPage({ params }) {
                   <Save className="w-4 h-4 mr-2" />
                 )}
                 {isEdit
-                  ? isKo
-                    ? '수정하기'
+                  ? isMn
+                    ? 'Хадгалах'
                     : 'Update'
-                  : isKo
-                  ? '작성하기'
+                  : isMn
+                  ? 'Нийтлэх'
                   : 'Publish'}
               </Button>
             </div>
-          </motion.form>
+          </form>
         </div>
       </section>
     </main>

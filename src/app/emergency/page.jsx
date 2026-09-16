@@ -1,3 +1,4 @@
+import { GuideSection } from '@/components/guide/GuideSection';
 import contactStyles from './emergency.module.css';
 import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
 import styles from '@/components/guide/IllustratedGuide.module.css';
@@ -75,7 +76,7 @@ function ContactCard({ contact }) {
 function ContactSection({ id, title, contacts }) {
   const Icon = sectionIcons[id] || Phone;
   return (
-    <section id={id}>
+    <GuideSection alwaysOpen={id === "em-urgent"} id={id}>
       <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
         <Icon className="w-6 h-6" />
         {title}
@@ -85,7 +86,7 @@ function ContactSection({ id, title, contacts }) {
           <ContactCard key={c.number} contact={c} />
         ))}
       </div>
-    </section>
+    </GuideSection>
   );
 }
 
@@ -165,14 +166,14 @@ export default function EmergencyPage() {
         />
 
         {/* Links */}
-        <section id="em-links">
+        <GuideSection id="em-links">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линкүүд</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {emergencyLinks.map((link) => (
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         <RelatedTips slugs={['emergency-numbers', 'hospital-visit']} />
 

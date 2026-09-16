@@ -36,8 +36,6 @@
 .content > section { padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; scroll-margin-top: var(--guide-offset); }
 .content > section > h2 { font-size: 21px; line-height: 1.5; letter-spacing: -.02em; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
 .content p, .content li { line-height: 1.8; }
-.content table thead { background: var(--guide-sky); }
-.content th { color: var(--ink); }
 .content th, .content td { padding: 14px 16px; }
 .content .tip { background: var(--guide-sky); border-color: var(--navy-light); border-radius: 16px; }
 .tip h4, .tip > div:first-child svg { color: var(--ink); }

@@ -81,7 +81,7 @@ export function PostActionButtons({
 }) {
   const router = useRouter();
   const { data: session } = useSession();
-  const isKo = locale === 'ko';
+  const isMn = locale === 'mn';
 
   const [deleting, setDeleting] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
@@ -102,13 +102,13 @@ export function PostActionButtons({
       const data = await res.json();
 
       if (data.success) {
-        toast.error(isKo ? '게시글이 삭제되었습니다.' : 'Post deleted.');
+        toast.error(isMn ? 'Нийтлэл устгагдлаа.' : 'Post deleted.');
         router.push(`/community/${boardType}`);
       } else {
-        toast.error(data.error || (isKo ? '삭제에 실패했습니다.' : 'Failed to delete.'));
+        toast.error(data.error || (isMn ? 'Устгаж чадсангүй.' : 'Failed to delete.'));
       }
     } catch (err) {
-      toast.error(isKo ? '삭제 중 오류가 발생했습니다.' : 'An error occurred.');
+      toast.error(isMn ? 'Устгахад алдаа гарлаа.' : 'An error occurred.');
     } finally {
       setDeleting(false);
       setShowDeleteDialog(false);
@@ -126,7 +126,7 @@ export function PostActionButtons({
       }
     } else {
       await navigator.clipboard.writeText(url);
-      toast.success(isKo ? '링크가 복사되었습니다.' : 'Link copied!');
+      toast.success(isMn ? 'Линк хуулагдлаа.' : 'Link copied!');
     }
   };
 
@@ -141,18 +141,18 @@ export function PostActionButtons({
             onClick={() => setShowDeleteDialog(true)}
           >
             <Trash2 className="w-4 h-4 mr-1.5" />
-            {isKo ? '삭제' : 'Delete'}
+            {isMn ? 'Устгах' : 'Delete'}
           </Button>
         )}
         <Button variant="outline" size="sm" onClick={handleShare}>
           <Share2 className="w-4 h-4 mr-1.5" />
-          {isKo ? '공유' : 'Share'}
+          {isMn ? 'Хуваалцах' : 'Share'}
         </Button>
         {canEdit && (
           <Button variant="outline" size="sm" asChild>
             <Link href={`/community/${boardType}/write?edit=${postId}`}>
               <Edit className="w-4 h-4 mr-1.5" />
-              {isKo ? '수정' : 'Edit'}
+              {isMn ? 'Засах' : 'Edit'}
             </Link>
           </Button>
         )}
@@ -162,10 +162,10 @@ export function PostActionButtons({
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
         variant="error"
-        title={isKo ? '게시글 삭제' : 'Delete Post'}
-        description={isKo ? '정말 이 게시글을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.' : 'Are you sure you want to delete this post? This action cannot be undone.'}
-        cancelText={isKo ? '취소' : 'Cancel'}
-        confirmText={isKo ? '삭제' : 'Delete'}
+        title={isMn ? 'Нийтлэл устгах' : 'Delete Post'}
+        description={isMn ? 'Энэ нийтлэлийг устгах уу? Энэ үйлдлийг буцаах боломжгүй.' : 'Are you sure you want to delete this post? This action cannot be undone.'}
+        cancelText={isMn ? 'Болих' : 'Cancel'}
+        confirmText={isMn ? 'Устгах' : 'Delete'}
         loading={deleting}
         onConfirm={handleDelete}
       />

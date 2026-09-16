@@ -1,5 +1,6 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import styles from '@/components/guide/ServicePages.module.css';
+import pageStyles from '@/components/guide/IllustratedGuide.module.css';
 import { Heart, Coffee, ExternalLink } from 'lucide-react';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
@@ -14,12 +15,12 @@ export default function DonatePage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: 'Дэмжлэг', url: `${BASE_URL}/donate` },
       ]} />
-    <main className="min-h-content bg-background">
+    <main className={`${pageStyles.page} ${styles.page} min-h-content`}>
       {/* Hero */}
       <section className="py-16 md:py-24 px-6 text-center">
         <div className="max-w-2xl mx-auto">
-          <div className="w-16 h-16 rounded-2xl bg-gold/10 flex items-center justify-center mx-auto mb-6">
-            <Heart className="w-8 h-8 text-gold" />
+          <div className="w-16 h-16 rounded-2xl bg-terracotta/10 flex items-center justify-center mx-auto mb-6">
+            <Heart className="w-8 h-8 text-terracotta" />
           </div>
           <h1 className="text-display mb-4">Дэмжлэг</h1>
           <p className="text-body-lg text-muted-foreground">
@@ -38,7 +39,7 @@ export default function DonatePage() {
               { icon: '📝', title: 'Мэдээлэл шинэчлэх', desc: 'Виз, хууль журмын өөрчлөлт' },
               { icon: '🚀', title: 'Шинэ боломж', desc: 'Шинэ гарын авлага, функц нэмэх' },
             ].map((item) => (
-              <div key={item.title} className="p-5 rounded-xl border border-border bg-card text-center">
+              <div key={item.title} className={styles.benefit}>
                 <span className="text-2xl">{item.icon}</span>
                 <h3 className="text-sm font-semibold font-heading mt-2 mb-1">{item.title}</h3>
                 <p className="text-xs text-muted-foreground">{item.desc}</p>
@@ -51,19 +52,19 @@ export default function DonatePage() {
       {/* Ko-fi + KakaoPay */}
       <section className="py-16 px-6">
         <div className="max-w-2xl mx-auto">
-          <div className="bg-card border-2 border-gold/30 rounded-2xl p-8 md:p-10 text-center">
-            <Coffee className="w-10 h-10 text-gold mx-auto mb-4" />
+          <div className={styles.payment}>
+            <Coffee className="w-10 h-10 text-terracotta mx-auto mb-4" />
             <h2 className="text-title mb-2">Ko-fi · KakaoPay</h2>
             <p className="text-sm text-muted-foreground mb-8">
               Нэг аяга кофены үнээр дэмжлэг үзүүлэх
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8">
+            <div className={styles.paymentLinks}>
               <a
                 href={KOFI_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-3 rounded-full bg-[#72A4F2] text-white font-semibold hover:bg-[#72A4F2]/90 transition-colors text-sm"
+                className={styles.paymentButton}
               >
                 <Coffee className="w-4 h-4" />
                 Ko-fi дээр дэмжих

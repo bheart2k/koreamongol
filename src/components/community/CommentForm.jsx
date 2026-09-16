@@ -29,13 +29,13 @@ export default function CommentForm({
   onSubmit,
   onCancel,
   isReply = false,
-  locale = 'ko',
+  locale = 'mn',
   mode = 'create',
   initialContent = '',
   commentId,
 }) {
   const { data: session } = useSession();
-  const isKo = locale === 'ko';
+  const isMn = locale === 'mn';
 
   const [content, setContent] = useState(initialContent);
   const [submitting, setSubmitting] = useState(false);
@@ -45,18 +45,18 @@ export default function CommentForm({
     e.preventDefault();
 
     if (!session?.user) {
-      setError(isKo ? '로그인이 필요합니다.' : 'Please sign in to comment.');
+      setError(isMn ? 'Нэвтрэх шаардлагатай.' : 'Please sign in to comment.');
       return;
     }
 
     const trimmed = content.trim();
     if (!trimmed) {
-      setError(isKo ? '내용을 입력해주세요.' : 'Please enter your comment.');
+      setError(isMn ? 'Агуулга оруулна уу.' : 'Please enter your comment.');
       return;
     }
 
     if (trimmed.length > 1000) {
-      setError(isKo ? '1000자까지 입력할 수 있습니다.' : 'Maximum 1000 characters.');
+      setError(isMn ? '1000 хүртэл тэмдэгт оруулж болно.' : 'Maximum 1000 characters.');
       return;
     }
 
@@ -82,15 +82,15 @@ export default function CommentForm({
         if (mode === 'create') setContent('');
         toast.success(
           mode === 'edit'
-            ? (isKo ? '댓글이 수정되었습니다.' : 'Comment updated.')
-            : (isKo ? '댓글이 작성되었습니다.' : 'Comment posted.')
+            ? (isMn ? 'Сэтгэгдэл шинэчлэгдлээ.' : 'Comment updated.')
+            : (isMn ? 'Сэтгэгдэл нийтлэгдлээ.' : 'Comment posted.')
         );
         onSubmit?.(data.data, data.pointResult);
       } else {
-        toast.error(data.error || (isKo ? '작업에 실패했습니다.' : 'Operation failed.'));
+        toast.error(data.error || (isMn ? 'Үйлдэл амжилтгүй боллоо.' : 'Operation failed.'));
       }
     } catch (err) {
-      toast.error(isKo ? '오류가 발생했습니다.' : 'An error occurred.');
+      toast.error(isMn ? 'Алдаа гарлаа.' : 'An error occurred.');
     } finally {
       setSubmitting(false);
     }
@@ -101,7 +101,7 @@ export default function CommentForm({
     return (
       <div className={`p-4 rounded-lg bg-muted/50 text-center ${isReply ? 'ml-12' : ''}`}>
         <p className="text-sm text-muted-foreground">
-          {isKo ? '댓글을 작성하려면 로그인이 필요합니다.' : 'Please sign in to comment.'}
+          {isMn ? 'Сэтгэгдэл бичихийн тулд нэвтэрнэ үү.' : 'Please sign in to comment.'}
         </p>
       </div>
     );
@@ -120,7 +120,7 @@ export default function CommentForm({
         {replyToUser && (
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>@{replyToUser.nickname}</span>
-            {isKo ? '님에게 답글' : 'Replying to'}
+            {isMn ? 'Хариулах' : 'Replying to'}
           </div>
         )}
 
@@ -131,15 +131,15 @@ export default function CommentForm({
             onChange={(e) => setContent(e.target.value)}
             placeholder={
               mode === 'edit'
-                ? isKo
-                  ? '댓글을 수정하세요...'
+                ? isMn
+                  ? 'Сэтгэгдлээ засна уу...'
                   : 'Edit your comment...'
                 : isReply
-                  ? isKo
-                    ? '답글을 입력하세요...'
+                  ? isMn
+                    ? 'Хариултаа бичнэ үү...'
                     : 'Write a reply...'
-                  : isKo
-                    ? '댓글을 입력하세요...'
+                  : isMn
+                    ? 'Сэтгэгдлээ бичнэ үү...'
                     : 'Write a comment...'
             }
             className="min-h-[80px] resize-none pr-20"
@@ -178,7 +178,7 @@ export default function CommentForm({
               disabled={submitting}
             >
               <X className="w-4 h-4 mr-1" />
-              {isKo ? '취소' : 'Cancel'}
+              {isMn ? 'Болих' : 'Cancel'}
             </Button>
           )}
           <Button type="submit" size="sm" disabled={submitting || !content.trim()}>
@@ -187,7 +187,7 @@ export default function CommentForm({
             ) : (
               <Send className="w-4 h-4 mr-1" />
             )}
-            {mode === 'edit' ? (isKo ? '수정' : 'Update') : (isKo ? '작성' : 'Post')}
+            {mode === 'edit' ? (isMn ? 'Засах' : 'Update') : (isMn ? 'Нийтлэх' : 'Post')}
           </Button>
         </div>
       </div>

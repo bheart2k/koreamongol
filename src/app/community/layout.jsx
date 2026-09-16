@@ -1,3 +1,5 @@
+import styles from './community.module.css';
+import pageStyles from '@/components/guide/IllustratedGuide.module.css';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 
 const BASE_URL = 'https://koreamongol.com';
@@ -33,7 +35,7 @@ export default async function CommunityLayout({ children }) {
   return (
     <>
       <BreadcrumbJsonLd items={breadcrumbItems} />
-      {children}
+      <div className={`${pageStyles.page} ${styles.community}`}>{children}</div>
     </>
   );
 }

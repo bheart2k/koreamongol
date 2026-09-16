@@ -60,11 +60,11 @@
 .content > section { scroll-margin-top: 88px; padding: 28px; border: 1px solid var(--arrival-line); background: var(--arrival-card); border-radius: 24px; }
 .content > section > h2 { line-height: 1.5; font-size: 21px; letter-spacing: -.02em; }
 .content > section > h2 > svg { color: var(--arrival-ink); vertical-align: middle; }
-.content > section > div:global(.bg-card) { border-radius: 18px; padding: 20px; }
+.content > section > div > div > div:global(.bg-card) { border-radius: 18px; padding: 20px; }
 .content li { line-height: 1.8; }
 .content section p { line-height: 1.8; }
 .periodTitle { display: flex; align-items: center; gap: 16px; font-weight: 650; margin-bottom: 24px; }
-.periodTitle > span { flex-shrink: 0; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 16px; background: var(--arrival-sky); font-size: 17px; letter-spacing: .03em; }
+.periodTitle > span, .periodTitle > button > span > span { flex-shrink: 0; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 16px; background: var(--arrival-sky); font-size: 17px; letter-spacing: .03em; }
 .content .timeline { border-top: 3px solid var(--arrival-line); }
 .timeline button { border-radius: 14px; }
 .content .tip { background: var(--arrival-sky); border-color: var(--arrival-line); border-left-color: var(--navy-light); border-radius: 16px; }
@@ -101,10 +101,12 @@
   .content { gap: 22px; }
   .content > section { padding: 20px 16px; border-radius: 20px; }
   .content > section > h2 { font-size: 18px; }
-  .content > section > div:global(.bg-card) { padding: 14px; }
+  .content > section > div > div > div:global(.bg-card) { padding: 14px; }
   .periodTitle { gap: 12px; }
-  .periodTitle > span { width: 40px; height: 40px; font-size: 14px; }
+  .periodTitle > span, .periodTitle > button > span > span { width: 40px; height: 40px; font-size: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .page *, .page *::before, .page *::after { transition: none !important; animation: none !important; }
 }
+
+.periodTitle > button > span { display: flex; align-items: center; gap: 12px; }

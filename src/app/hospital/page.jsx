@@ -1,3 +1,4 @@
+import { GuideSection } from '@/components/guide/GuideSection';
 import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
 import styles from '@/components/guide/IllustratedGuide.module.css';
 import { Heart } from 'lucide-react';
@@ -38,7 +39,7 @@ export default function HospitalPage() {
 
       <IllustratedGuideBody sections={hospitalSections}>
         {/* Emergency Contacts (full list) */}
-        <section id="hospital-emergency">
+        <GuideSection alwaysOpen id="hospital-emergency">
           <h2 className="text-title text-navy dark:text-sky mb-6">Яаралтай холбоо барих</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {emergencyContacts.map((contact) => (
@@ -56,16 +57,16 @@ export default function HospitalPage() {
               </a>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Hospital Steps */}
-        <section id="hospital-steps">
+        <GuideSection id="hospital-steps">
           <h2 className="text-title text-navy dark:text-sky mb-6">Эмнэлэгт хандах</h2>
           <StepList steps={hospitalSteps} />
-        </section>
+        </GuideSection>
 
         {/* Pharmacy Guide */}
-        <section id="hospital-pharmacy">
+        <GuideSection id="hospital-pharmacy">
           <h2 className="text-title text-navy dark:text-sky mb-6">{pharmacyGuide.title}</h2>
           <StepList steps={pharmacyGuide.steps.map((s, i) => ({ title: `${i + 1}`, description: s }))} />
 
@@ -84,10 +85,10 @@ export default function HospitalPage() {
           <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Анхаар">
             <p>{pharmacyGuide.tip}</p>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Insurance Comparison */}
-        <section id="hospital-insurance">
+        <GuideSection id="hospital-insurance">
           <h2 className="text-title text-navy dark:text-sky mb-6">Даатгалын мэдээлэл</h2>
           <InfoTable
             headers={insuranceComparison.headers}
@@ -96,10 +97,10 @@ export default function HospitalPage() {
           <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Даатгалын зөвлөгөө">
             <p>Гадаадын иргэн 6 сар дээш оршин суувал Үндэсний эрүүл мэндийн даатгал (국민건강보험) заавал (E-9, D-2 визтэй бол ирсэн даруй). Сар бүр ~₩159,000 төлнө (2026 он).</p>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Undocumented Access */}
-        <section id="hospital-undocumented">
+        <GuideSection id="hospital-undocumented">
           <h2 className="text-title text-navy dark:text-sky mb-6">{undocumentedAccess.title}</h2>
           <div className="space-y-3 mb-4">
             {undocumentedAccess.items.map((item) => (
@@ -112,10 +113,10 @@ export default function HospitalPage() {
           <TipBox title="Мэдэх зүйл" className={styles.tip}>
             <p>{undocumentedAccess.warning}</p>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Interpreter Services */}
-        <section id="hospital-interpreter">
+        <GuideSection id="hospital-interpreter">
           <h2 className="text-title text-navy dark:text-sky mb-6">Орчуулга / Тусламж</h2>
           <TipBox title="1345 дуудах" className={styles.tip}>
             <p>1345 (гадаадын иргэдийн мэдээллийн төв) руу залгаж орчуулга хүсэх боломжтой. 20 хэлээр үйлчилнэ.</p>
@@ -125,10 +126,10 @@ export default function HospitalPage() {
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Situation Guides */}
-        <section id="hospital-situations">
+        <GuideSection id="hospital-situations">
           <h2 className="text-title text-navy dark:text-sky mb-6">Тохиолдлоор</h2>
           <Accordion type="single" collapsible className="w-full">
             {situationGuides.map((guide, i) => (
@@ -147,10 +148,10 @@ export default function HospitalPage() {
               </AccordionItem>
             ))}
           </Accordion>
-        </section>
+        </GuideSection>
 
         {/* Tips */}
-        <section id="hospital-tips">
+        <GuideSection id="hospital-tips">
           <h2 className="text-title text-navy dark:text-sky mb-6">Зөвлөгөө</h2>
           <WarningBox className={styles.warning}>
             <ul className="space-y-1">
@@ -160,7 +161,7 @@ export default function HospitalPage() {
               <li>• Өвчний шинж тэмдэг, эмийн нэрийг тэмдэглэх</li>
             </ul>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         <RelatedTips slugs={['hospital-visit', 'emergency-numbers']} />
 

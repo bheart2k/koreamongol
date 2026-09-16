@@ -1,3 +1,4 @@
+import { GuideSection } from '@/components/guide/GuideSection';
 import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
 import styles from '@/components/guide/IllustratedGuide.module.css';
 import {
@@ -53,7 +54,7 @@ export default function TransportPage() {
         </div>
 
         {/* T-money */}
-        <section id="tr-card">
+        <GuideSection id="tr-card">
           <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
             <CreditCard className="w-6 h-6" />
             {tmoney.title}
@@ -91,10 +92,10 @@ export default function TransportPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Metro */}
-        <section id="tr-metro">
+        <GuideSection id="tr-metro">
           <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
             <Train className="w-6 h-6" />
             {metro.title}
@@ -122,10 +123,10 @@ export default function TransportPage() {
               ))}
             </ul>
           </div>
-        </section>
+        </GuideSection>
 
         {/* Bus */}
-        <section id="tr-bus">
+        <GuideSection id="tr-bus">
           <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
             <Bus className="w-6 h-6" />
             {bus.title}
@@ -145,10 +146,10 @@ export default function TransportPage() {
           <WarningBox title="Буухдаа карт уншуул!" className={styles.warning}>
             <p>Автобуснаас буухдаа заавал карт уншуулаарай. Уншуулахгүй бол дараагийн тээвэрт шилжих хөнгөлөлт авахгүй.</p>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* Taxi */}
-        <section id="tr-taxi">
+        <GuideSection id="tr-taxi">
           <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
             <Car className="w-6 h-6" />
             {taxi.title}
@@ -200,10 +201,10 @@ export default function TransportPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* KTX */}
-        <section id="tr-ktx">
+        <GuideSection id="tr-ktx">
           <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
             <Zap className="w-6 h-6" />
             {ktx.title}
@@ -227,10 +228,10 @@ export default function TransportPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Apps */}
-        <section id="tr-apps">
+        <GuideSection id="tr-apps">
           <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
             <Smartphone className="w-6 h-6" />
             Тээврийн аппууд
@@ -248,10 +249,10 @@ export default function TransportPage() {
               </div>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Tips */}
-        <section id="tr-tips">
+        <GuideSection id="tr-tips">
           <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
             <Lightbulb className="w-6 h-6" />
             Зөвлөгөө
@@ -263,17 +264,17 @@ export default function TransportPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Links */}
-        <section id="tr-links">
+        <GuideSection id="tr-links">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линкүүд</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {transportLinks.map((link) => (
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         <RelatedTips slugs={['tmoney-card']} />
 

@@ -1,3 +1,4 @@
+import { GuideSection } from '@/components/guide/GuideSection';
 import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
 import styles from '@/components/guide/IllustratedGuide.module.css';
 import { BookOpen } from 'lucide-react';
@@ -40,13 +41,13 @@ export default function KoreanLifePage() {
         </TipBox>
 
         {/* Daily Korean */}
-        <section id="kl-daily">
+        <GuideSection id="kl-daily">
           <h2 className="text-title text-navy dark:text-sky mb-6">Өдөр тутмын хэллэг</h2>
           <KoreanLifeTabs />
-        </section>
+        </GuideSection>
 
         {/* Misunderstandings */}
-        <section id="kl-misunderstand">
+        <GuideSection id="kl-misunderstand">
           <h2 className="text-title text-navy dark:text-sky mb-6">Буруу ойлголт</h2>
           <Accordion type="single" collapsible className="w-full">
             {koreanMisunderstandings.map((item, i) => (
@@ -62,20 +63,20 @@ export default function KoreanLifePage() {
               </AccordionItem>
             ))}
           </Accordion>
-        </section>
+        </GuideSection>
 
         {/* Cultural Points */}
-        <section id="kl-culture">
+        <GuideSection id="kl-culture">
           <h2 className="text-title text-navy dark:text-sky mb-6">Соёлын ялгаа</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {culturalPoints.map((point) => (
               <CultureCard key={point.title} {...point} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Common Mistakes */}
-        <section id="kl-mistakes">
+        <GuideSection id="kl-mistakes">
           <h2 className="text-title text-navy dark:text-sky mb-6">Түгээмэл алдаа TOP 5</h2>
           <div className="space-y-3">
             {commonMistakes.map((mistake, i) => (
@@ -84,17 +85,17 @@ export default function KoreanLifePage() {
               </TipBox>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Learning Resources */}
-        <section id="kl-resources">
+        <GuideSection id="kl-resources">
           <h2 className="text-title text-navy dark:text-sky mb-6">Суралцах эх сурвалж</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {learningResources.map((link) => (
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         <ReportBanner pageUrl="/korean-life" />
         <DonateBanner />

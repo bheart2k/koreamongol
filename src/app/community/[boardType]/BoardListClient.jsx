@@ -70,12 +70,12 @@ function formatDate(dateString) {
   const hours = Math.floor(diff / 3600000);
   const days = Math.floor(diff / 86400000);
 
-  if (minutes < 1) return '방금 전';
-  if (minutes < 60) return `${minutes}분 전`;
-  if (hours < 24) return `${hours}시간 전`;
-  if (days < 7) return `${days}일 전`;
+  if (minutes < 1) return 'Саяхан';
+  if (minutes < 60) return `${minutes} минутын өмнө`;
+  if (hours < 24) return `${hours} цагийн өмнө`;
+  if (days < 7) return `${days} өдрийн өмнө`;
 
-  return date.toLocaleDateString('ko-KR', {
+  return date.toLocaleDateString('mn-MN', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -326,7 +326,7 @@ function PostItem({ post, boardType }) {
                   ) : (
                     <User className="w-4 h-4" />
                   )}
-                  <span>{post.author?.nickname || '익명'}</span>
+                  <span>{post.author?.nickname || 'Нэргүй'}</span>
                 </div>
                 <div className="flex items-center gap-1">
                   <Clock className="w-3 h-3" />

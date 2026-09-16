@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, PencilLine } from 'lucide-react';
 import { toast } from 'sonner';
+import styles from './GuideDialog.module.css';
 import {
   Dialog,
   DialogContent,
@@ -29,6 +30,7 @@ export function getClientMeta() {
 }
 
 export default function ReportDialog({ open, onOpenChange, pageUrl }) {
+  const titleRef = useRef(null);
   const { data: session } = useSession();
   const [description, setDescription] = useState('');
   const [email, setEmail] = useState('');
@@ -107,15 +109,16 @@ export default function ReportDialog({ open, onOpenChange, pageUrl }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Мэдээлэл засах</DialogTitle>
-          <DialogDescription>
+      <DialogContent className={styles.dialog} overlayClassName={styles.overlay} closeLabel="Хаах"
+        onOpenAutoFocus={(event) => { event.preventDefault(); titleRef.current?.focus({ preventScroll: true }); }}>
+        <DialogHeader className={styles.header}>
+          <DialogTitle ref={titleRef} tabIndex={-1} className={styles.title}><PencilLine aria-hidden="true" />Мэдээлэл засах</DialogTitle>
+          <DialogDescription className={styles.description}>
             Буруу мэдээлэл олсон бол бидэнд мэдэгдэнэ үү.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={styles.form}>
           {/* 감지된 섹션 표시 */}
           {currentSection.title && (
             <div className="space-y-1">
@@ -158,7 +161,7 @@ export default function ReportDialog({ open, onOpenChange, pageUrl }) {
             </p>
           </div>
 
-          <div className="flex justify-end gap-2">
+          <div className={styles.actions}>
             <Button
               type="button"
               variant="outline"
@@ -167,7 +170,7 @@ export default function ReportDialog({ open, onOpenChange, pageUrl }) {
             >
               Болих
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} className={styles.submit}>
               {loading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
               Илгээх
             </Button>

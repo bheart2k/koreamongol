@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { motion } from 'motion/react';
+import styles from './about.module.css';
+import pageStyles from '@/components/guide/IllustratedGuide.module.css';
 import {
-  Heart, Globe, Mail, Sparkles,
+  Heart, Mail, Sparkles, ArrowRight, ChevronRight,
   AlertTriangle, Target, Shield,
   FileText, Plane, Hospital, Banknote, MessageCircle,
   Briefcase, Home, GraduationCap, Calculator, Train, Phone,
@@ -68,61 +69,51 @@ const targetUsers = [
 
 export default function AboutContent() {
   return (
-    <main className="min-h-content bg-background">
+    <main className={`${pageStyles.page} ${styles.page} min-h-content`}>
       {/* Hero */}
-      <section className="relative py-16 md:py-24 px-6">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 right-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
-        </div>
-        <div className="relative max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+      <section className={styles.hero}>
+        <nav className={styles.breadcrumb} aria-label="Хуудасны зам">
+          <Link href="/" aria-label="Нүүр"><Home aria-hidden="true" /></Link>
+          <ChevronRight aria-hidden="true" /><span aria-current="page">Танилцуулга</span>
+        </nav>
+        <div className={styles.heroText}>
+          <div
           >
-            <h1 className="text-display mb-6">
+            <h1 className={styles.title}>
               Солонгос ба Монголын
               <br />
-              <span className="text-accent">хоорондын гүүр</span>
+              <span>хоорондын гүүр</span>
             </h1>
-            <p className="text-body-lg text-muted-foreground max-w-xl mx-auto">
+            <p className={styles.intro}>
               Солонгост амьдарч, ажиллаж, суралцаж буй монгол иргэдэд зориулсан монгол хэлээрх амьдралын гарын авлага.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Why KoreaMongol */}
-      <section className="py-16 md:py-20 px-6 bg-muted/30">
+      <section className={styles.section}>
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+          <div
+            className={styles.sectionHeading}
           >
-            <h2 className="text-headline mb-4">Яагаад KoreaMongol?</h2>
-          </motion.div>
+            <h2 className={styles.sectionTitle}>Яагаад KoreaMongol?</h2>
+          </div>
 
-          <div className="grid sm:grid-cols-3 gap-6">
+          <div className={styles.threeColumns}>
             {whyReasons.map((item, index) => {
               const Icon = item.icon;
               return (
-                <motion.div
+                <div
                   key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-card border border-border rounded-2xl p-6 text-center"
+                  className={styles.infoCard}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-6 h-6 text-accent" />
+                  <div className={styles.infoIcon}>
+                    <Icon className="w-5 h-5" aria-hidden="true" />
                   </div>
                   <h3 className="font-semibold mb-2">{item.title}</h3>
                   <p className="text-sm text-muted-foreground">{item.desc}</p>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -130,53 +121,45 @@ export default function AboutContent() {
       </section>
 
       {/* Our Guides */}
-      <section className="py-16 md:py-20 px-6">
+      <section className={styles.section}>
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+          <div
+            className={styles.sectionHeading}
           >
-            <h2 className="text-headline mb-4">Бидний гарын авлага</h2>
+            <h2 className={styles.sectionTitle}>Бидний гарын авлага</h2>
             <p className="text-body text-muted-foreground">
               Солонгос амьдралын бүх чиглэлд туслах мэдээлэл
             </p>
-          </motion.div>
+          </div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className={styles.guideGrid}>
             {guides.map((guide, index) => {
               const Icon = guide.icon;
               return (
-                <motion.div
+                <div
                   key={guide.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
                 >
                   <Link
                     href={guide.href}
-                    className="block h-full p-4 rounded-xl border border-border bg-card hover:border-accent/40 hover:shadow-sm transition-all"
+                    className={styles.guideLink}
                   >
-                    <Icon className="w-5 h-5 text-accent mb-2" />
+                    <Icon className={styles.linkIcon} aria-hidden="true" /><ArrowRight className={styles.linkArrow} aria-hidden="true" />
                     <p className="text-sm font-semibold mb-1">{guide.title}</p>
                     <p className="text-xs text-muted-foreground">{guide.desc}</p>
                   </Link>
-                </motion.div>
+                </div>
               );
             })}
           </div>
 
-          <div className="mt-4 max-w-xs mx-auto">
+          <div className={styles.tools}>
             {tools.map((tool) => {
               const Icon = tool.icon;
               return (
                 <Link
                   key={tool.href}
                   href={tool.href}
-                  className="flex items-center gap-3 p-4 rounded-xl border border-border bg-card hover:border-accent/40 hover:shadow-sm transition-all"
+                  className={styles.toolLink}
                 >
                   <Icon className="w-5 h-5 text-accent shrink-0" />
                   <div>
@@ -191,36 +174,28 @@ export default function AboutContent() {
       </section>
 
       {/* Target Users */}
-      <section className="py-16 md:py-20 px-6 bg-muted/30">
+      <section className={styles.section}>
         <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
+          <div
+            className={styles.sectionHeading}
           >
-            <h2 className="text-headline mb-4">Хэнд зориулсан?</h2>
-          </motion.div>
+            <h2 className={styles.sectionTitle}>Хэнд зориулсан?</h2>
+          </div>
 
-          <div className="grid sm:grid-cols-3 gap-6">
+          <div className={styles.threeColumns}>
             {targetUsers.map((item, index) => {
               const Icon = item.icon;
               return (
-                <motion.div
+                <div
                   key={item.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-card border border-border rounded-2xl p-6 text-center"
+                  className={styles.infoCard}
                 >
-                  <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-4">
-                    <Icon className="w-6 h-6 text-accent" />
+                  <div className={styles.infoIcon}>
+                    <Icon className="w-5 h-5" aria-hidden="true" />
                   </div>
                   <h3 className="font-semibold mb-2">{item.title}</h3>
                   <p className="text-sm text-muted-foreground">{item.desc}</p>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -228,16 +203,12 @@ export default function AboutContent() {
       </section>
 
       {/* Mission */}
-      <section className="py-16 md:py-20 px-6">
+      <section className={styles.section}>
         <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
           >
-            <h2 className="text-headline mb-8 text-center">Бидний зорилго</h2>
-            <div className="bg-card border border-border rounded-2xl p-8 md:p-10">
+            <h2 className={styles.sectionTitle}>Бидний зорилго</h2>
+            <div className={styles.prose}>
               <div className="space-y-6 text-body text-muted-foreground">
                 <p>
                   Солонгост олон мянган монгол иргэн амьдарч байна. Гэвч монгол хэлээрх найдвартай мэдээллийн эх сурвалж дутмаг.
@@ -250,24 +221,20 @@ export default function AboutContent() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Creator */}
-      <section className="py-16 md:py-20 px-6 bg-muted/30">
+      <section className={styles.section}>
         <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
           >
-            <h2 className="text-headline mb-8 text-center">Хөгжүүлэгч</h2>
-            <div className="bg-card border border-border rounded-2xl p-8 md:p-10">
+            <h2 className={styles.sectionTitle}>Хөгжүүлэгч</h2>
+            <div className={styles.prose}>
               <div className="flex items-start gap-6 mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent/20 to-accent/5 flex items-center justify-center shrink-0">
-                  <Sparkles className="w-8 h-8 text-accent" />
+                <div className={styles.creatorIcon}>
+                  <Sparkles className="w-6 h-6" aria-hidden="true" />
                 </div>
                 <div>
                   <h3 className="text-title font-semibold mb-1">KoreaMongol</h3>
@@ -283,29 +250,25 @@ export default function AboutContent() {
                 </p>
               </div>
               <div className="mt-8 pt-6 border-t border-border">
-                <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                  <Mail className="w-4 h-4" />
-                  <a href="mailto:koreamongol@googlegroups.com" className="hover:text-accent transition-colors">
+                <div className="flex items-start gap-3 text-sm text-muted-foreground">
+                  <Mail className="w-4 h-4 shrink-0 mt-1" aria-hidden="true" />
+                  <a href="mailto:koreamongol@googlegroups.com" className={styles.email}>
                     koreamongol@googlegroups.com
                   </a>
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Together */}
-      <section className="py-16 md:py-20 px-6">
+      <section className={styles.section}>
         <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
           >
-            <h2 className="text-headline mb-8 text-center">Хамтдаа бүтээе</h2>
-            <div className="bg-card border-2 border-gold/30 rounded-2xl p-8 md:p-10">
+            <h2 className={styles.sectionTitle}>Хамтдаа бүтээе</h2>
+            <div className={`${styles.prose} ${styles.notice}`}>
               <div className="space-y-4 text-body text-muted-foreground">
                 <p>
                   Бид мэдээлэл бүрийг нягтлан шалгаж бичсэн. Гэхдээ хууль, журам, үнэ ханш байнга өөрчлөгддөг тул алдаа байж болно.
@@ -318,35 +281,31 @@ export default function AboutContent() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-16 md:py-24 px-6">
+      <section className={styles.section}>
         <div className="max-w-2xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
           >
-            <h2 className="text-headline mb-4">Хамтдаа</h2>
+            <h2 className={styles.sectionTitle}>Хамтдаа</h2>
             <p className="text-body text-muted-foreground mb-8">
               Асуулт, санал байвал хүссэн үедээ холбогдоно уу.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button asChild variant="outline" size="lg">
+              <Button asChild variant="outline" size="lg" className="hover:bg-secondary hover:text-secondary-foreground">
                 <Link href="/contact">Холбоо барих</Link>
               </Button>
-              <Button asChild size="lg" className="bg-gold hover:bg-gold/90 text-navy">
+              <Button asChild size="lg" className="bg-terracotta hover:bg-terracotta-dark text-white">
                 <Link href="/donate">
                   <Heart className="w-4 h-4 mr-2" />
                   Дэмжлэг үзүүлэх
                 </Link>
               </Button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </main>

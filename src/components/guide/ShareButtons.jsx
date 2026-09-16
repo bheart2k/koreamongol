@@ -34,18 +34,18 @@ export function ShareButtons() {
   }, [url]);
 
   return (
-    <div className="mb-4 p-5 rounded-lg border border-border bg-card">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <div className="flex items-center gap-2 flex-1">
+    <div className="py-2">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <div className="flex items-center gap-2">
           <Share2 className="w-4 h-4 text-navy dark:text-sky shrink-0" />
-          <p className="text-sm font-medium text-foreground">
+          <p className="text-xs text-muted-foreground">
             Найзууддаа хуваалцаарай
           </p>
         </div>
         <div className="flex items-center gap-2">
           <button
             onClick={shareToFacebook}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium bg-[#1877F2] text-white hover:bg-[#1877F2]/90 transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-11 rounded-md text-xs font-medium border border-border bg-background text-foreground hover:bg-secondary hover:text-secondary-foreground hover:border-navy-light/40 dark:hover:border-sky/40 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta"
             aria-label="Facebook-д хуваалцах"
           >
             <Facebook className="w-3.5 h-3.5" />
@@ -53,7 +53,7 @@ export function ShareButtons() {
           </button>
           <button
             onClick={copyLink}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium border border-border bg-background text-foreground hover:bg-muted transition-colors"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-11 rounded-md text-xs font-medium border border-border bg-background text-foreground hover:bg-secondary hover:text-secondary-foreground hover:border-navy-light/40 dark:hover:border-sky/40 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta"
             aria-label="Линк хуулах"
           >
             {copied ? (

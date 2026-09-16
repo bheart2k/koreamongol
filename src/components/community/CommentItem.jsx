@@ -16,36 +16,36 @@ import { toast } from 'sonner';
 import { ConfirmDialog } from '@/components/ui/confirm-dialog';
 import CommentForm from './CommentForm';
 
-function formatDate(dateString, locale = 'ko') {
+function formatDate(dateString, locale = 'mn') {
   const date = new Date(dateString);
   const now = new Date();
   const diff = now - date;
 
   // 1분 이내
   if (diff < 60 * 1000) {
-    return locale === 'ko' ? '방금 전' : 'Just now';
+    return locale === 'mn' ? 'Саяхан' : 'Just now';
   }
 
   // 1시간 이내
   if (diff < 60 * 60 * 1000) {
     const mins = Math.floor(diff / (60 * 1000));
-    return locale === 'ko' ? `${mins}분 전` : `${mins}m ago`;
+    return locale === 'mn' ? `${mins} минутын өмнө` : `${mins}m ago`;
   }
 
   // 24시간 이내
   if (diff < 24 * 60 * 60 * 1000) {
     const hours = Math.floor(diff / (60 * 60 * 1000));
-    return locale === 'ko' ? `${hours}시간 전` : `${hours}h ago`;
+    return locale === 'mn' ? `${hours} цагийн өмнө` : `${hours}h ago`;
   }
 
   // 7일 이내
   if (diff < 7 * 24 * 60 * 60 * 1000) {
     const days = Math.floor(diff / (24 * 60 * 60 * 1000));
-    return locale === 'ko' ? `${days}일 전` : `${days}d ago`;
+    return locale === 'mn' ? `${days} өдрийн өмнө` : `${days}d ago`;
   }
 
   // 그 외
-  return date.toLocaleDateString(locale === 'ko' ? 'ko-KR' : 'en-US', {
+  return date.toLocaleDateString(locale === 'mn' ? 'mn-MN' : 'en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -70,12 +70,12 @@ export default function CommentItem({
   onDelete,
   onUpdate,
   onLikeToggle,
-  locale = 'ko',
+  locale = 'mn',
   isReply = false,
   boardType,
 }) {
   const { data: session } = useSession();
-  const isKo = locale === 'ko';
+  const isMn = locale === 'mn';
 
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
@@ -103,14 +103,14 @@ export default function CommentItem({
       const data = await res.json();
 
       if (data.success) {
-        toast.error(isKo ? '댓글이 삭제되었습니다.' : 'Comment deleted.');
+        toast.error(isMn ? 'Сэтгэгдэл устгагдлаа.' : 'Comment deleted.');
         onDelete?.(comment.id, comment.parentComment);
       } else {
-        toast.error(data.error || (isKo ? '삭제에 실패했습니다.' : 'Failed to delete comment.'));
+        toast.error(data.error || (isMn ? 'Устгаж чадсангүй.' : 'Failed to delete comment.'));
       }
     } catch (err) {
       console.error(err);
-      toast.error(isKo ? '삭제 중 오류가 발생했습니다.' : 'An error occurred.');
+      toast.error(isMn ? 'Устгахад алдаа гарлаа.' : 'An error occurred.');
     } finally {
       setDeleting(false);
       setShowDeleteDialog(false);
@@ -182,7 +182,7 @@ export default function CommentItem({
           {/* 헤더 */}
           <div className="flex items-center gap-2 flex-wrap">
             <span className="font-medium text-sm">
-              {comment.author?.nickname || (isKo ? '익명' : 'Anonymous')}
+              {comment.author?.nickname || (isMn ? 'Нэргүй' : 'Anonymous')}
             </span>
             {comment.author?.level && (
               <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
@@ -194,7 +194,7 @@ export default function CommentItem({
             </span>
             {comment.createdAt !== comment.updatedAt && (
               <span className="text-xs text-muted-foreground">
-                ({isKo ? '수정됨' : 'edited'})
+                ({isMn ? 'зассан' : 'edited'})
               </span>
             )}
           </div>
@@ -214,7 +214,7 @@ export default function CommentItem({
               <p className="text-sm whitespace-pre-wrap break-words">
                 {comment.replyToUser && (
                   <span className="text-primary font-medium mr-1">
-                    @{comment.replyToUser.nickname || (isKo ? '알 수 없음' : 'Unknown')}
+                    @{comment.replyToUser.nickname || (isMn ? 'Тодорхойгүй' : 'Unknown')}
                   </span>
                 )}
                 {comment.content}
@@ -256,7 +256,7 @@ export default function CommentItem({
                   className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
-                  {isKo ? '답글' : 'Reply'}
+                  {isMn ? 'Хариулах' : 'Reply'}
                 </button>
               )}
 
@@ -268,7 +268,7 @@ export default function CommentItem({
                   className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
-                  {isKo ? '수정' : 'Edit'}
+                  {isMn ? 'Засах' : 'Edit'}
                 </button>
               )}
 
@@ -280,7 +280,7 @@ export default function CommentItem({
                   className="text-xs text-muted-foreground hover:text-destructive transition-colors flex items-center gap-1"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
-                  {isKo ? '삭제' : 'Delete'}
+                  {isMn ? 'Устгах' : 'Delete'}
                 </button>
               )}
             </div>
@@ -298,8 +298,8 @@ export default function CommentItem({
               ) : (
                 <ChevronDown className="w-3.5 h-3.5" />
               )}
-              {isKo
-                ? `답글 ${comment.replies.length}개 ${showReplies ? '숨기기' : '보기'}`
+              {isMn
+                ? `${comment.replies.length} хариулт ${showReplies ? 'нуух' : 'харах'}`
                 : `${showReplies ? 'Hide' : 'Show'} ${comment.replies.length} ${comment.replies.length === 1 ? 'reply' : 'replies'}`}
             </button>
           )}
@@ -352,10 +352,10 @@ export default function CommentItem({
         open={showDeleteDialog}
         onOpenChange={setShowDeleteDialog}
         variant="error"
-        title={isKo ? '댓글 삭제' : 'Delete Comment'}
-        description={isKo ? '정말 이 댓글을 삭제하시겠습니까?' : 'Are you sure you want to delete this comment?'}
-        cancelText={isKo ? '취소' : 'Cancel'}
-        confirmText={isKo ? '삭제' : 'Delete'}
+        title={isMn ? 'Сэтгэгдэл устгах' : 'Delete Comment'}
+        description={isMn ? 'Энэ сэтгэгдлийг устгах уу?' : 'Are you sure you want to delete this comment?'}
+        cancelText={isMn ? 'Болих' : 'Cancel'}
+        confirmText={isMn ? 'Устгах' : 'Delete'}
         loading={deleting}
         onConfirm={handleDelete}
       />

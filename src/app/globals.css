@@ -256,13 +256,13 @@
   }
 
   html {
-    overflow-y: scroll;
-    background-color: var(--navy);
-    scrollbar-gutter: stable;
+    background-color: var(--background);
+    scrollbar-gutter: auto;
   }
 
   ::-webkit-scrollbar {
     width: 12px;
+    height: 12px;
     background-color: var(--bg-sky);
   }
 
@@ -283,6 +283,19 @@
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--navy-light) var(--bg-sky);
+  }
+
+  /* Mobile page scrolling must not reserve a desktop scrollbar column.
+     Nested scrollers (including tables) retain their own scrollbars. */
+  @media (max-width: 639px), (pointer: coarse) {
+    html {
+      scrollbar-width: none;
+    }
+    html::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
+    }
   }
 
   body {

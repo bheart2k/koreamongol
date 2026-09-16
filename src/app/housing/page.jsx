@@ -1,3 +1,4 @@
+import { GuideSection } from '@/components/guide/GuideSection';
 import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
 import styles from '@/components/guide/IllustratedGuide.module.css';
 import { Home, ExternalLink } from 'lucide-react';
@@ -33,7 +34,7 @@ export default function HousingPage() {
 
       <IllustratedGuideBody sections={housingSections}>
         {/* Housing Types */}
-        <section id="housing-types">
+        <GuideSection id="housing-types">
           <h2 className="text-title text-navy dark:text-sky mb-6">Байрны төрлүүд</h2>
           <InfoTable
             headers={housingTypes.comparison.headers}
@@ -63,10 +64,10 @@ export default function HousingPage() {
               </div>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Cost System */}
-        <section id="housing-cost-system">
+        <GuideSection id="housing-cost-system">
           <h2 className="text-title text-navy dark:text-sky mb-6">Барьцаа / Түрээс / 관리비</h2>
 
           <div className="space-y-3 mb-6">
@@ -95,10 +96,10 @@ export default function HousingPage() {
           <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Өвөл анхааруулга">
             <p>{costSystem.winterWarning}</p>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* How to Find */}
-        <section id="housing-how-to-find">
+        <GuideSection id="housing-how-to-find">
           <h2 className="text-title text-navy dark:text-sky mb-6">Байр хайх арга</h2>
           <div className="space-y-3">
             {housingSearchMethods.map((method) => (
@@ -120,10 +121,10 @@ export default function HousingPage() {
               </div>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Contract */}
-        <section id="housing-contract">
+        <GuideSection id="housing-contract">
           <h2 className="text-title text-navy dark:text-sky mb-6">Гэрээний чеклист</h2>
           <StepList steps={contractSteps} />
           <div className="mt-6">
@@ -136,10 +137,10 @@ export default function HousingPage() {
               ))}
             </ul>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* Move-in Life */}
-        <section id="housing-move-in">
+        <GuideSection id="housing-move-in">
           <h2 className="text-title text-navy dark:text-sky mb-6">Нүүж орсны дараа</h2>
 
           <h3 className="text-base font-semibold font-heading mb-3">Хог ангилал (분리수거)</h3>
@@ -172,10 +173,10 @@ export default function HousingPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Scam Warnings */}
-        <section id="housing-warnings">
+        <GuideSection id="housing-warnings">
           <h2 className="text-title text-navy dark:text-sky mb-6">Залилан сэрэмжлүүлэг</h2>
           <WarningBox title="Залилангаас сэргийлэх" className={styles.warning}>
             <ul className="space-y-1">
@@ -191,10 +192,10 @@ export default function HousingPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Links */}
-        <section id="housing-links">
+        <GuideSection id="housing-links">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй утас / Линк</h2>
           <div className="grid sm:grid-cols-2 gap-3 mb-6">
             {housingContacts.map((contact) => (
@@ -217,7 +218,7 @@ export default function HousingPage() {
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         <RelatedTips slugs={['housing-deposit']} />
 

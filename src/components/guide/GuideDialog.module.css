@@ -1,0 +1,31 @@
+.overlay { background: rgb(15 26 46 / .48); }
+.dialog { --dialog-paper: #fffdf9; --dialog-field: #faf6f0; --dialog-ink: #1b2d4f; --dialog-copy: #53647a; --dialog-line: #dce5ef; width: min(480px, calc(100vw - 32px)); max-width: 480px; max-height: calc(100dvh - 32px); overflow-y: auto; overscroll-behavior: contain; padding: 28px; gap: 24px; border: 1px solid var(--dialog-line); border-radius: 20px; background: var(--dialog-paper); color: var(--dialog-ink); box-shadow: 0 24px 80px #0f1a2e30; }
+:global(.dark) .dialog { --dialog-paper: #1b2d4f; --dialog-field: #152235; --dialog-ink: #e8f0fe; --dialog-copy: #b9c8dc; --dialog-line: #364c6b; }
+.header { text-align: left; padding-right: 24px; gap: 10px; }
+.title { display: flex; align-items: center; gap: 10px; font-size: 21px; line-height: 1.5; font-weight: 650; outline: none; }
+.title svg { width: 21px; height: 21px; flex-shrink: 0; color: var(--terracotta); }
+.description { font-size: 13px; line-height: 1.8; color: var(--dialog-copy); }
+.form { display: grid; gap: 20px; min-width: 0; }
+.form label { font-size: 13px; font-weight: 600; color: var(--dialog-ink); }
+.form input, .form textarea { width: 100%; min-width: 0; border: 1px solid var(--dialog-line); border-radius: 10px; background: var(--dialog-field); color: var(--dialog-ink); font-size: 16px; box-shadow: none; }
+.form input { min-height: 46px; padding: 10px 12px; }
+.form textarea { min-height: 140px; padding: 12px; line-height: 1.7; resize: vertical; }
+.form input::placeholder, .form textarea::placeholder { color: var(--dialog-copy); opacity: .8; }
+.form input:focus-visible, .form textarea:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 2px; box-shadow: none; }
+.form p { line-height: 1.7; }
+.actions { display: flex; justify-content: flex-end; gap: 10px; padding-top: 18px; border-top: 1px solid var(--dialog-line); }
+.actions button { min-height: 44px; min-width: 88px; border-radius: 10px; }
+.actions .submit { background: var(--terracotta); color: #fff; }
+.actions .submit:hover { background: var(--terracotta-dark); }
+.dialog > button { display: grid; place-items: center; top: 12px; right: 12px; width: 36px; height: 36px; border-radius: 10px; color: var(--dialog-copy); opacity: 1; }
+.dialog > button:hover { background: var(--dialog-field); }
+.dialog[data-state='open'] { animation: enter .18s ease-out; }
+.dialog[data-state='closed'] { animation: leave .12s ease-in; }
+@keyframes enter { from { opacity: 0; } to { opacity: 1; } }
+@keyframes leave { to { opacity: 0; } }
+@media (max-width: 639px) {
+  .dialog { padding: 24px 20px; gap: 20px; }
+  .title { font-size: 19px; }
+  .actions { display: grid; grid-template-columns: 1fr 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .dialog[data-state], .overlay[data-state] { animation: none; } }

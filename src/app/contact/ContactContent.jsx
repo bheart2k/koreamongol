@@ -2,7 +2,9 @@
 
 import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { motion } from 'motion/react';
+import styles from '@/components/guide/ServicePages.module.css';
+import contact from './contact.module.css';
+import pageStyles from '@/components/guide/IllustratedGuide.module.css';
 import { Mail, Send, CheckCircle, AlertCircle, HelpCircle, Lightbulb, Bug, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,10 +36,10 @@ const faqs = [
 ];
 
 const CATEGORIES = [
-  { value: 'general', label: 'Ерөнхий асуулт', icon: MessageCircle, color: 'text-blue-600 bg-blue-100' },
-  { value: 'improvement', label: 'Сайжруулалт', icon: Lightbulb, color: 'text-yellow-600 bg-yellow-100' },
-  { value: 'bug', label: 'Алдаа мэдэгдэх', icon: Bug, color: 'text-red-600 bg-red-100' },
-  { value: 'other', label: 'Бусад', icon: HelpCircle, color: 'text-gray-600 bg-gray-100' },
+  { value: 'general', label: 'Ерөнхий асуулт', icon: MessageCircle, tone: 'blue' },
+  { value: 'improvement', label: 'Сайжруулалт', icon: Lightbulb, tone: 'amber' },
+  { value: 'bug', label: 'Алдаа мэдэгдэх', icon: Bug, tone: 'coral' },
+  { value: 'other', label: 'Бусад', icon: HelpCircle, tone: 'purple' },
 ];
 
 function getClientMeta() {
@@ -114,73 +116,44 @@ function ContactPageContent() {
   };
 
   return (
-    <main className="min-h-content bg-background">
+    <main className={`${pageStyles.page} ${styles.page} ${contact.page} min-h-content`}>
       {/* Hero Section */}
-      <section className="relative py-16 md:py-24 px-6">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-20 left-1/4 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <h1 className="text-display mb-6">Холбоо барих</h1>
-            <p className="text-body-lg text-muted-foreground max-w-xl mx-auto whitespace-pre-line">
-              {'Асуулт, санал, сэтгэгдэл байвал хүссэн үедээ холбогдоно уу.\nАль болох хурдан хариу өгөхийг хичээнэ.'}
-            </p>
-          </motion.div>
+      <section>
+        <div className="max-w-4xl mx-auto">
+          <div className={contact.eyebrow}><MessageCircle size={18} aria-hidden="true" /> KOREAMONGOL · ХОЛБОО БАРИХ</div>
+          <h1 className="font-bold mb-4">Холбоо барих</h1>
+          <p className="text-base text-muted-foreground max-w-xl">
+            Асуулт, санал, сэтгэгдэл байвал хүссэн үедээ холбогдоно уу. Аль болох хурдан хариу өгөхийг хичээнэ.
+          </p>
         </div>
       </section>
 
       {/* Contact Info & Form Section */}
       <section className="py-8 md:py-16 px-6">
         <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-5 gap-8 md:gap-12">
-            {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="md:col-span-2"
-            >
-              <h2 className="text-headline mb-6">Холбоо барих</h2>
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-5 h-5 text-accent" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium mb-1">Имэйл</h3>
-                    <a
-                      href="mailto:koreamongol@googlegroups.com"
-                      className="text-sm text-muted-foreground hover:text-accent transition-colors"
-                    >
-                      koreamongol@googlegroups.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="bg-muted/30 rounded-xl p-4">
-                  <p className="text-sm text-muted-foreground">
-                    Ажлын өдрөөр 1-2 хоногт хариу өгнө. Яаралтай асуудал бол имэйлээр шууд холбогдоно уу.
-                  </p>
+          <div className={contact.layout}>
+            <aside className={contact.aside}>
+              <div className={contact.note}>
+                <span className={contact.noteIcon}><Mail size={23} aria-hidden="true" /></span>
+                <h2>Шууд холбогдох</h2>
+                <p>Имэйлээр холбогдохыг хүсвэл:</p>
+                <a href="mailto:koreamongol@googlegroups.com">koreamongol@googlegroups.com</a>
+                <div className={contact.response}>
+                  <h3>Хариу өгөх хугацаа</h3>
+                  <p>Ажлын өдрөөр 1-2 хоногт хариу өгнө. Яаралтай асуудал бол имэйлээр шууд холбогдоно уу.</p>
                 </div>
               </div>
-            </motion.div>
+              <div className={contact.hint}>
+                <Lightbulb size={19} aria-hidden="true" />
+                <p>Алдаа мэдэгдэх бол тухайн хуудасны холбоос, юу болсныг хамт бичээрэй.</p>
+              </div>
+            </aside>
 
             {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="md:col-span-3"
+            <div
+              className={contact.formColumn}
             >
-              <div className="bg-card border border-border rounded-2xl p-6 md:p-8">
+              <div className={`${styles.form} ${contact.form}`}>
                 {status === 'success' ? (
                   <div className="text-center py-8">
                     <CheckCircle className="w-16 h-16 text-success mx-auto mb-4" />
@@ -189,7 +162,7 @@ function ContactPageContent() {
                       Аль болох хурдан хариу өгөхийг хичээнэ.
                     </p>
                     <Button
-                      variant="outline"
+                      variant="outline" className="hover:bg-secondary hover:text-secondary-foreground"
                       onClick={() => setStatus('idle')}
                     >
                       Шинэ мессеж бичих
@@ -197,10 +170,14 @@ function ContactPageContent() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className={contact.formHeading}>
+                      <h2>Мессеж илгээх</h2>
+                      <p>Асуулт, санал эсвэл тулгарсан асуудлаа бидэнд бичээрэй.</p>
+                    </div>
                     {/* 카테고리 선택 */}
-                    <div>
-                      <label className="block text-sm font-medium mb-3">Төрөл</label>
-                      <div className="grid grid-cols-2 gap-2">
+                    <fieldset>
+                      <legend className="block text-sm font-medium mb-3">Төрөл</legend>
+                      <div className={`${styles.categories} grid grid-cols-2 gap-2`}>
                         {CATEGORIES.map((cat) => {
                           const Icon = cat.icon;
                           const isSelected = selectedCategory === cat.value;
@@ -209,21 +186,16 @@ function ContactPageContent() {
                               key={cat.value}
                               type="button"
                               onClick={() => setSelectedCategory(cat.value)}
-                              className={`flex items-center gap-2 p-3 rounded-xl border-2 transition-all text-left ${
-                                isSelected
-                                  ? 'border-gold bg-gold/10 text-gold-dark'
-                                  : 'border-border hover:border-gold/40'
-                              }`}
+                              className={contact.category}
+                              aria-pressed={isSelected}
                             >
-                              <div className={`w-8 h-8 rounded-lg ${cat.color} flex items-center justify-center flex-shrink-0`}>
-                                <Icon className="w-4 h-4" />
-                              </div>
-                              <span className="text-sm font-medium">{cat.label}</span>
+                              <span className={contact.categoryIcon} data-tone={cat.tone}><Icon size={19} aria-hidden="true" /></span>
+                              <span className="min-w-0">{cat.label}</span>
                             </button>
                           );
                         })}
                       </div>
-                    </div>
+                    </fieldset>
 
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium mb-2">
@@ -286,7 +258,7 @@ function ContactPageContent() {
 
                     <Button
                       type="submit"
-                      className="w-full"
+                      className="w-full min-h-11 bg-terracotta text-white hover:bg-terracotta-dark"
                       disabled={status === 'loading'}
                     >
                       {status === 'loading' ? (
@@ -304,7 +276,7 @@ function ContactPageContent() {
                   </form>
                 )}
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -312,11 +284,7 @@ function ContactPageContent() {
       {/* FAQ Section */}
       <section className="py-12 md:py-16 px-6 bg-muted/30">
         <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
           >
             <div className="flex items-center gap-3 mb-8">
               <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
@@ -345,7 +313,7 @@ function ContactPageContent() {
             <p className="text-sm text-muted-foreground mt-8 text-center">
               Хүссэн хариултаа олсонгүй юу? Дээрх формоор холбогдоно уу.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
     </main>

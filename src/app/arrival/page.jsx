@@ -1,7 +1,8 @@
+import { GuideBreadcrumb } from '@/components/guide/GuideBreadcrumb';
+import { GuideSection } from '@/components/guide/GuideSection';
 import Image from 'next/image';
-import Link from 'next/link';
 import styles from './arrival.module.css';
-import { MapPin, Smartphone, Building2, Phone, FileCheck, ExternalLink, ArrowUpRight, ChevronRight, Home } from 'lucide-react';
+import { Smartphone, Building2, Phone, FileCheck, ExternalLink, ArrowDown } from 'lucide-react';
 import {
   GuideTOC, GuideNav, CheckList,
   TipBox, WarningBox, InfoTable, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
@@ -38,19 +39,14 @@ export default function ArrivalPage() {
       <GuideViewTracker guideId="arrival" />
       <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <nav className={styles.breadcrumb} aria-label="breadcrumb">
-            <Link href="/" aria-label="KoreaMongol"><Home aria-hidden="true" /></Link>
-            <ChevronRight aria-hidden="true" />
-            <span aria-current="page">{arrivalMeta.title}</span>
-          </nav>
+          <GuideBreadcrumb label={arrivalMeta.title} />
           <div className={styles.welcome}>
             <div className={styles.intro}>
-              <span className={styles.emblem} aria-hidden="true"><MapPin /></span>
               <h1>{arrivalMeta.title}</h1>
               <p className={styles.subtitle}>{arrivalMeta.subtitle}</p>
               <p className={styles.updated}>Сүүлд шинэчилсэн: {arrivalMeta.lastUpdated}</p>
               <a href="#arrival-day1" className={styles.startLink}>
-                {arrivalTimeline[0].period}<ArrowUpRight aria-hidden="true" />
+                {arrivalTimeline[0].period}<ArrowDown aria-hidden="true" />
               </a>
             </div>
             <Image src="/images/guides/arrival-mazaalai-l-transparent.png"
@@ -61,15 +57,15 @@ export default function ArrivalPage() {
           <div className={styles.quickLinks}>
             <a href="#arrival-alien" className={styles.quickLink}>
               <Image src="/images/home/visa.png" alt="" width={1254} height={1254} sizes="72px" className={styles.documentArt} />
-              <span>{alienRegistration.title}</span><ArrowUpRight aria-hidden="true" />
+              <span>{alienRegistration.title}</span><ArrowDown aria-hidden="true" />
             </a>
             <a href="#arrival-bank" className={styles.quickLink}>
               <span className={styles.quickIcon} aria-hidden="true"><Building2 strokeWidth={1.4} /></span>
-              <span>{bankRecommendations.title}</span><ArrowUpRight aria-hidden="true" />
+              <span>{bankRecommendations.title}</span><ArrowDown aria-hidden="true" />
             </a>
             <a href="#arrival-phone" className={styles.quickLink}>
               <span className={styles.quickIcon} aria-hidden="true"><Smartphone strokeWidth={1.4} /></span>
-              <span>{phoneInfo.title}</span><ArrowUpRight aria-hidden="true" />
+              <span>{phoneInfo.title}</span><ArrowDown aria-hidden="true" />
             </a>
           </div>
         </div>
@@ -82,17 +78,17 @@ export default function ArrivalPage() {
         <div className={styles.content}>
         {/* Timeline Checklists */}
         {arrivalTimeline.map((period, index) => (
-          <section key={period.storageKey} id={period.storageKey} className={styles.timeline}>
+          <GuideSection key={period.storageKey} id={period.storageKey} className={styles.timeline}>
             <h2 className={styles.periodTitle}><span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{period.period}</h2>
             <CheckList
               items={period.items}
               storageKey={period.storageKey}
             />
-          </section>
+          </GuideSection>
         ))}
 
         {/* Alien Registration Details */}
-        <section id="arrival-alien">
+        <GuideSection id="arrival-alien">
           <h2 className="text-title text-navy dark:text-sky mb-6">
             <FileCheck className="w-6 h-6 inline mr-2" />
             {alienRegistration.title}
@@ -147,10 +143,10 @@ export default function ArrivalPage() {
           <WarningBox className={styles.warning} title="Анхаар!">
             <p>90 хоногийн дотор бүртгүүлэхгүй бол торгууль ногдуулна. Аль болох эрт бүртгүүлэх!</p>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* Bank Recommendations */}
-        <section id="arrival-bank">
+        <GuideSection id="arrival-bank">
           <h2 className="text-title text-navy dark:text-sky mb-6">
             <Building2 className="w-6 h-6 inline mr-2" />
             {bankRecommendations.title}
@@ -182,10 +178,10 @@ export default function ArrivalPage() {
           <TipBox className={styles.tip} title="Зөвлөгөө">
             <p>{bankRecommendations.tip}</p>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Phone / SIM */}
-        <section id="arrival-phone">
+        <GuideSection id="arrival-phone">
           <h2 className="text-title text-navy dark:text-sky mb-6">
             <Smartphone className="w-6 h-6 inline mr-2" />
             {phoneInfo.title}
@@ -231,10 +227,10 @@ export default function ArrivalPage() {
           <TipBox className={styles.tip} title="KT тусгай нөхцөл">
             <p className="text-sm">{phoneInfo.postpaid.tip}</p>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Tips */}
-        <section id="arrival-tips">
+        <GuideSection id="arrival-tips">
           <h2 className="text-title text-navy dark:text-sky mb-6">Амьдралын зөвлөгөө</h2>
           <div className="space-y-4">
             {arrivalTips.map((tip) => (
@@ -243,10 +239,10 @@ export default function ArrivalPage() {
               </TipBox>
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         {/* Essential Apps */}
-        <section id="arrival-apps">
+        <GuideSection id="arrival-apps">
           <h2 className="text-title text-navy dark:text-sky mb-6">
             <Smartphone className="w-6 h-6 inline mr-2" />
             Заавал суулгах апп
@@ -255,17 +251,17 @@ export default function ArrivalPage() {
             headers={['Апп', 'Төрөл', 'Тайлбар']}
             rows={essentialApps}
           />
-        </section>
+        </GuideSection>
 
         {/* Useful Links */}
-        <section id="arrival-links">
+        <GuideSection id="arrival-links">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линк</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {arrivalLinks.map((link) => (
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         <RelatedTips slugs={['alien-registration', 'phone-sim', 'open-bank-account']} />
 

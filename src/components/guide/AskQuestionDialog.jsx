@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, MessageCircleQuestion } from 'lucide-react';
 import { toast } from 'sonner';
+import styles from './GuideDialog.module.css';
 import {
   Dialog,
   DialogContent,
@@ -19,6 +20,7 @@ import { getClientMeta } from './ReportDialog';
 
 // 질문 접수 다이얼로그 — inbox type=question. 답변은 조사·검증 후 tips 페이지로 영구화
 export default function AskQuestionDialog({ open, onOpenChange, pageUrl }) {
+  const titleRef = useRef(null);
   const { data: session } = useSession();
   const [question, setQuestion] = useState('');
   const [email, setEmail] = useState('');
@@ -66,15 +68,16 @@ export default function AskQuestionDialog({ open, onOpenChange, pageUrl }) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Асуулт асуух</DialogTitle>
-          <DialogDescription>
+      <DialogContent className={styles.dialog} overlayClassName={styles.overlay} closeLabel="Хаах"
+        onOpenAutoFocus={(event) => { event.preventDefault(); titleRef.current?.focus({ preventScroll: true }); }}>
+        <DialogHeader className={styles.header}>
+          <DialogTitle ref={titleRef} tabIndex={-1} className={styles.title}><MessageCircleQuestion aria-hidden="true" />Асуулт асуух</DialogTitle>
+          <DialogDescription className={styles.description}>
             Хайсан зүйлээ олсонгүй юу? Асуултаа үлдээгээрэй — бид олж мэдээд хариулт нэмнэ.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className={styles.form}>
           {/* 질문 */}
           <div className="space-y-2">
             <Label htmlFor="ask-question">Асуулт *</Label>
@@ -109,7 +112,7 @@ export default function AskQuestionDialog({ open, onOpenChange, pageUrl }) {
             </div>
           )}
 
-          <div className="flex justify-end gap-2">
+          <div className={styles.actions}>
             <Button
               type="button"
               variant="outline"
@@ -118,7 +121,7 @@ export default function AskQuestionDialog({ open, onOpenChange, pageUrl }) {
             >
               Болих
             </Button>
-            <Button type="submit" disabled={loading}>
+            <Button type="submit" disabled={loading} className={styles.submit}>
               {loading && <Loader2 className="w-4 h-4 animate-spin mr-2" />}
               Илгээх
             </Button>

@@ -59,7 +59,7 @@ export async function generateMetadata({ params }) {
 
 function formatDate(dateString) {
   const date = new Date(dateString);
-  return date.toLocaleDateString('ko-KR', {
+  return date.toLocaleDateString('mn-MN', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
@@ -70,7 +70,7 @@ function formatDate(dateString) {
 
 export default async function PostDetailPage({ params }) {
   const { boardType, postId } = await params;
-  const locale = 'ko';
+  const locale = 'mn';
 
   let post = null;
   try {
@@ -148,7 +148,7 @@ export default async function PostDetailPage({ params }) {
             className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            목록으로
+            Жагсаалт руу
           </Link>
         </div>
       </section>
@@ -175,7 +175,7 @@ export default async function PostDetailPage({ params }) {
               )}
               <div>
                 <div className="font-medium text-foreground">
-                  {post.author?.nickname || '익명'}
+                  {post.author?.nickname || 'Нэргүй'}
                 </div>
                 {post.author?.level && (
                   <div className="text-xs">Lv.{post.author.level}</div>

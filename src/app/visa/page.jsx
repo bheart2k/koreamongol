@@ -1,9 +1,10 @@
+import { GuideBreadcrumb } from '@/components/guide/GuideBreadcrumb';
+import { GuideSection } from '@/components/guide/GuideSection';
 import Image from 'next/image';
-import Link from 'next/link';
 import styles from './visa.module.css';
-import { FileText, Clock, AlertTriangle, ArrowRightLeft, TrendingUp, Home, ChevronRight, ArrowUpRight, List } from 'lucide-react';
+import { FileText, Clock, AlertTriangle, ArrowRightLeft, TrendingUp, ArrowDown } from 'lucide-react';
 import {
-  GuideNav, CheckList,
+  GuideTOC, GuideNav, CheckList,
   WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
 } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
@@ -33,17 +34,13 @@ export default function VisaPage() {
       <GuideViewTracker guideId="visa" />
       <section className={styles.hero}>
         <div className={styles.heroInner}>
-          <nav className={styles.breadcrumb} aria-label="breadcrumb">
-            <Link href="/" aria-label="KoreaMongol"><Home aria-hidden="true" /></Link>
-            <ChevronRight aria-hidden="true" /><span aria-current="page">Виз</span>
-          </nav>
+          <GuideBreadcrumb label={'Виз'} />
           <div className={styles.welcome}>
             <div>
-              <span className={styles.emblem} aria-hidden="true"><FileText /></span>
               <h1>{visaMeta.title}</h1>
               <p className={styles.subtitle}>{visaMeta.subtitle}</p>
               <p className={styles.updated}>Сүүлд шинэчилсэн: {visaMeta.lastUpdated}</p>
-              <a href="#visa-types" className={styles.startLink}>Визний төрлүүд<ArrowUpRight aria-hidden="true" /></a>
+              <a href="#visa-types" className={styles.startLink}>Визний төрлүүд<ArrowDown aria-hidden="true" /></a>
             </div>
             <Image src="/images/guides/visa-mazaalai-l.png" alt="Бичиг баримтаа шалгаж буй Мазаалай"
               width={1024} height={1536} sizes="(min-width: 768px) 240px, 140px" priority className={styles.mascot} />
@@ -52,22 +49,17 @@ export default function VisaPage() {
       </section>
       <div className={styles.layout}>
         <aside className={styles.sidebar}>
-          <nav className={styles.toc} aria-label="Агуулга">
-            <h2><List aria-hidden="true" />Агуулга</h2>
-            <ul>{visaSections.map(({ id, title }) => (
-              <li key={id}><a href={`#${id}`}>{title}</a></li>
-            ))}</ul>
-          </nav>
+          <GuideTOC sections={visaSections} className={styles.toc} />
         </aside>
         <div className={styles.content}>
         {/* Visa Types */}
-        <section id="visa-types">
+        <GuideSection id="visa-types">
           <h2 className="text-title text-navy dark:text-sky mb-6">Визний төрлүүд</h2>
           <VisaTabs />
-        </section>
+        </GuideSection>
 
         {/* Cost & Duration */}
-        <section id="visa-cost">
+        <GuideSection id="visa-cost">
           <h2 className="text-title text-navy dark:text-sky mb-6">
             <Clock className="w-6 h-6 inline mr-2" />
             {visaCostInfo.title}
@@ -128,10 +120,10 @@ export default function VisaPage() {
               </div>
             </div>
           </div>
-        </section>
+        </GuideSection>
 
         {/* Workplace Change */}
-        <section id="visa-workplace">
+        <GuideSection id="visa-workplace">
           <h2 className="text-title text-navy dark:text-sky mb-6">
             <ArrowRightLeft className="w-6 h-6 inline mr-2" />
             {workplaceChange.title}
@@ -168,10 +160,10 @@ export default function VisaPage() {
               ))}
             </ul>
           </div>
-        </section>
+        </GuideSection>
 
         {/* Long-term Stay Paths */}
-        <section id="visa-longterm">
+        <GuideSection id="visa-longterm">
           <h2 className="text-title text-navy dark:text-sky mb-6">
             <TrendingUp className="w-6 h-6 inline mr-2" />
             {longTermPaths.title}
@@ -205,10 +197,10 @@ export default function VisaPage() {
               ))}
             </ul>
           </TipBox>
-        </section>
+        </GuideSection>
 
         {/* Mongolia Preparation */}
-        <section id="visa-mongolia-prep">
+        <GuideSection id="visa-mongolia-prep">
           <h2 className="text-title text-navy dark:text-sky mb-6">Монголоос бэлтгэх зүйлс</h2>
 
           <TipBox className={styles.tip} title="Монгол Улсын ЭСЯ (Сөүл)">
@@ -223,10 +215,10 @@ export default function VisaPage() {
           <div className="mt-6">
             <CheckList items={mongoliaPrep.checklist} storageKey="visa-mongolia-prep" />
           </div>
-        </section>
+        </GuideSection>
 
         {/* Rejection Reasons */}
-        <section id="visa-rejection">
+        <GuideSection id="visa-rejection">
           <h2 className="text-title text-navy dark:text-sky mb-6">Татгалзах шалтгаан</h2>
           <WarningBox className={styles.warning} title="Виз татгалзах гол шалтгаанууд">
             <ul className="space-y-1">
@@ -235,10 +227,10 @@ export default function VisaPage() {
               ))}
             </ul>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* Illegal Stay */}
-        <section id="visa-illegal">
+        <GuideSection id="visa-illegal">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хууль бус оршин суух</h2>
           <WarningBox className={styles.warning} title="Хууль бус оршин суухын үр дагавар">
             <ul className="space-y-1">
@@ -247,17 +239,17 @@ export default function VisaPage() {
               ))}
             </ul>
           </WarningBox>
-        </section>
+        </GuideSection>
 
         {/* Useful Links */}
-        <section id="visa-links">
+        <GuideSection id="visa-links">
           <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линкүүд</h2>
           <div className="grid sm:grid-cols-2 gap-3">
             {usefulLinks.map((link) => (
               <LinkCard key={link.href} {...link} />
             ))}
           </div>
-        </section>
+        </GuideSection>
 
         <RelatedTips slugs={['e9-reentry', 'e9-to-e74', 'visa-extension']} />
 

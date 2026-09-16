@@ -15,8 +15,8 @@ import { useComments } from '@/lib/swr/hooks';
  * @param {string} [props.locale] - 로케일
  * @param {Function} [props.onCountChange] - 댓글 수 변경 콜백
  */
-export default function CommentSection({ postId, initialCount = 0, locale = 'ko', onCountChange, boardType }) {
-  const isKo = locale === 'ko';
+export default function CommentSection({ postId, initialCount = 0, locale = 'mn', onCountChange, boardType }) {
+  const isMn = locale === 'mn';
 
   const [commentCount, setCommentCount] = useState(initialCount);
 
@@ -148,7 +148,7 @@ export default function CommentSection({ postId, initialCount = 0, locale = 'ko'
       <div className="flex items-center gap-2 mb-6">
         <MessageSquare className="w-5 h-5" />
         <h2 className="text-title font-semibold">
-          {isKo ? '댓글' : 'Comments'}
+          {isMn ? 'Сэтгэгдэл' : 'Comments'}
         </h2>
         <span className="text-muted-foreground">({commentCount})</span>
       </div>
@@ -176,7 +176,7 @@ export default function CommentSection({ postId, initialCount = 0, locale = 'ko'
       {!isLoading && !error && comments.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
           <MessageSquare className="w-10 h-10 mx-auto mb-2 opacity-30" />
-          <p>{isKo ? '첫 댓글을 남겨보세요!' : 'Be the first to comment!'}</p>
+          <p>{isMn ? 'Эхний сэтгэгдлээ үлдээгээрэй!' : 'Be the first to comment!'}</p>
         </div>
       )}
 
