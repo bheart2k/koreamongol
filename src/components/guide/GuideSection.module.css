@@ -4,7 +4,7 @@
 .toggle .rotated { transform: rotate(180deg); }
 .toggle:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 4px; border-radius: 4px; }
 @media (max-width: 639px) {
-  :global(section[id][data-collapsed]) > h2 { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
+  :global(section[id][data-collapsed]) > h2:has(.toggle) { margin-bottom: 0; padding-bottom: 0; border-bottom: 0; }
 }
 
 .body { display: grid; grid-template-rows: 1fr; opacity: 1; transition: grid-template-rows 280ms ease, opacity 200ms ease, visibility 280ms; }
