@@ -19,7 +19,6 @@ const RATE_LIMIT_WINDOW = 60 * 1000; // 1분
 const RATE_LIMIT_MAX_API = 60; // API: 분당 60회
 const RATE_LIMIT_MAX_AUTH = 60; // 인증: 분당 60회 (ClientFetchError 방지를 위해 완화)
 const RATE_LIMIT_MAX_WRITE = 10; // 쓰기(POST/PUT/DELETE): 분당 10회
-const RATE_LIMIT_MAX_DESIGN_LAB = 10; // design-lab 인증 실패: 분당 10회
 
 // 주기적으로 만료된 항목 정리
 function cleanupRateLimit() {
@@ -46,12 +45,6 @@ function checkRateLimit(key, maxRequests) {
   }
 
   return { allowed: true, remaining: maxRequests - data.count };
-}
-
-// 횟수를 올리지 않고 이미 한도에 닿았는지만 본다 (실패 누적 후 맞는 비밀번호로도 계속 시도하지 못하게)
-function isRateLimited(key, maxRequests) {
-  const data = rateLimitMap.get(key);
-  return Boolean(data) && Date.now() - data.windowStart <= RATE_LIMIT_WINDOW && data.count >= maxRequests;
 }
 
 const DESIGN_LAB_HEADERS = { 'X-Robots-Tag': 'noindex, nofollow', 'Cache-Control': 'no-store' };
@@ -121,16 +114,11 @@ export default async function middleware(request) {
   // ──────────────────────────────
   const isDesignLab = isDesignLabPath(pathname);
   if (isDesignLab) {
+    // 연속 실패 차단은 두지 않는다: 브라우저·비밀번호 관리자가 자동으로 연달아 시도하면
+    // 사용자가 입력하기도 전에 잠겨 버린다(2026-10-08 운영에서 0.4초 만에 10회 → 429).
+    // 비밀번호가 무작위 8자리라 무차별 대입 위험은 낮고, 인스턴스 메모리 카운터는 Vercel 에서 신뢰할 수 없다.
     const authorization = request.headers.get('authorization');
     const password = process.env.DESIGN_LAB_PASSWORD;
-    const failKey = `design-lab:${ip}`;
-
-    if (password && authorization && isRateLimited(failKey, RATE_LIMIT_MAX_DESIGN_LAB)) {
-      return new NextResponse('Too many requests', {
-        status: 429,
-        headers: { ...DESIGN_LAB_HEADERS, 'Retry-After': '60' },
-      });
-    }
 
     const result = checkDesignLabAuth({
       authorization,
@@ -141,17 +129,6 @@ export default async function middleware(request) {
     if (!result.ok) {
       if (result.status === 404) {
         return new NextResponse(null, { status: 404, headers: DESIGN_LAB_HEADERS });
-      }
-      // 비밀번호를 넣은 실패 시도만 센다 (첫 요청의 헤더 없는 401은 브라우저 로그인 창 띄우기용)
-      if (authorization) {
-        if (rateLimitMap.size > 1000) cleanupRateLimit();
-        const { allowed } = checkRateLimit(failKey, RATE_LIMIT_MAX_DESIGN_LAB);
-        if (!allowed) {
-          return new NextResponse('Too many requests', {
-            status: 429,
-            headers: { ...DESIGN_LAB_HEADERS, 'Retry-After': '60' },
-          });
-        }
       }
       return new NextResponse('Authentication required', {
         status: 401,
