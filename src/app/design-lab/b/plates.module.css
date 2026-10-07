@@ -1,0 +1,115 @@
+/* 딥틱 플레이트 · 마무리 */
+
+.plate { padding: clamp(96px, 12vw, 190px) 0; }
+.inner { max-width: calc(var(--b-wrap) + var(--b-margin) * 2); margin: 0 auto; padding: 0 var(--b-margin); }
+
+.head { display: flex; align-items: center; gap: 14px; font-family: var(--b-font-mono), monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--b-ink-soft); }
+.pl { font-family: var(--b-font-display), serif; font-style: italic; font-size: 22px; letter-spacing: 0; text-transform: none; color: var(--b-gold-ink); }
+.headRule { flex: 1; height: 1px; background: var(--b-rule-strong); transform-origin: 0 50%; }
+.headPair i { font-style: normal; color: var(--b-gold-ink); margin: 0 4px; }
+
+.words {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  column-gap: 4vw;
+  margin: clamp(20px, 3vw, 44px) 0 -0.34em;
+  font-family: var(--b-font-display), serif;
+  font-weight: 400;
+  font-size: var(--words-size, clamp(64px, 11.5vw, 196px));
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  pointer-events: none;
+}
+.wordMn, .wordKr { display: block; white-space: nowrap; }
+.wordKr { font-style: italic; text-align: right; margin-left: auto; }
+
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 24px; align-items: start; }
+.fig { margin: 0; }
+.frame { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--b-paper-deep); }
+.media { position: absolute; inset: -9% 0; will-change: transform; }
+.media img, .video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.video { opacity: 0; transition: opacity 1.4s ease; }
+.video[data-on='true'] { opacity: 1; }
+
+.cap { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 12px; font-family: var(--b-font-mono), monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--b-ink-faint); }
+.capSide { color: var(--b-ink-soft); }
+.capWord { display: inline-flex; align-items: baseline; gap: 10px; font-family: var(--b-font-display), serif; font-style: italic; font-size: 19px; letter-spacing: 0; text-transform: none; color: var(--b-ink); }
+.hangul { font-family: var(--font-sans); font-style: normal; font-size: 13px; color: var(--b-ink-faint); }
+
+/* 배치 변주 */
+.a .figMn { grid-column: 1 / 8; }
+.a .figKr { grid-column: 9 / 13; margin-top: clamp(80px, 16vw, 260px); }
+.b .figMn { grid-column: 2 / 6; margin-top: clamp(80px, 12vw, 200px); }
+.b .figKr { grid-column: 7 / 13; }
+.c .figMn { grid-column: 1 / 6; }
+.c .figKr { grid-column: 7 / 11; margin-top: clamp(60px, 9vw, 150px); }
+.d { --words-size: clamp(56px, 7.4vw, 124px); }
+.d .words { margin-bottom: 0.18em; } /* 어두운 사진 위로 겹치지 않게 */
+.d .grid { column-gap: 28px; }
+.d .figMn { grid-column: 1 / 7; }
+.d .figKr { grid-column: 7 / 13; }
+
+/* ── 마무리 ── */
+.finale { position: relative; color: var(--b-on-image); }
+.finaleMedia { position: relative; height: calc(100svh - var(--navbar-height)); min-height: 600px; overflow: hidden; background: #1b1712; }
+.finaleInner { position: absolute; inset: 0; }
+.finaleInner img, .finaleVideo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 62%; }
+.finaleVideo { opacity: 0; transition: opacity 1.4s ease; }
+.finaleVideo[data-on='true'] { opacity: 1; }
+.finaleShade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(14 11 8 / 0.78) 0%, rgb(14 11 8 / 0.35) 34%, transparent 58%); }
+
+.finaleText {
+  position: absolute;
+  inset: 0 0 auto;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 24px;
+  max-width: calc(var(--b-wrap) + var(--b-margin) * 2);
+  margin: 0 auto;
+  padding: clamp(48px, 8vh, 96px) var(--b-margin) 0;
+}
+.finaleBlock { grid-column: 1 / 8; }
+.finaleDonate { grid-column: 9 / 13; padding-top: 10px; }
+.finale .secNo { display: flex; align-items: baseline; gap: 12px; margin: 0 0 16px; font-family: var(--b-font-mono), monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: rgb(251 248 242 / 0.7); }
+.finale .secNo span { font-family: var(--b-font-display), serif; font-style: italic; font-size: 22px; letter-spacing: 0; color: var(--b-gold); }
+.finaleTitle { margin: 0 0 14px; font-family: var(--b-font-display), serif; font-weight: 400; font-size: clamp(56px, 7.8vw, 132px); line-height: 0.9; letter-spacing: -0.03em; overflow-wrap: normal; word-break: keep-all; hyphens: none; }
+.finaleDesc { margin: 0 0 26px; font-size: 15px; color: rgb(251 248 242 / 0.78); }
+.finaleLink, .donateBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--b-font-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: gap 0.45s var(--b-ease), background 0.3s, color 0.3s;
+}
+.finaleLink { padding-bottom: 6px; border-bottom: 1px solid currentColor; }
+.finaleLink svg, .donateBtn svg { width: 15px; height: 15px; }
+.finaleLink:hover { gap: 16px; color: var(--b-gold); }
+.donateLine { margin: 0 0 22px; font-family: var(--b-font-display), serif; font-size: clamp(22px, 1.9vw, 28px); line-height: 1.3; }
+.donateLine strong { font-weight: 500; font-style: italic; }
+.donateBtn { height: 46px; padding: 0 20px; border: 1px solid rgb(251 248 242 / 0.6); border-radius: 999px; }
+.donateBtn:hover { gap: 16px; background: var(--b-terracotta); border-color: var(--b-terracotta); }
+
+@media (max-width: 767px) {
+  .plate { padding: 88px 0; }
+  .plate { --words-size: 15vw; }
+  .words, .d .words { margin-bottom: 0.14em; } /* 작은 화면에서는 사진과 겹치지 않게 */
+  .d { --words-size: 12vw; }
+  .grid { column-gap: 12px; }
+  .a .figMn, .b .figMn, .c .figMn, .d .figMn { grid-column: 1 / 7; margin-top: 0; }
+  .a .figKr, .b .figKr, .c .figKr, .d .figKr { grid-column: 7 / 13; margin-top: 18vw; }
+  .d .figKr { margin-top: 0; }
+  .cap { flex-direction: column; gap: 2px; font-size: 9.5px; }
+  .capWord { font-size: 16px; }
+  .finaleMedia { min-height: 640px; }
+  .finaleText { display: block; padding-top: 44px; }
+  .finaleDonate { margin-top: 36px; }
+  .finaleTitle { font-size: 14.5vw; }
+  .finaleShade { background: linear-gradient(180deg, rgb(14 11 8 / 0.85) 0%, rgb(14 11 8 / 0.5) 45%, transparent 70%); }
+}

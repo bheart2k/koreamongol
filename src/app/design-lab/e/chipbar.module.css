@@ -1,0 +1,98 @@
+/* 빠른 찾기 칩 바 — Navbar(4rem) 바로 아래 고정 */
+
+.bar {
+  position: sticky;
+  top: var(--navbar-height);
+  z-index: 30;
+  background: linear-gradient(180deg, rgb(10 18 38 / 0.86), rgb(10 18 38 / 0.74));
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  backdrop-filter: blur(18px) saturate(1.3);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  box-shadow: 0 12px 30px -18px rgb(4 8 20 / 0.6);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(1152px, 100% - 32px);
+  height: 56px;
+  margin-inline: auto;
+}
+
+.chips {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 20px), transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 12px, #000 calc(100% - 20px), transparent 100%);
+  padding-inline: 6px;
+}
+.chips::-webkit-scrollbar { display: none; }
+.list { display: flex; gap: 4px; width: max-content; }
+
+.indicator {
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--a-gold-soft);
+  opacity: 0;
+  transition: transform 0.55s var(--a-ease-out), width 0.55s var(--a-ease-out), opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--a-ink-light-muted);
+  transition: color 0.3s ease, background 0.3s ease;
+}
+.chip:hover { color: var(--a-ink-light); background: rgb(255 255 255 / 0.08); }
+.chip:focus-visible { outline: 2px solid var(--a-gold-soft); outline-offset: -2px; }
+.chip[aria-current] { color: var(--a-ink-light); }
+.no {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  color: var(--a-gold-soft);
+  opacity: 0.8;
+}
+
+.pause {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgb(255 255 255 / 0.2);
+  color: var(--a-ink-light);
+  background: rgb(255 255 255 / 0.06);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.pause:hover { background: rgb(255 255 255 / 0.14); }
+.pause:focus-visible { outline: 2px solid var(--a-gold-soft); outline-offset: 2px; }
+.pause svg { width: 15px; height: 15px; }
+
+@media (max-width: 639px) {
+  .inner { width: 100%; padding-right: 12px; gap: 6px; height: 52px; }
+  .chip { height: 36px; padding: 0 12px; font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator { transition: none; }
+}

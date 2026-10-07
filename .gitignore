@@ -9,7 +9,6 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-pnpm-lock.yaml
 
 # testing
 /coverage
@@ -38,6 +37,7 @@ yarn-error.log*
 # Google service account keys
 *.json
 !package.json
+!.infisical.json
 !tsconfig.json
 !jsconfig.json
 !components.json

@@ -1,4 +1,7 @@
 import { NextResponse } from 'next/server';
+import {
+  checkDesignLabAuth, DESIGN_LAB_CHALLENGE, isDesignLabOptimizerUrl, isDesignLabPath,
+} from '@/lib/design-lab-auth';
 // TODO: 관리자 인증 활성화 시 주석 해제
 // import { auth } from '@/lib/auth';
 
@@ -7,6 +10,7 @@ import { NextResponse } from 'next/server';
  * 1. 관리자 페이지 인증
  * 2. API Rate Limiting (IP 기반)
  * 3. 봇/악성 요청 차단
+ * 4. /design-lab 비밀번호 잠금 (페이지 + 정적 파일)
  */
 
 // Rate Limit 저장소 (메모리 기반, 서버리스 환경에서는 요청 간 초기화될 수 있음)
@@ -15,6 +19,7 @@ const RATE_LIMIT_WINDOW = 60 * 1000; // 1분
 const RATE_LIMIT_MAX_API = 60; // API: 분당 60회
 const RATE_LIMIT_MAX_AUTH = 60; // 인증: 분당 60회 (ClientFetchError 방지를 위해 완화)
 const RATE_LIMIT_MAX_WRITE = 10; // 쓰기(POST/PUT/DELETE): 분당 10회
+const RATE_LIMIT_MAX_DESIGN_LAB = 10; // design-lab 인증 실패: 분당 10회
 
 // 주기적으로 만료된 항목 정리
 function cleanupRateLimit() {
@@ -42,6 +47,14 @@ function checkRateLimit(key, maxRequests) {
 
   return { allowed: true, remaining: maxRequests - data.count };
 }
+
+// 횟수를 올리지 않고 이미 한도에 닿았는지만 본다 (실패 누적 후 맞는 비밀번호로도 계속 시도하지 못하게)
+function isRateLimited(key, maxRequests) {
+  const data = rateLimitMap.get(key);
+  return Boolean(data) && Date.now() - data.windowStart <= RATE_LIMIT_WINDOW && data.count >= maxRequests;
+}
+
+const DESIGN_LAB_HEADERS = { 'X-Robots-Tag': 'noindex, nofollow', 'Cache-Control': 'no-store' };
 
 // 차단할 User-Agent 패턴
 const BLOCKED_UA_PATTERNS = [
@@ -80,6 +93,16 @@ export default async function middleware(request) {
   const userAgent = request.headers.get('user-agent') || '';
 
   // ──────────────────────────────
+  // 0. 이미지 최적화기: design-lab 파일을 가리키면 404 (Basic Auth 우회 차단), 그 외는 기존처럼 그대로 통과
+  // ──────────────────────────────
+  if (pathname === '/_next/image') {
+    if (isDesignLabOptimizerUrl(request.nextUrl.searchParams.get('url'), request.url)) {
+      return new NextResponse(null, { status: 404, headers: DESIGN_LAB_HEADERS });
+    }
+    return NextResponse.next();
+  }
+
+  // ──────────────────────────────
   // 1. 악성 User-Agent 차단
   // ──────────────────────────────
   if (BLOCKED_UA_PATTERNS.some((pattern) => pattern.test(userAgent))) {
@@ -91,6 +114,50 @@ export default async function middleware(request) {
   // ──────────────────────────────
   if (BLOCKED_PATH_PATTERNS.some((pattern) => pattern.test(pathname))) {
     return new NextResponse(null, { status: 404 });
+  }
+
+  // ──────────────────────────────
+  // 2-1. /design-lab 비밀번호 잠금 (HTTP Basic, 비밀번호는 DESIGN_LAB_PASSWORD)
+  // ──────────────────────────────
+  const isDesignLab = isDesignLabPath(pathname);
+  if (isDesignLab) {
+    const authorization = request.headers.get('authorization');
+    const password = process.env.DESIGN_LAB_PASSWORD;
+    const failKey = `design-lab:${ip}`;
+
+    if (password && authorization && isRateLimited(failKey, RATE_LIMIT_MAX_DESIGN_LAB)) {
+      return new NextResponse('Too many requests', {
+        status: 429,
+        headers: { ...DESIGN_LAB_HEADERS, 'Retry-After': '60' },
+      });
+    }
+
+    const result = checkDesignLabAuth({
+      authorization,
+      password,
+      isProduction: process.env.NODE_ENV === 'production',
+    });
+
+    if (!result.ok) {
+      if (result.status === 404) {
+        return new NextResponse(null, { status: 404, headers: DESIGN_LAB_HEADERS });
+      }
+      // 비밀번호를 넣은 실패 시도만 센다 (첫 요청의 헤더 없는 401은 브라우저 로그인 창 띄우기용)
+      if (authorization) {
+        if (rateLimitMap.size > 1000) cleanupRateLimit();
+        const { allowed } = checkRateLimit(failKey, RATE_LIMIT_MAX_DESIGN_LAB);
+        if (!allowed) {
+          return new NextResponse('Too many requests', {
+            status: 429,
+            headers: { ...DESIGN_LAB_HEADERS, 'Retry-After': '60' },
+          });
+        }
+      }
+      return new NextResponse('Authentication required', {
+        status: 401,
+        headers: { ...DESIGN_LAB_HEADERS, 'WWW-Authenticate': DESIGN_LAB_CHALLENGE },
+      });
+    }
   }
 
   // ──────────────────────────────
@@ -163,6 +230,7 @@ export default async function middleware(request) {
     'Permissions-Policy',
     'camera=(), microphone=(), geolocation=()'
   );
+  if (isDesignLab) response.headers.set('X-Robots-Tag', 'noindex, nofollow');
 
   return response;
 }
@@ -171,6 +239,10 @@ export const config = {
   matcher: [
     '/admin/:path*',
     '/api/:path*',
+    // design-lab 은 이미지·영상·JSON 등 정적 파일까지 잠그기 위해 확장자 제외 패턴과 별도로 매칭
+    '/design-lab',
+    '/design-lab/:path*',
+    '/_next/image', // url 이 design-lab 을 가리키는 최적화 요청만 차단 (위 0단계)
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|woff2?|ttf|css|js)$).*)',
   ],
 };

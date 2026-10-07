@@ -1,0 +1,260 @@
+/* 히어로 이후 섹션 — 긴급번호 · 상황별 바로가기 · 가이드 범례 */
+
+.sectionTitle {
+  margin: 0;
+  font: 800 clamp(30px, 3.6vw, 52px)/1.05 var(--font-heading);
+  letter-spacing: -0.03em;
+  color: var(--c-ink);
+}
+
+/* ---------- 긴급번호 ---------- */
+.emergency {
+  position: relative;
+  z-index: 2;
+  padding: 28px 0;
+  background: var(--c-emergency-bg);
+}
+
+.emList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 14px;
+  margin-block: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.emItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 12px;
+  border-radius: 999px;
+  background: rgba(250, 246, 240, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(250, 246, 240, 0.12);
+  color: var(--c-on-dark);
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.5s var(--c-spring);
+}
+
+.emItem:hover { background: rgba(212, 168, 67, 0.16); transform: translateY(-2px); }
+.emItem:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 3px; }
+
+.emEmoji {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(250, 246, 240, 0.1);
+  font-size: 16px;
+}
+
+.emLabel { font-size: 14px; color: var(--c-on-dark-soft); }
+
+.emNumber {
+  font: 800 22px/1 var(--font-heading);
+  letter-spacing: 0.02em;
+  color: var(--c-gold);
+}
+
+/* ---------- 상황별 바로가기 (티켓) ---------- */
+.situations {
+  padding: clamp(72px, 10vw, 128px) 0 clamp(48px, 7vw, 88px);
+}
+
+.ticketGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin: 36px 0 0;
+  padding: 0;
+  list-style: none;
+  perspective: 1200px;
+}
+
+.ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 92px;
+  padding: 18px 20px 18px 18px;
+  border-radius: 22px;
+  background: var(--c-surface);
+  color: var(--c-ink);
+  text-decoration: none;
+  box-shadow: 0 1px 0 var(--c-line), 0 24px 40px -32px rgba(27, 45, 79, 0.5);
+  transform-style: preserve-3d;
+  transition: box-shadow 0.4s ease;
+}
+
+/* 티켓 절취선 */
+.ticket::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  right: 58px;
+  border-left: 1.5px dashed var(--c-line);
+}
+
+.ticket:hover { box-shadow: 0 1px 0 var(--c-line), 0 32px 50px -28px rgba(27, 45, 79, 0.55); }
+.ticket:focus-visible { outline: 3px solid var(--c-gold); outline-offset: 3px; }
+
+.ticketNo {
+  position: absolute;
+  top: 10px;
+  left: 18px;
+  font: 700 10px/1 var(--font-heading);
+  letter-spacing: 0.16em;
+  color: var(--c-gold-ink);
+  opacity: 0.8;
+}
+
+.ticketEmoji {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-top: 8px;
+  border-radius: 16px;
+  background: var(--c-sky);
+  font-size: 22px;
+}
+
+.ticketLabel {
+  margin-top: 8px;
+  font: 650 16.5px/1.3 var(--font-heading);
+}
+
+.ticketArrow {
+  width: 20px;
+  height: 20px;
+  margin-left: 22px;
+  color: var(--c-terra);
+  transition: transform 0.5s var(--c-spring);
+}
+
+.ticket:hover .ticketArrow { transform: translateX(5px); }
+
+/* ---------- 가이드 범례 (#guides) ---------- */
+.guides {
+  padding: clamp(80px, 11vw, 140px) 0;
+  background: var(--c-sky);
+  scroll-margin-top: var(--navbar-height);
+}
+
+.guidesHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.guidesHead p {
+  max-width: 320px;
+  margin: 0;
+  color: var(--c-ink-soft);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 40px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--c-line);
+}
+
+.legend > li { border-bottom: 1px solid var(--c-line); }
+
+.legendRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px 44px 1fr 20px;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 4px;
+  color: var(--c-ink);
+  text-decoration: none;
+}
+
+.legendRow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--c-gold);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 0.6s var(--c-expo);
+}
+
+.legendRow:hover::after,
+.legendRow:focus-visible::after { transform: scaleX(1); }
+.legendRow:focus-visible { outline: none; background: var(--c-tint); }
+
+.legendNo {
+  font: 700 12px/1 var(--font-heading);
+  letter-spacing: 0.08em;
+  color: var(--c-gold-ink);
+}
+
+.legendIcon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--c-surface);
+  color: var(--c-ink);
+  box-shadow: 0 10px 20px -16px rgba(27, 45, 79, 0.6);
+  transition: transform 0.5s var(--c-spring), background-color 0.3s ease, color 0.3s ease;
+}
+
+.legendIcon svg { width: 20px; height: 20px; }
+
+.legendRow:hover .legendIcon {
+  transform: rotate(-8deg) scale(1.08);
+  background: var(--c-ink-solid);
+  color: var(--c-gold);
+}
+
+.legendText { display: grid; gap: 4px; min-width: 0; }
+.legendText strong { font: 650 16.5px/1.25 var(--font-heading); }
+.legendText span { font-size: 13.5px; line-height: 1.4; color: var(--c-ink-soft); }
+
+.legendArrow {
+  width: 18px;
+  height: 18px;
+  color: var(--c-terra);
+  transition: transform 0.5s var(--c-spring);
+}
+
+.legendRow:hover .legendArrow { transform: translate(3px, -3px); }
+
+/* ---------- 반응형 ---------- */
+@media (max-width: 1023px) {
+  .ticketGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .legend { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 639px) {
+  .emList { justify-content: flex-start; }
+  .emItem { padding: 8px 14px 8px 8px; }
+  .emNumber { font-size: 19px; }
+  .ticketGrid { grid-template-columns: 1fr; gap: 10px; }
+  .ticket { min-height: 76px; }
+  .guidesHead { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .legendRow { grid-template-columns: 26px 40px 1fr 18px; gap: 12px; padding: 16px 0; }
+  .legendIcon { width: 40px; height: 40px; }
+}

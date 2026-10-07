@@ -1,0 +1,185 @@
+/* 챕터 6장 — 일반 스크롤 2열 카드 (데스크톱) / 1열 (모바일) */
+
+.chapters {
+  position: relative;
+  padding: clamp(24px, 4vh, 48px) 0 clamp(72px, 12vh, 120px);
+  color: var(--a-ink-dark);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(36px, 5vh, 56px) clamp(20px, 2.4vw, 32px);
+  width: min(1152px, 100% - 40px);
+  margin-inline: auto;
+}
+
+.card {
+  scroll-margin-top: calc(var(--navbar-height) + 64px); /* Navbar + 칩 바 */
+}
+
+.media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 24px;
+  background: var(--a-navy);
+  box-shadow: 0 30px 60px -36px rgb(10 18 38 / 0.6);
+  isolation: isolate;
+}
+.media picture,
+.media img,
+.media video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.media img,
+.media video { object-fit: cover; }
+.media img { transition: transform 1.6s var(--a-ease-out); }
+.card:hover .media img { transform: scale(1.04); }
+.media video { opacity: 0; transition: opacity 0.8s ease; }
+.media[data-playing] video { opacity: 1; }
+
+.shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(0deg, rgb(6 12 26 / 0.78) 0%, rgb(6 12 26 / 0.28) 42%, transparent 64%),
+    linear-gradient(90deg, rgb(6 12 26 / 0.35) 0%, transparent 50%);
+}
+
+.bigNo {
+  position: absolute;
+  right: -0.03em;
+  top: -0.16em;
+  font-family: var(--font-heading);
+  font-size: clamp(120px, 15vw, 220px);
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgb(246 239 226 / 0.38);
+  pointer-events: none;
+  user-select: none;
+}
+
+.cap {
+  position: absolute;
+  left: clamp(18px, 2.2vw, 28px);
+  right: clamp(18px, 2.2vw, 28px);
+  bottom: clamp(16px, 2vw, 24px);
+  color: var(--a-ink-light);
+}
+.kicker {
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--a-gold-soft);
+}
+.title {
+  margin-top: 6px;
+  font-family: var(--font-heading);
+  font-size: clamp(30px, 3.4vw, 50px);
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  text-shadow: 0 4px 30px rgb(4 10 24 / 0.4);
+  text-wrap: balance;
+}
+
+.links {
+  margin-top: 14px;
+  border-top: 1px solid var(--a-hairline-dark);
+}
+.links li { border-bottom: 1px solid var(--a-hairline-dark); }
+.link {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 14px;
+  padding: 12px 4px;
+  color: var(--a-ink-dark);
+  transition: padding 0.45s var(--a-ease-out), background 0.3s ease;
+}
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--a-terracotta);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--a-ease-out);
+}
+.link:hover { padding-left: 12px; background: linear-gradient(90deg, rgb(27 45 79 / 0.06), transparent); }
+.link:hover::after { transform: scaleX(1); }
+.link:focus-visible { outline: 2px solid var(--a-terracotta); outline-offset: 2px; }
+.linkTitle { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.linkDesc { grid-column: 1; margin-top: 1px; font-size: 13px; color: var(--a-ink-dark-muted); }
+.link svg {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 18px;
+  height: 18px;
+  color: var(--a-terracotta);
+  transition: transform 0.45s var(--a-ease-out);
+}
+.link:hover svg { transform: translate(3px, -3px); }
+
+.skyMarkEnd {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+/* full 모드: 스크롤에 맞춰 이미지가 열리듯 등장 (스크롤 기반 CSS 애니메이션) */
+@supports (animation-timeline: view()) {
+  [data-motion='full'] .media {
+    animation: mediaIn linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+  [data-motion='full'] .media img {
+    animation: imgIn linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 50%;
+  }
+}
+@keyframes mediaIn {
+  from { clip-path: inset(14% 8% 0 8% round 24px); }
+  to { clip-path: inset(0 0 0 0 round 24px); }
+}
+@keyframes imgIn {
+  from { transform: scale(1.14); }
+  to { transform: scale(1); }
+}
+
+/* lite: 정지 이미지 느린 줌 */
+[data-motion='lite'] .media img { animation: drift 26s ease-in-out infinite alternate; }
+@keyframes drift {
+  from { transform: scale(1.08); }
+  to { transform: scale(1); }
+}
+
+@media (max-width: 899px) {
+  .grid { grid-template-columns: 1fr; width: min(640px, 100% - 32px); }
+}
+@media (max-aspect-ratio: 3/4) {
+  .media { aspect-ratio: 1 / 1; border-radius: 20px; }
+  .bigNo { font-size: 46vw; }
+  .title { font-size: clamp(30px, 9vw, 40px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link, .link::after, .link svg, .media img { transition: none; }
+}

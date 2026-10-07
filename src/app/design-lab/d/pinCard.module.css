@@ -1,0 +1,172 @@
+/* 핀 카드(전시 명판) · 모바일 하단 시트 · 장소 칩 */
+
+/* ---------- 데스크톱 팝업 명판 ---------- */
+.card {
+  position: absolute;
+  width: 316px;
+  padding: 16px 14px 12px;
+  background: var(--d-glass-strong);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: var(--d-card-shadow), 0 0 0 1px var(--d-line);
+  border-top: 2px solid var(--d-brass);
+  animation: cardIn 0.6s var(--d-expo) both;
+}
+
+.card { left: -158px; }
+:global([data-pin][data-vert='below']) .card { top: 14px; transform-origin: 50% 0; }
+:global([data-pin][data-vert='above']) .card { bottom: 64px; transform-origin: 50% 100%; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); clip-path: inset(0 0 100% 0); }
+  to { opacity: 1; transform: none; clip-path: inset(0 0 0 0); }
+}
+
+.cardKicker {
+  margin: 0 6px 10px;
+  font: 600 11px/1 var(--font-heading);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--d-brass-ink);
+}
+
+.cardList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cardList > li + li { border-top: 1px solid var(--d-line); }
+
+.cardLink {
+  display: grid;
+  grid-template-columns: 38px 1fr 16px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 6px;
+  color: var(--d-ink);
+  text-decoration: none;
+  transition: background-color 0.25s ease, transform 0.45s var(--d-spring);
+}
+
+.cardLink:hover,
+.cardLink:focus-visible {
+  background: var(--d-tint);
+  transform: translateX(3px);
+  outline: none;
+}
+
+.cardIcon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px var(--d-hair);
+  color: var(--d-ink);
+}
+
+.cardIcon svg { width: 17px; height: 17px; }
+
+.cardText { display: grid; gap: 3px; min-width: 0; }
+.cardText strong { font: 600 14.5px/1.25 var(--font-heading); }
+.cardText span { font-size: 12.5px; line-height: 1.35; color: var(--d-ink-soft); }
+
+.cardArrow {
+  width: 16px;
+  height: 16px;
+  color: var(--d-terra);
+  transition: transform 0.4s var(--d-spring);
+}
+
+.cardLink:hover .cardArrow { transform: translate(2px, -2px); }
+
+/* ---------- 모바일 하단 시트 ---------- */
+.sheet {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 76px; /* 하단 장소 칩·피드백 버튼 줄 위 */
+  z-index: 70;
+  pointer-events: none;
+}
+
+.sheetInner {
+  padding: 14px 12px 8px;
+  background: var(--d-paper);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  box-shadow: var(--d-card-shadow), 0 0 0 1px var(--d-line);
+  border-top: 2px solid var(--d-brass);
+  pointer-events: auto;
+  animation: sheetIn 0.6s var(--d-expo) both;
+}
+
+@keyframes sheetIn {
+  from { opacity: 0; transform: translateY(36px); }
+  to { opacity: 1; transform: none; }
+}
+
+.sheetHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sheetHead .cardKicker { margin-bottom: 6px; }
+
+.sheetClose {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: -6px -2px 0 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--d-tint);
+  color: var(--d-ink);
+  cursor: pointer;
+}
+
+.sheetClose svg { width: 18px; height: 18px; }
+
+/* ---------- 장소 칩 ---------- */
+.chips {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 9px 13px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--d-glass-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--d-ink);
+  font: 600 12.5px/1 var(--font-heading);
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--d-line), 0 8px 18px -12px rgba(40, 30, 16, 0.6);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.45s var(--d-spring);
+}
+
+.chip:hover { transform: translateY(-2px); }
+
+.chip[data-active] {
+  background: var(--d-ink-solid);
+  color: var(--d-paper-solid);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--d-brass);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .sheetInner { animation: none; }
+}

@@ -1,0 +1,55 @@
+/* 착지 유리 패널 안 '지금 필요한 것' 바로가기 */
+
+.nowTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(16px, 1.35vw, 20px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--a-ink-light);
+}
+
+.situations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.situation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 52px;
+  padding: 10px 14px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  color: var(--a-ink-light);
+  font-size: 14.5px;
+  font-weight: 500;
+  line-height: 1.3;
+  transition: background 0.35s ease, border-color 0.35s ease, transform 0.35s var(--a-ease-out);
+}
+.situation:hover {
+  background: rgb(255 255 255 / 0.16);
+  border-color: color-mix(in srgb, var(--a-gold-soft) 60%, transparent);
+  transform: translateY(-2px);
+}
+.situation:focus-visible { outline: 2px solid var(--a-gold-soft); outline-offset: 2px; }
+.emoji { font-size: 18px; line-height: 1; }
+.situation span:nth-child(2) { flex: 1; }
+.situation svg {
+  width: 16px;
+  height: 16px;
+  color: var(--a-gold-soft);
+  opacity: 0.7;
+  transition: transform 0.35s var(--a-ease-out), opacity 0.35s ease;
+}
+.situation:hover svg { transform: translate(2px, -2px); opacity: 1; }
+
+@media (max-aspect-ratio: 3/4) {
+  .situations { gap: 8px; margin-top: 12px; }
+  .situation { min-height: 48px; padding: 8px 12px; font-size: 13.5px; gap: 10px; border-radius: 14px; }
+  .emoji { font-size: 16px; }
+  .situation svg { display: none; }
+}

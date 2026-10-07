@@ -1,0 +1,155 @@
+/* 마무리 — 서울의 밤 불빛이 별이 되고, 은하수 아래 게르로 돌아옴 */
+
+.finale {
+  position: relative;
+  color: var(--a-ink-light);
+}
+
+.stage {
+  position: relative;
+  min-height: var(--a-stage-h);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(56px, 12vh, 120px) clamp(20px, 5vw, 80px) clamp(84px, 11vh, 104px);
+}
+
+.media,
+.media img,
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.media { z-index: -2; }
+.media img { object-fit: cover; }
+.mediaStart { display: none; }
+.canvas { display: none; z-index: -2; opacity: 0; transition: opacity 0.6s ease; }
+
+.veil {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgb(4 8 20 / 0.55) 0%, transparent 34%),
+    linear-gradient(0deg, rgb(4 8 20 / 0.7) 0%, transparent 46%);
+}
+
+.line {
+  max-width: 14em;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: clamp(36px, 5.6vw, 92px);
+  font-weight: 250;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  text-shadow: 0 6px 50px rgb(4 8 20 / 0.5);
+  text-wrap: balance;
+}
+.word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.04em 0.05em 0.12em;
+}
+.word > span { display: inline-block; }
+
+.ctas {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 16px;
+  width: min(860px, 64%);
+  margin: 40px 0 0 auto; /* 좌하단 게르가 가려지지 않게 오른쪽 정렬 */
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 22px;
+  min-height: 180px;
+  padding: clamp(22px, 2.4vw, 32px);
+  border-radius: 26px;
+  color: var(--a-ink-light);
+  transition: transform 0.6s var(--a-ease-out), border-color 0.4s ease;
+}
+.card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--a-gold-soft) 55%, transparent); }
+.card:focus-visible { outline: 2px solid var(--a-gold-soft); outline-offset: 4px; }
+
+.cardTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(26px, 2.6vw, 40px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+}
+.cardText { margin-top: 8px; font-size: 15px; line-height: 1.55; color: var(--a-ink-light-muted); }
+.cardText strong { color: var(--a-ink-light); font-weight: 600; }
+.cardFoot {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  font-weight: 600;
+  color: var(--a-gold-soft);
+}
+.cardFoot svg { width: 18px; height: 18px; transition: transform 0.4s var(--a-ease-out); }
+.card:hover .cardFoot svg { transform: translateX(4px); }
+.donateBtn {
+  padding: 12px 20px;
+  border-radius: 999px;
+  background: var(--a-terracotta);
+  color: #fff;
+}
+
+.skyMark {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.skyMarkStart { top: 0; }
+.skyMarkEnd { bottom: 0; }
+
+[data-motion='lite'] .media img { animation: slowzoom 30s ease-out both; }
+@keyframes slowzoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+
+/* ---------- full: 고정 + 스크럽 ---------- */
+[data-motion='full'] .finale { height: 360vh; }
+[data-motion='full'] .stage {
+  position: sticky;
+  top: var(--navbar-height);
+  height: var(--a-stage-h);
+  min-height: 0;
+}
+[data-motion='full'] .mediaEnd { display: none; z-index: -1; }
+[data-motion='full'] .mediaStart { display: block; }
+[data-motion='full'] .canvas { display: block; }
+[data-motion='full'] .canvas.ready { opacity: 1; }
+[data-motion='full'] .ctas .card { opacity: 0; visibility: hidden; }
+
+@media (max-aspect-ratio: 3/4) {
+  .stage { padding-top: clamp(40px, 8vh, 72px); padding-bottom: 76px; justify-content: flex-start; }
+  /* 모바일: 두 줄 컴팩트 CTA — 은하수 아래 게르가 카드 위로 보이도록 */
+  .ctas { grid-template-columns: 1fr; gap: 8px; width: 100%; margin: 24px 0 0; }
+  .card {
+    flex-direction: row;
+    align-items: center;
+    min-height: 0;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 18px;
+  }
+  .card > :first-child { flex: 1; min-width: 0; }
+  .cardTitle { font-size: 19px; font-weight: 400; }
+  .cardText { margin-top: 2px; font-size: 12.5px; line-height: 1.45; }
+  .cardFoot { align-self: center; }
+  .donateBtn { padding: 9px 14px; font-size: 14px; flex: none; }
+  .line { font-size: clamp(32px, 9.6vw, 48px); }
+  [data-motion='full'] .finale { height: 320vh; }
+}

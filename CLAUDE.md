@@ -58,6 +58,7 @@ Warm (#FAF6F0)       — 커뮤니티 배경
 
 ### 서버/빌드 관련
 - **빌드(pnpm build) 실행 금지** — 사용자가 직접 확인함
+  - 사용자가 빌드를 요청한 경우에도 **프로젝트 폴더에서 빌드하지 않는다** (dev 서버의 `.next`를 덮어 깨뜨림). 스크래치에 복사본을 만들고(node_modules는 링크 말고 `pnpm install --prefer-offline`) 거기서 빌드 → 복사본 삭제
 - **개발 서버(pnpm dev) 실행 금지** — 사용자가 dev.bat으로 직접 실행
 - **서버는 항상 http://localhost:5005 에서 실행 중**이라고 가정
 
@@ -316,6 +317,21 @@ main().catch(e => { console.error(e); process.exit(1); });
 - drizzle-kit push는 인터랙티브 프롬프트가 있어서 자동화 불가 → DDL은 위 방식으로 직접 실행
 
 ---
+
+## 미디어 에셋 · CDN (R2)
+
+- 에셋 CDN = R2 버킷 `koreamongol` + 커스텀 도메인 **`https://cdn.koreamongol.com`**. Cloudflare 캐시 규칙: host eq `cdn.koreamongol.com` → Eligible for cache, Edge TTL = cache-control 우선(없으면 기본 TTL), Browser TTL = origin 존중
+- `pub-…r2.dev` 주소는 캐시 없음·초당 수백 요청 넘으면 429 → **운영에 쓰지 않는다** (`R2_PUBLIC_URL`이 아직 r2.dev — 전환 대기)
+- 버킷 CORS 허용 출처: `koreamongol.com`, `www.koreamongol.com`, `localhost:5005` (GET/HEAD). 다른 도메인에서 CDN 에셋을 캔버스·WebGL로 쓰려면 CORS에 추가
+- **CORS 캐시 함정**: R2는 Origin 없는 요청에 `Access-Control-Allow-Origin`·`Vary: Origin`을 붙이지 않는다. 같은 URL을 일반 `<img>`와 `crossOrigin`(캔버스·WebGL)으로 섞어 받으면 브라우저 캐시 때문에 CORS가 실패한다 → 캔버스·WebGL용 요청은 `?gl` 같은 쿼리로 캐시를 분리
+- 업로드: `scripts/design-lab/upload-r2.mjs <폴더> [--prefix …]`. 웹용 파일은 **프로젝트 밖** 임시 폴더(세션 스크래치 등)에서 만들어 올리고 로컬 사본은 삭제 (public·프로젝트 안에 두지 않음). `Cache-Control: immutable`이라 파일 수정 시 새 버전 경로(v2…)로 올린다
+- Cloudflare 설정 권한: 프로젝트 env에는 R2 S3 키만 있음. 캐시 규칙·DNS·도메인 설정은 대시보드(또는 별도 API 토큰) 필요
+
+## 홈 리디자인 시안 (design-lab)
+
+- `/design-lab/*` = 비공개 시안 비교 페이지. 운영은 Basic Auth(`DESIGN_LAB_PASSWORD`, **Infisical prod에만** — 값 없으면 404), 로컬 dev는 잠금 없음. 로직: `src/lib/design-lab-auth.js` + `src/middleware.js`
+- 에셋은 R2 `design-lab/v1/`(웹용), `design-lab/originals/`(원본 영상 보관). 코드에서는 `src/app/design-lab/_shared/asset.js`의 `labAsset()`/`LAB_ASSET_BASE`로 참조
+- 브리프·기록: `docs/design-lab/brief.md`, `brief-de.md`, `video-model-research.md`, `prompts/`
 
 ## 참고 문서
 

@@ -1,0 +1,133 @@
+/* 히어로 위 UI — 정착 후 안내 명판 · 장소 칩 · 낮/밤(전시 조명) 토글 */
+
+@keyframes fadeUp {
+  from { transform: translateY(16px); opacity: 0; }
+}
+
+/* ---------- 정착 후 안내 명판 (좌하단) ---------- */
+.mapHead {
+  position: absolute;
+  bottom: 78px; /* 장소 칩 위 — 테이블 앞면이라 모형을 가리지 않는다 */
+  left: 24px;
+  z-index: 30;
+  max-width: 340px;
+  padding: 16px 18px 16px 20px;
+  background: var(--d-glass-strong);
+  backdrop-filter: blur(16px) saturate(1.3);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  box-shadow: var(--d-card-shadow), 0 0 0 1px var(--d-line);
+  border-left: 2px solid var(--d-brass);
+  opacity: 0;
+}
+
+.mapTitle {
+  margin: 0 0 6px;
+  font: 650 18px/1.2 var(--font-heading);
+  letter-spacing: -0.01em;
+  color: var(--d-ink);
+}
+
+.mapHint {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--d-ink-soft);
+}
+
+.chipsBar {
+  position: absolute;
+  left: 24px;
+  right: 210px; /* 우하단 피드백 버튼 자리 비움 */
+  bottom: 22px;
+  z-index: 30;
+  overflow-x: auto;
+  scrollbar-width: none;
+  opacity: 0;
+}
+
+.chipsBar::-webkit-scrollbar { display: none; }
+
+:global([data-stage]):not([data-settled]) .mapHead,
+:global([data-stage]):not([data-settled]) .chipsBar { pointer-events: none; }
+
+/* 모션 축소: 처음부터 보임 */
+:global([data-static]) .mapHead,
+:global([data-static]) .chipsBar { opacity: 1; }
+
+/* ---------- 전시 조명 토글 (낮/밤) ---------- */
+.toggle {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  z-index: 40;
+  display: flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--d-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset 0 0 0 1px var(--d-line);
+  animation: fadeUp 1s var(--d-expo) 1.7s backwards;
+}
+
+.toggleBtn {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--d-ink-soft);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.toggleBtn svg { width: 17px; height: 17px; }
+.toggleBtn[aria-pressed='true'] { color: var(--d-ink-solid); }
+.toggleBtn:focus-visible { outline: 2px solid var(--d-brass); outline-offset: 1px; }
+
+.toggleKnob {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f3dc9c 0%, #d4a843 50%, #a37a2c 100%);
+  box-shadow: 0 6px 16px -6px rgba(163, 122, 44, 0.9);
+  transition: transform 0.6s var(--d-spring);
+}
+
+:global(.dark) .toggleKnob { transform: translateX(38px); }
+
+/* ---------- 세로 화면 (모바일) ---------- */
+@media (max-aspect-ratio: 1/1) {
+  .toggle { top: 12px; right: 12px; }
+
+  /* 세로 근접 프레임의 아래쪽은 오크 테이블 — 모형을 가리지 않는 자리 */
+  .mapHead {
+    bottom: 76px;
+    left: 12px;
+    right: 76px;
+    max-width: none;
+    padding: 10px 14px 11px 16px;
+  }
+
+  :global([data-stage][data-active]) .mapHead { visibility: hidden; }
+
+  .mapTitle { font-size: 16px; margin-bottom: 4px; }
+  .mapHint { font-size: 12.5px; }
+
+  .chipsBar {
+    left: 12px;
+    right: 76px; /* 우하단 피드백 버튼(48px + 여백) 옆 */
+    bottom: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toggle { animation: none; }
+}

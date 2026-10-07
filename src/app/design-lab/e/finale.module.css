@@ -1,0 +1,121 @@
+/* 마무리 — 고정 없음. 서울의 밤 → 은하수 아래 게르 크로스페이드 */
+
+.finale {
+  position: relative;
+  min-height: min(92svh, 900px);
+  overflow: hidden;
+  color: var(--a-ink-light);
+  isolation: isolate;
+}
+
+.skyMark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+.night,
+.stars,
+.night img,
+.stars img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.night img,
+.stars img { object-fit: cover; }
+.night { opacity: 0; }
+
+.veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgb(4 8 20 / 0.6) 0%, transparent 36%),
+    linear-gradient(0deg, rgb(4 8 20 / 0.55) 0%, transparent 40%);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+  min-height: inherit;
+  padding: clamp(56px, 11vh, 110px) clamp(20px, 5vw, 80px) clamp(84px, 11vh, 104px);
+}
+
+.line {
+  max-width: 14em;
+  margin: 0 auto;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: clamp(36px, 5.4vw, 88px);
+  font-weight: 250;
+  line-height: 1.04;
+  letter-spacing: -0.04em;
+  text-shadow: 0 6px 50px rgb(4 8 20 / 0.5);
+  text-wrap: balance;
+}
+.word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.04em 0.05em 0.12em;
+}
+.word > span { display: inline-block; }
+
+.ctas {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 16px;
+  width: min(860px, 64%);
+  margin-left: auto; /* 좌하단 게르가 가려지지 않게 오른쪽 정렬 */
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 170px;
+  padding: clamp(20px, 2.2vw, 30px);
+  border-radius: 26px;
+  color: var(--a-ink-light);
+  transition: transform 0.6s var(--a-ease-out), border-color 0.4s ease;
+}
+.card:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--a-gold-soft) 55%, transparent); }
+.card:focus-visible { outline: 2px solid var(--a-gold-soft); outline-offset: 4px; }
+.cardTitle { font-family: var(--font-heading); font-size: clamp(24px, 2.4vw, 36px); font-weight: 300; letter-spacing: -0.03em; }
+.cardText { margin-top: 8px; font-size: 15px; line-height: 1.55; color: var(--a-ink-light-muted); }
+.cardText strong { color: var(--a-ink-light); font-weight: 600; }
+.cardFoot { display: inline-flex; align-items: center; gap: 10px; align-self: flex-start; font-weight: 600; color: var(--a-gold-soft); }
+.cardFoot svg { width: 18px; height: 18px; transition: transform 0.4s var(--a-ease-out); }
+.card:hover .cardFoot svg { transform: translateX(4px); }
+.donateBtn { padding: 12px 20px; border-radius: 999px; background: var(--a-terracotta); color: #fff; }
+
+/* full 모드: 처음엔 서울의 밤에서 시작 (스크롤로 은하수로 바뀜) */
+[data-motion='full'] .night { opacity: 1; }
+[data-motion='full'] .stars { opacity: 0; }
+
+[data-motion='lite'] .stars img { animation: slowzoom 30s ease-out both; }
+@keyframes slowzoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+
+@media (max-aspect-ratio: 3/4) {
+  .inner { justify-content: flex-start; gap: 24px; padding: clamp(40px, 8vh, 72px) 16px 76px; }
+  .line { font-size: clamp(32px, 9.6vw, 48px); }
+  .ctas { grid-template-columns: 1fr; gap: 8px; width: 100%; margin: 0; }
+  .card { flex-direction: row; align-items: center; min-height: 0; gap: 12px; padding: 12px 14px; border-radius: 18px; }
+  .card > :first-child { flex: 1; min-width: 0; }
+  .cardTitle { font-size: 19px; font-weight: 400; }
+  .cardText { margin-top: 2px; font-size: 12.5px; line-height: 1.45; }
+  .cardFoot { align-self: center; }
+  .donateBtn { padding: 9px 14px; font-size: 14px; flex: none; }
+}

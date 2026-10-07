@@ -1,0 +1,154 @@
+/* 모형 위 핀 — 브라스 핀 머리 + 헤어라인 + 전시 명판식 라벨 */
+
+.pins {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.pin {
+  position: absolute;
+  left: calc(var(--dx) * 1%);
+  top: calc(var(--dy) * 1%);
+  width: 0;
+  height: 0;
+  z-index: calc(10 + var(--i));
+  pointer-events: auto;
+}
+
+.pin[data-active] { z-index: 60; }
+
+.pinBtn {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: translate(-50%, 6px);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 11px 7px 8px;
+  background: var(--d-glass-strong);
+  backdrop-filter: blur(10px) saturate(1.3);
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  color: var(--d-ink);
+  font: 600 12.5px/1 var(--font-heading);
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+  box-shadow: var(--d-label-shadow), 0 0 0 1px var(--d-line);
+  transition:
+    transform 0.5s var(--d-spring),
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.labelNo {
+  padding-right: 8px;
+  border-right: 1px solid var(--d-hair);
+  font: 600 10px/1 var(--font-heading);
+  letter-spacing: 0.12em;
+  color: var(--d-brass-ink);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 라벨과 핀 머리를 잇는 헤어라인 */
+.stem {
+  width: 1px;
+  height: 18px;
+  background: linear-gradient(to bottom, var(--d-ink-solid), rgba(27, 45, 79, 0.5));
+  transform-origin: 50% 100%;
+}
+
+:global(.dark) .stem { background: linear-gradient(to bottom, var(--d-on-dark), rgba(243, 238, 227, 0.4)); }
+
+/* 브라스 핀 머리 + 모형 위 작은 그림자 */
+.head {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #f6e2a6 0%, #d4a843 45%, #8f6d27 100%);
+  box-shadow: 0 0 0 1.5px rgba(255, 255, 255, 0.85), 3px 5px 7px rgba(30, 20, 8, 0.45);
+  transition: transform 0.5s var(--d-spring);
+}
+
+.head > span {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--d-brass);
+  animation: pulse 3s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+  animation-delay: calc(var(--i) * -0.29s);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(2.8); opacity: 0; }
+}
+
+.pin:hover .label,
+.pin[data-active] .label,
+.pinBtn:focus-visible .label {
+  transform: translateY(-3px);
+  background: var(--d-ink-solid);
+  color: var(--d-paper-solid);
+}
+
+.pin:hover .labelNo,
+.pin[data-active] .labelNo,
+.pinBtn:focus-visible .labelNo {
+  color: var(--gold-light);
+  border-color: rgba(250, 246, 240, 0.25);
+}
+
+.pin:hover .head,
+.pin[data-active] .head { transform: scale(1.25); }
+
+.pinBtn:focus-visible { outline: none; }
+.pinBtn:focus-visible .label { box-shadow: 0 0 0 3px var(--d-brass), var(--d-label-shadow); }
+
+/* ---------- 세로 화면: 핀 머리만 (터치 44px), 라벨은 스크린리더 전용 ---------- */
+@media (max-aspect-ratio: 1/1) {
+  .pin {
+    left: calc(var(--mx) * 1%);
+    top: calc(var(--my) * 1%);
+  }
+
+  .pinBtn {
+    width: 44px;
+    height: 44px;
+    justify-content: center;
+    transform: translate(-50%, 50%);
+  }
+
+  .label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .stem { display: none; }
+  .head { width: 16px; height: 16px; }
+  .pin[data-active] .head { background: radial-gradient(circle at 35% 30%, #f0a48f 0%, #c45b3e 55%, #8a3a25 100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .head > span { animation: none; opacity: 0; }
+}

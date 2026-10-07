@@ -1,0 +1,101 @@
+/* 시안 C 공통 토큰 — 낮(라이트) / 밤(.dark) */
+
+.root {
+  --c-ink: var(--navy);
+  --c-ink-solid: #1b2d4f;
+  --c-ink-soft: #55657f;
+  --c-paper: var(--bg-warm);
+  --c-paper-solid: #faf6f0;
+  --c-sky: var(--bg-sky);
+  --c-sky-top: #c9daf6;
+  --c-gold: var(--gold);
+  --c-gold-ink: #a8822a;
+  --c-terra: var(--terracotta);
+  --c-line: rgba(27, 45, 79, 0.12);
+  --c-tint: rgba(27, 45, 79, 0.06);
+  --c-glass: rgba(250, 246, 240, 0.58);
+  --c-glass-strong: rgba(250, 246, 240, 0.86);
+  --c-surface: #ffffff;
+  --c-pin-shadow: 0 10px 24px -10px rgba(27, 45, 79, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+  --c-pin-drop: rgba(27, 45, 79, 0.35);
+  --c-card-shadow: 0 40px 80px -30px rgba(27, 45, 79, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.65) inset;
+  /* 밤 패널(긴급번호·환율·마무리) 위 글자색 — 테마와 무관하게 어두운 배경 위 */
+  --c-on-dark: #f3eee3;
+  --c-on-dark-soft: #c3cde0;
+  --c-on-dark-mute: #a9b4c8;
+  --c-on-terra: #ffffff;
+  /* 하늘 그라디언트 (히어로 · 마무리) — 디오라마 원화 상단 하늘색에서 추출 */
+  --c-day-sky-1: #bdd3f5;
+  --c-day-sky-2: #dfe8f7;
+  --c-day-sky-3: #f4eee6;
+  --c-night-sky-1: #0a1430;
+  --c-night-sky-2: #172a52;
+  --c-night-sky-3: #23366a;
+  --c-finale-top: #071533;
+  --c-finale-mid: #0c275c;
+  --c-finale-top-m: #06122e;
+  --c-finale-mid-m: #091f57;
+  --c-emergency-bg: var(--c-ink-solid);
+  --c-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --c-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  background: var(--c-paper);
+  color: var(--c-ink);
+  overflow-x: clip;
+}
+
+:global(.dark) .root {
+  --c-emergency-bg: #08111f;
+  --c-ink: #f1ece2;
+  --c-ink-soft: #a9b4c8;
+  --c-paper: #0d1729;
+  --c-sky: #18294a;
+  --c-sky-top: #0b1426;
+  --c-gold-ink: #e4c06a;
+  --c-line: rgba(232, 240, 254, 0.12);
+  --c-tint: rgba(232, 240, 254, 0.07);
+  --c-glass: rgba(13, 23, 41, 0.5);
+  --c-glass-strong: rgba(19, 32, 56, 0.86);
+  --c-surface: #132038;
+  --c-pin-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(232, 240, 254, 0.14);
+  --c-pin-drop: rgba(0, 0, 0, 0.5);
+  --c-card-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(232, 240, 254, 0.1) inset;
+}
+
+/* 공통: 섹션 폭 */
+.wrap {
+  width: min(100% - 32px, 1152px);
+  margin-inline: auto;
+}
+
+.wrapMid {
+  width: min(100% - 32px, 896px);
+  margin-inline: auto;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 14px;
+  font: 700 12px/1 var(--font-heading);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--c-gold-ink);
+}
+
+.kicker::before {
+  content: '';
+  width: 28px;
+  height: 1.5px;
+  background: currentColor;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

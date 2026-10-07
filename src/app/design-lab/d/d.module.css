@@ -1,0 +1,89 @@
+/* 시안 D 공통 토큰 — 낮(갤러리 조명) / 밤(.dark, 야간 전시 조명) */
+
+.root {
+  --d-ink: var(--navy);
+  --d-ink-solid: #1b2d4f;
+  --d-ink-soft: #5b6476;
+  --d-wall: #ece5da;          /* 전시 벽 — 기준 프레임 벽색에서 추출 */
+  --d-wall-deep: #e2d8c9;
+  --d-paper: #f7f3ec;         /* 명판·카드 */
+  --d-paper-solid: #faf6f0;
+  --d-oak: #cfb48c;
+  --d-oak-deep: #a88a62;
+  --d-brass: var(--gold);
+  --d-brass-ink: #8f6d27;     /* 밝은 배경 위 브라스 글자 (대비 4.5:1 이상) */
+  --d-terra: var(--terracotta);
+  --d-line: rgba(27, 45, 79, 0.14);
+  --d-hair: rgba(27, 45, 79, 0.22);
+  --d-tint: rgba(27, 45, 79, 0.05);
+  --d-glass: rgba(247, 243, 236, 0.66);
+  --d-glass-strong: rgba(247, 243, 236, 0.92);
+  --d-surface: #fbf9f5;
+  --d-shadow-far: rgba(60, 42, 20, 0.28);
+  --d-label-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 14px 30px -18px rgba(40, 30, 16, 0.55);
+  --d-card-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 40px 80px -36px rgba(40, 30, 16, 0.5);
+  /* 어두운 패널(긴급번호·환율·마무리) 위 글자 — 테마와 무관 */
+  --d-on-dark: #f3eee3;
+  --d-on-dark-soft: #c6ccd8;
+  --d-on-dark-mute: #a4adbd;
+  --d-on-terra: #ffffff;
+  --d-night-wall: #0d1628;
+  --d-night-wall-2: #15223b;
+  --d-band: var(--d-ink-solid);
+  --d-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --d-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --d-quart: cubic-bezier(0.76, 0, 0.24, 1);
+
+  background: var(--d-wall);
+  color: var(--d-ink);
+  overflow-x: clip;
+}
+
+:global(.dark) .root {
+  --d-ink: #eee8dc;
+  --d-ink-soft: #a9b2c3;
+  --d-wall: #0e1729;
+  --d-wall-deep: #0a1221;
+  --d-paper: #152139;
+  --d-brass-ink: #e0bd6a;
+  --d-line: rgba(232, 236, 245, 0.12);
+  --d-hair: rgba(232, 236, 245, 0.2);
+  --d-tint: rgba(232, 236, 245, 0.06);
+  --d-glass: rgba(14, 23, 41, 0.55);
+  --d-glass-strong: rgba(21, 33, 57, 0.92);
+  --d-surface: #131f35;
+  --d-shadow-far: rgba(0, 0, 0, 0.6);
+  --d-label-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 14px 30px -16px rgba(0, 0, 0, 0.8);
+  --d-card-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 40px 80px -30px rgba(0, 0, 0, 0.8);
+  --d-band: #070d19;
+}
+
+/* 공통: 섹션 폭 */
+.wrap {
+  width: min(100% - 32px, 1152px);
+  margin-inline: auto;
+}
+
+.wrapMid {
+  width: min(100% - 32px, 896px);
+  margin-inline: auto;
+}
+
+/* 전시 명판식 소제목: 브라스 괘선 + 자간 넓은 대문자 */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 16px;
+  font: 600 11.5px/1 var(--font-heading);
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--d-brass-ink);
+}
+
+.kicker::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+}

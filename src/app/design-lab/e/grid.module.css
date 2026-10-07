@@ -1,0 +1,165 @@
+/* 가이드 14개 전체 그리드 + 긴급번호 띠 */
+
+.section {
+  position: relative;
+  padding: clamp(48px, 8vh, 88px) 0 clamp(40px, 6vh, 64px);
+  color: var(--a-ink-dark);
+  scroll-margin-top: calc(var(--navbar-height) + 56px); /* Navbar + 칩 바 */
+}
+
+.skyMark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.wrap {
+  width: min(1152px, 100% - 40px);
+  margin-inline: auto;
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 24px;
+}
+.label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--a-terracotta-dark);
+}
+.label::before { content: ''; width: 36px; height: 1px; background: currentColor; }
+.sub {
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  color: var(--a-ink-dark);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.tile {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  height: 100%;
+  padding: 14px 34px 14px 14px;
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.62);
+  border: 1px solid rgb(27 45 79 / 0.1);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 10px 24px -20px rgb(27 45 79 / 0.5);
+  transition: transform 0.45s var(--a-ease-out), box-shadow 0.45s var(--a-ease-out), border-color 0.3s ease, background 0.3s ease;
+}
+.tile:hover {
+  transform: translateY(-3px);
+  background: rgb(255 255 255 / 0.9);
+  border-color: color-mix(in srgb, var(--a-gold) 60%, transparent);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 18px 34px -22px rgb(27 45 79 / 0.55);
+}
+.tile:focus-visible { outline: 2px solid var(--a-terracotta); outline-offset: 2px; }
+
+.icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--a-gold) 16%, transparent);
+  color: var(--a-navy);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+.icon svg { width: 20px; height: 20px; }
+.tile:hover .icon { background: var(--a-navy); color: var(--a-gold-soft); }
+
+.text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.title { font-size: 15px; font-weight: 600; line-height: 1.3; color: var(--a-ink-dark); }
+.desc { font-size: 12.5px; line-height: 1.4; color: var(--a-ink-dark-muted); }
+
+.arrow {
+  position: absolute;
+  top: 14px;
+  right: 12px;
+  width: 16px;
+  height: 16px;
+  color: var(--a-terracotta);
+  opacity: 0.55;
+  transition: transform 0.4s var(--a-ease-out), opacity 0.3s ease;
+}
+.tile:hover .arrow { transform: translate(2px, -2px); opacity: 1; }
+
+/* 긴급번호 띠 */
+.sos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 28px;
+  margin-top: 16px;
+  padding: 16px clamp(16px, 2vw, 24px);
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--a-terracotta) 8%, var(--a-warm));
+  border: 1px solid color-mix(in srgb, var(--a-terracotta) 28%, transparent);
+}
+.sosNums { display: flex; flex-wrap: wrap; gap: 8px 26px; }
+.sosNum { display: inline-flex; align-items: baseline; gap: 8px; font-size: 14.5px; color: var(--a-ink-dark); }
+.sosNum strong {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--a-terracotta-dark);
+}
+.sosNum:hover strong { text-decoration: underline; text-underline-offset: 4px; }
+.sosGuide { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--a-terracotta-dark); }
+.sosGuide svg { width: 16px; height: 16px; transition: transform 0.35s var(--a-ease-out); }
+.sosGuide:hover svg { transform: translateX(4px); }
+.sosNum:focus-visible,
+.sosGuide:focus-visible { outline: 2px solid var(--a-terracotta); outline-offset: 3px; border-radius: 6px; }
+
+/* full 모드: 스크롤에 맞춰 타일이 떠오름 (JS 없이 스크롤 기반 CSS 애니메이션) */
+@supports (animation-timeline: view()) {
+  [data-motion='full'] .grid li {
+    animation: tileIn linear both;
+    animation-timeline: view();
+    animation-range: entry 5% entry 60%;
+  }
+}
+@keyframes tileIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 639px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 20px; }
+  .tile { align-items: center; gap: 10px; min-height: 56px; padding: 10px 24px 10px 10px; border-radius: 14px; }
+  .icon { width: 30px; height: 30px; border-radius: 9px; }
+  .icon svg { width: 17px; height: 17px; }
+  .title { font-size: 13.5px; }
+  .desc { display: none; }
+  .arrow { top: 8px; right: 8px; width: 13px; height: 13px; }
+  .sosNum strong { font-size: 19px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile, .arrow, .icon { transition: none; }
+}

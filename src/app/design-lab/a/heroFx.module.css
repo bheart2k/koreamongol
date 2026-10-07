@@ -1,0 +1,150 @@
+/* 히어로 연출 레이어 — 비행 중 문구, 좌표 HUD, 스크롤 안내 (full 모드에서만 표시) */
+
+.lines,
+.hud,
+.cue { display: none; }
+
+.lineA {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 30%;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: clamp(12px, 1vw, 15px);
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--a-ink-light);
+}
+
+.lineB {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+.lineBTitle {
+  font-family: var(--font-heading);
+  font-size: clamp(52px, 9.5vw, 156px);
+  font-weight: 250;
+  line-height: 1;
+  letter-spacing: -0.045em;
+  color: var(--a-ink-light);
+  text-shadow: 0 4px 60px rgb(120 80 20 / 0.35);
+}
+.lineBWord {
+  display: inline-block;
+  overflow: hidden;
+  padding: 0.06em 0.1em 0.12em;
+  vertical-align: top;
+}
+.lineBWord > span { display: inline-block; }
+.lineBRoute {
+  margin-top: 22px;
+  font-family: var(--font-heading);
+  font-size: clamp(11px, 0.95vw, 14px);
+  font-weight: 500;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--a-gold-soft);
+  text-shadow: 0 2px 18px rgb(4 10 24 / 0.6);
+}
+
+.hud {
+  position: absolute;
+  top: clamp(18px, 3.5vh, 32px);
+  right: clamp(16px, 3vw, 44px);
+  z-index: 4;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--a-ink-light-muted);
+}
+.hudCity {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--a-ink-light);
+}
+.hudCoord { display: block; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.hudBar {
+  display: block;
+  width: 120px;
+  height: 1px;
+  margin: 10px 0 0 auto;
+  background: var(--a-hairline-light);
+  position: relative;
+  overflow: hidden;
+}
+.hudBar i {
+  position: absolute;
+  inset: 0;
+  background: var(--a-gold-soft);
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+}
+
+.cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(18px, 4vh, 36px);
+  z-index: 4;
+  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--a-ink-light-muted);
+}
+.cue i {
+  display: block;
+  width: 1px;
+  height: 44px;
+  background: linear-gradient(var(--a-ink-light), transparent);
+  transform-origin: top;
+  animation: cue 2.2s var(--a-ease-out) infinite;
+}
+@keyframes cue {
+  0% { transform: scaleY(0); opacity: 1; }
+  60% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+[data-motion='full'] .lines { display: block; position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+[data-motion='full'] .lineA,
+[data-motion='full'] .lineB { opacity: 0; visibility: hidden; }
+[data-motion='full'] .hud { display: block; }
+[data-motion='full'] .cue { display: flex; }
+
+@media (max-aspect-ratio: 3/4) {
+  .hud { top: 26px; right: 16px; }
+  .hudCity { font-size: 10px; letter-spacing: 0.22em; }
+  .hudCoord { font-size: 9.5px; }
+  .hudBar { width: 72px; }
+  .cue { bottom: 84px; }
+  .lineBTitle { font-size: clamp(38px, 11.5vw, 60px); }
+  .lineA { top: 26%; letter-spacing: 0.36em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cue i { animation: none; }
+}
+
+.skyEnd {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
