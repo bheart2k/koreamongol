@@ -1,0 +1,155 @@
+/* 히어로 위 UI — 지도 안내 · 장소 칩 · 영상 일시정지 · 낮/밤 토글 */
+
+@keyframes fadeUp {
+  from { transform: translateY(14px); opacity: 0; }
+}
+
+/* ---------- 지도 바: 문구 패널 오른쪽, 섬 밑면·구름 위 ---------- */
+.mapBar {
+  position: absolute;
+  left: calc(24px + var(--copy-w) + 16px);
+  right: 210px; /* 우하단 피드백 버튼 자리 비움 */
+  bottom: 22px;
+  z-index: 30;
+  display: grid;
+  gap: 8px;
+  animation: fadeUp 0.5s var(--c-expo) 0.15s backwards;
+}
+
+.mapHint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  margin: 0;
+  padding: 7px 13px 7px 11px;
+  border-radius: 999px;
+  background: var(--c-glass-strong);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 0 0 1px var(--c-line);
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: var(--c-ink-soft);
+}
+
+.mapHint svg {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  color: var(--c-terra);
+}
+
+.mapHint strong {
+  margin-right: 4px;
+  font-weight: 650;
+  color: var(--c-ink);
+}
+
+.chipsBar {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chipsBar::-webkit-scrollbar { display: none; }
+
+.chipsBar > ul { flex-wrap: wrap; }
+
+/* ---------- 우상단: 영상 일시정지 + 낮/밤 토글 ---------- */
+.controls {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  animation: fadeUp 0.6s var(--c-expo) 0.2s backwards;
+}
+
+.pause {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--c-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset 0 0 0 1px var(--c-line);
+  color: var(--c-ink);
+  cursor: pointer;
+}
+
+.pause svg { width: 18px; height: 18px; }
+.pause:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 2px; }
+
+.toggle {
+  position: relative;
+  display: flex;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--c-glass);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset 0 0 0 1px var(--c-line);
+}
+
+.toggleBtn {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--c-ink-soft);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.toggleBtn svg { width: 18px; height: 18px; }
+.toggleBtn[aria-pressed='true'] { color: var(--c-ink-solid); }
+.toggleBtn:focus-visible { outline: 2px solid var(--c-gold); outline-offset: 1px; }
+
+.toggleKnob {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  box-shadow: 0 6px 16px -6px rgba(212, 168, 67, 0.9);
+  transition: transform 0.6s var(--c-spring);
+}
+
+:global(.dark) .toggleKnob { transform: translateX(38px); }
+
+/* ---------- 세로 화면 (모바일): 지도 바는 CTA 위 ---------- */
+@media (max-aspect-ratio: 1/1) {
+  .controls { top: 14px; right: 12px; gap: 8px; }
+
+  .mapBar {
+    left: 12px;
+    right: 12px;
+    bottom: 136px;
+    gap: 6px;
+  }
+
+  .mapHint { padding: 6px 11px 6px 9px; font-size: 12px; }
+  .mapHint strong { display: none; }
+  .chipsBar > ul { flex-wrap: nowrap; }
+}
+
+/* 낮은 세로 화면(375×667 등): 섬이 작아져 안내 문구가 아래쪽 핀을 가리므로 칩만 남긴다 */
+@media (max-aspect-ratio: 1/1) and (max-height: 720px) {
+  .mapHint { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapBar, .controls { animation: none; }
+}

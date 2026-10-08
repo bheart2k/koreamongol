@@ -1,5 +1,5 @@
 // <폴더>/** → R2 버킷 <prefix>/** (같은 상대 경로. 예: <폴더>/d/k1.webp → design-lab/v1/d/k1.webp)
-// - prefix 기본값 design-lab/v1. design-lab/ 아래 prefix 만 허용한다 (버킷의 다른 경로는 건드리지 않음)
+// - prefix 기본값 design-lab/v1. design-lab/ 또는 home/ 아래 prefix 만 허용한다 (버킷의 다른 경로는 건드리지 않음)
 // - 쓰기는 prefix 아래로만 한다. 삭제는 하지 않는다
 // - 같은 키에 같은 크기의 객체가 이미 있으면 건너뛴다 (재실행 안전)
 // - --ext mp4,webp : 해당 확장자만 올린다 (없으면 전부)
@@ -41,10 +41,10 @@ if (!srcArg) {
 }
 const SRC_DIR = resolve(ROOT, srcArg);
 
-// 앞뒤 슬래시를 정리하고 끝에 / 를 붙인다. design-lab/ 아래가 아니거나 .. 이 있으면 거부
+// 앞뒤 슬래시를 정리하고 끝에 / 를 붙인다. design-lab/ 또는 home/ 아래가 아니거나 .. 이 있으면 거부
 const prefixArg = (optValue('--prefix') ?? 'design-lab/v1').replace(/^\/+|\/+$/g, '');
-if (!/^design-lab\/[A-Za-z0-9._-]+(\/[A-Za-z0-9._-]+)*$/.test(prefixArg) || prefixArg.split('/').includes('..')) {
-  console.error(`--prefix 는 design-lab/ 아래 경로만 허용합니다: ${prefixArg}`);
+if (!/^(design-lab|home)\/[A-Za-z0-9._-]+(\/[A-Za-z0-9._-]+)*$/.test(prefixArg) || prefixArg.split('/').includes('..')) {
+  console.error(`--prefix 는 design-lab/ 또는 home/ 아래 경로만 허용합니다: ${prefixArg}`);
   process.exit(1);
 }
 const PREFIX = `${prefixArg}/`;

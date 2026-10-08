@@ -1,0 +1,103 @@
+/* 챕터 진행 미니맵 — 화면 좌하단 고정, 기준 전경 위에 금빛 경로 */
+
+.mini {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 35;
+  width: 232px;
+  padding: 7px 7px 9px;
+  border-radius: 20px;
+  background: var(--c-glass-strong);
+  backdrop-filter: blur(16px) saturate(1.4);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  box-shadow: var(--c-card-shadow);
+  opacity: 0;
+  transform: translateY(24px) scale(0.96);
+  transition: opacity 0.5s ease, transform 0.7s var(--c-spring);
+  pointer-events: none;
+}
+
+.mini[data-visible] { opacity: 1; transform: none; }
+
+.miniMap {
+  position: relative;
+  aspect-ratio: var(--ratio);
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--c-sky);
+}
+
+.miniImg {
+  position: absolute;
+  top: var(--img-t);
+  left: var(--img-l);
+  width: var(--img-w);
+  max-width: none;
+  height: auto;
+}
+
+.miniNight { opacity: 0; transition: opacity 1.1s ease; }
+:global(.dark) .miniNight { opacity: 1; }
+
+.miniRoute {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.miniRoute path {
+  fill: none;
+  stroke: var(--c-gold);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  transition: stroke-dashoffset 0.9s var(--c-expo);
+  filter: drop-shadow(0 0 3px rgba(212, 168, 67, 0.8));
+}
+
+.miniDot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c-paper-solid);
+  box-shadow: 0 0 0 1.5px var(--c-gold);
+  transform: translate(-50%, -50%);
+  transition: transform 0.6s var(--c-spring), background-color 0.3s ease;
+}
+
+.miniDot[data-done] { background: var(--c-gold); }
+
+.miniDot[data-on] {
+  background: var(--c-terra);
+  box-shadow: 0 0 0 2px var(--c-paper-solid), 0 0 0 5px rgba(196, 91, 62, 0.35);
+  transform: translate(-50%, -50%) scale(1.5);
+}
+
+.miniLabel {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 9px 4px 0;
+  font: 700 10.5px/1 var(--font-heading);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-gold-ink);
+}
+
+.miniLabel strong {
+  font: 700 13px/1 var(--font-heading);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--c-ink);
+}
+
+@media (max-width: 1023px) {
+  .mini { display: none; }
+}

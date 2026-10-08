@@ -1,0 +1,131 @@
+/* 히어로 — 한 화면 스테이지: 하늘 → 착지 장면(정지 이미지 · 루프 영상) → 핀 → 문구 · 지도 UI */
+
+.hero {
+  position: relative;
+  --stage-h: calc(100dvh - var(--navbar-height));
+  --copy-w: min(400px, 34vw); /* 데스크톱 문구 패널 폭 — 지도 바가 그 오른쪽에서 시작 */
+}
+
+.stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  container: hero / size;
+}
+
+.sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--c-day-sky-1) 0%, var(--c-day-sky-2) 48%, var(--c-day-sky-3) 100%);
+  transition: opacity 1.1s ease;
+}
+
+.skyNight {
+  background: linear-gradient(180deg, var(--c-night-sky-1) 0%, var(--c-night-sky-2) 60%, var(--c-night-sky-3) 100%);
+  opacity: 0;
+}
+
+:global(.dark) .skyNight { opacity: 1; }
+
+/* ---------- 디오라마 박스 (cover 맞춤, 핀 좌표 기준) ---------- */
+.tilt {
+  position: absolute;
+  inset: 0;
+  perspective: 1800px;
+}
+
+.tiltInner {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* 화면을 덮되 좌우 잘림은 4% 이내(4:3 등 좁은 화면은 섬 전체가 보임), 원본 폭(1672px)보다 크게 늘리지 않는다 */
+.box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  aspect-ratio: 16 / 9;
+  width: min(1672px, max(100%, min(var(--stage-h) * 16 / 9, 104%)));
+  transform: translate(-50%, -50%);
+}
+
+/* 그림 + 움직임 레이어 (핀은 바깥) */
+.scene {
+  position: absolute;
+  inset: 0;
+  --fade-x: linear-gradient(#000 0 0);
+  --fade-y: linear-gradient(#000 0 0);
+}
+
+/* 그림 상자가 스테이지보다 좁거나(1672px 초과 화면) 낮을 때(4:3 · 큰 화면): 가장자리를 하늘 그라디언트로 녹인다 */
+@container hero (min-width: 1673px) {
+  .scene { --fade-x: linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%); }
+}
+
+@container hero (min-aspect-ratio: 1/1) and ((min-height: 941px) or (max-aspect-ratio: 1709/1000)) {
+  .scene { --fade-y: linear-gradient(to bottom, transparent 0, #000 9%, #000 94%, transparent 100%); }
+}
+
+@container hero (min-aspect-ratio: 1/1) and ((min-width: 1673px) or (min-height: 941px) or (max-aspect-ratio: 1709/1000)) {
+  .scene {
+    -webkit-mask-image: var(--fade-x), var(--fade-y);
+    mask-image: var(--fade-x), var(--fade-y);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+}
+
+.art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.artNight {
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+
+:global(.dark) .artNight[data-loaded] { opacity: 1; }
+
+/* 핀: 바로 누를 수 있고, 짧게 순차 등장 (10개 전체 0.6초 이내) */
+.box :global([data-pin]) {
+  animation: pinIn 0.32s var(--c-spring) backwards;
+  animation-delay: calc(var(--i) * 28ms);
+}
+
+@keyframes pinIn {
+  from { opacity: 0; transform: scale(0.3); }
+}
+
+/* ---------- 세로 화면 (모바일): 섬을 아래에 붙이고 위쪽 하늘에 문구 자리 ---------- */
+@media (max-aspect-ratio: 1/1) {
+  .hero { --copy-h: 178px; }
+
+  .box {
+    top: auto;
+    bottom: 0;
+    aspect-ratio: 9 / 16;
+    /* 섬 윗면(이미지 높이의 약 15%)이 문구 아래에서 시작하도록 */
+    width: min(100%, calc((var(--stage-h) - var(--copy-h)) / 0.85 * 9 / 16));
+    transform: translateX(-50%);
+  }
+
+  /* 이미지 위·옆 가장자리를 하늘 그라디언트에 녹인다 */
+  .art {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%), linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 9%), linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .box :global([data-pin]) { animation: none; }
+}

@@ -1,0 +1,234 @@
+/* 히어로 움직임 레이어 (c-final §3) — 전부 이벤트·선택·끌기 없음, transform·opacity 위주 */
+
+.motion {
+  --glow-beacon: rgba(255, 72, 56, 0.95);
+  --glow-beacon-soft: rgba(255, 72, 56, 0.32);
+  --glow-warm: rgba(255, 196, 110, 0.55);
+  --sheen: rgba(255, 255, 255, 0.55);
+  --cloud-shade: rgba(27, 45, 79, 0.15);
+
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.motion[data-ready] { opacity: 1; }
+
+.motion,
+.motion * {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-drag: none;
+}
+
+/* 멈춤(버튼·화면 밖·탭 숨김·로딩 중): CSS 애니메이션 전부 정지 */
+.motion[data-paused] *,
+.motion[data-paused] *::before,
+.motion[data-paused] *::after {
+  animation-play-state: paused !important;
+}
+
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* ---------- 구름 띠 (가로 반복, 타일 하나만큼 흘러 이음새 없음) ---------- */
+.strip {
+  position: absolute;
+  left: 0;
+  top: calc(var(--top) * 1%);
+  display: flex;
+  width: calc(var(--tw) * 3%);
+  animation: drift calc(var(--sec) * 1s) linear infinite;
+  will-change: transform;
+}
+
+.strip img {
+  display: block;
+  width: 33.3334%;
+  height: auto;
+}
+
+@keyframes drift {
+  to { transform: translateX(-33.3333%); }
+}
+
+/* 섬 뒤 먼 층: 섬 모양을 뺀 마스크 */
+.far {
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* ---------- 구름 그림자: 섬 위만 지나감 ---------- */
+.island {
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.cloudShade {
+  position: absolute;
+  top: 8%;
+  left: 0;
+  width: 44%;
+  height: 72%;
+  background: radial-gradient(ellipse at center, var(--cloud-shade) 0%, transparent 68%);
+  animation: shade 52s linear infinite;
+  will-change: transform;
+}
+
+@keyframes shade {
+  from { transform: translateX(-110%); }
+  to { transform: translateX(240%); }
+}
+
+/* ---------- 연못 빛 반사 ---------- */
+.pond {
+  position: absolute;
+  overflow: hidden;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.sheen {
+  position: absolute;
+  top: -20%;
+  bottom: -20%;
+  left: 0;
+  width: 45%;
+  background: linear-gradient(100deg, transparent 20%, var(--sheen) 50%, transparent 80%);
+  opacity: 0.75;
+  animation: sheen 8s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes sheen {
+  0% { transform: translateX(-130%); }
+  65%, 100% { transform: translateX(260%); }
+}
+
+/* ---------- 불빛 ---------- */
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: blink calc(var(--sec) * 1s) ease-in-out infinite;
+  animation-delay: calc(var(--delay, 0) * 1s);
+}
+
+.beacon { background: radial-gradient(closest-side, var(--glow-beacon) 0%, var(--glow-beacon-soft) 45%, transparent 100%); }
+.warm {
+  background: radial-gradient(closest-side, var(--glow-warm) 0%, transparent 100%);
+  animation-name: breathe;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  12%, 30% { opacity: 1; }
+  48% { opacity: 0; }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.85; }
+}
+
+/* ---------- 굴뚝 연기: 퍼프 3개가 시차를 두고 피어오름 ---------- */
+.puff {
+  position: absolute;
+  inset: 0;
+  animation: rise 7.5s linear infinite;
+  animation-delay: calc(var(--n) * -2.5s);
+  will-change: transform;
+}
+
+@keyframes rise {
+  from { transform: translate(0, 0); }
+  to { transform: translate(1.4%, -8%); }
+}
+
+.smoke {
+  position: absolute;
+  height: auto;
+  opacity: 0;
+  transform: translate(-50%, -100%);
+  animation-duration: 7.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-delay: calc(var(--n) * -2.5s);
+}
+
+.s1 { animation-name: s1; }
+.s2 { animation-name: s2; }
+.s3 { animation-name: s3; }
+.s4 { animation-name: s4; }
+
+@keyframes s1 {
+  0% { opacity: 0; }
+  6%, 24% { opacity: 0.85; }
+  34%, 100% { opacity: 0; }
+}
+
+@keyframes s2 {
+  0%, 22% { opacity: 0; }
+  33%, 48% { opacity: 0.72; }
+  60%, 100% { opacity: 0; }
+}
+
+@keyframes s3 {
+  0%, 46% { opacity: 0; }
+  57%, 70% { opacity: 0.5; }
+  82%, 100% { opacity: 0; }
+}
+
+@keyframes s4 {
+  0%, 68% { opacity: 0; }
+  80% { opacity: 0.32; }
+  100% { opacity: 0; }
+}
+
+/* ---------- 탈것 · 그림자 · 앞가림 ---------- */
+.sprite {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: auto;
+  opacity: 0;
+  transform-origin: 0 0;
+  will-change: transform, opacity;
+}
+
+.occluder {
+  position: absolute;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* 기준 그림을 그대로 한 겹 더 깔아 다각형으로 자른 앞가림 (기준 그림 Art 와 같은 맞춤) */
+.baseOccluder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.busLayer {
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}

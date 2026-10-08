@@ -1,0 +1,137 @@
+/* 히어로 문구 — 아이브로 · H1 · 리드 · CTA. H1·리드는 등장 애니메이션 없이 첫 페인트에 보인다. */
+
+/* 데스크톱: 좌하단(섬 밑면·구름 영역) 유리 패널 */
+.copy {
+  position: absolute;
+  left: 24px;
+  bottom: 22px;
+  z-index: 20;
+  width: var(--copy-w);
+  padding: 22px 24px 24px;
+  border-radius: 24px;
+  background: var(--c-glass-strong);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  box-shadow: var(--c-card-shadow);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 12px;
+  font: 700 12px/1 var(--font-heading);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-gold-ink);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 26px;
+  height: 1.5px;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: clamp(30px, 5.4vh, 50px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--c-ink);
+}
+
+.line { display: block; }
+
+.lead {
+  margin: 12px 0 0;
+  font-size: clamp(13.5px, 1.75vh, 15.5px);
+  line-height: 1.55;
+  color: var(--c-ink-soft);
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 8px 8px 8px 22px;
+  border-radius: 999px;
+  background: var(--c-ink-solid);
+  color: var(--c-paper-solid);
+  font: 650 15px/1 var(--font-heading);
+  text-decoration: none;
+  box-shadow: 0 18px 40px -18px rgba(27, 45, 79, 0.75);
+}
+
+:global(.dark) .cta {
+  background: var(--c-paper-solid);
+  color: var(--c-ink-solid);
+}
+
+.ctaIcon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--c-gold);
+  color: var(--c-ink-solid);
+  transition: transform 0.5s var(--c-spring);
+}
+
+.cta:hover .ctaIcon { transform: rotate(-45deg) scale(1.08); }
+.ctaIcon svg { width: 18px; height: 18px; }
+
+.cta:focus-visible {
+  outline: 3px solid var(--c-gold);
+  outline-offset: 3px;
+}
+
+/* 낮은 가로 화면(노트북 1280×720 등): 패널 높이를 줄여 학교 건물을 가리지 않게 */
+@media (min-aspect-ratio: 1/1) and (max-height: 820px) {
+  .copy { padding: 18px 20px 20px; }
+  .cta { margin-top: 14px; gap: 10px; padding: 6px 6px 6px 18px; font-size: 14px; }
+  .ctaIcon { width: 34px; height: 34px; }
+}
+
+/* ---------- 세로 화면 (모바일): 문구는 위쪽 하늘, CTA는 피드백 버튼 줄 바로 위 ---------- */
+@media (max-aspect-ratio: 1/1) {
+  .copy {
+    inset: 0;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 16px 80px;
+    border-radius: 0;
+    background: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+    pointer-events: none;
+  }
+
+  .eyebrow { margin-bottom: 10px; }
+  .title { font-size: clamp(28px, 8.2vw, 40px); }
+
+  .lead {
+    margin-top: 8px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--c-ink);
+  }
+
+  .cta {
+    margin-top: auto;
+    gap: 10px;
+    padding: 6px 6px 6px 18px;
+    font-size: 14px;
+    pointer-events: auto;
+  }
+
+  .ctaIcon { width: 34px; height: 34px; }
+}

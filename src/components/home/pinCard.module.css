@@ -1,0 +1,182 @@
+/* 핀 팝업 카드 · 모바일 하단 시트 · 장소 칩 */
+
+/* ---------- 데스크톱 팝업 카드 ---------- */
+.card {
+  position: absolute;
+  width: 312px;
+  padding: 14px;
+  border-radius: 22px;
+  background: var(--c-glass-strong);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  box-shadow: var(--c-card-shadow);
+  animation: cardIn 0.55s var(--c-spring) both;
+}
+
+:global([data-pin][data-side='right']) .card { left: 22px; transform-origin: 0 50%; }
+:global([data-pin][data-side='left']) .card { right: 22px; transform-origin: 100% 50%; }
+:global([data-pin][data-vert='below']) .card { top: -14px; }
+:global([data-pin][data-vert='middle']) .card { top: -70px; }
+:global([data-pin][data-vert='above']) .card { bottom: 30px; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(0.86) translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.cardKicker {
+  margin: 2px 6px 10px;
+  font: 700 11px/1 var(--font-heading);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-gold-ink);
+}
+
+.cardList {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cardLink {
+  display: grid;
+  grid-template-columns: 40px 1fr 18px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 14px;
+  color: var(--c-ink);
+  text-decoration: none;
+  transition: background-color 0.25s ease, transform 0.45s var(--c-spring);
+}
+
+.cardLink:hover,
+.cardLink:focus-visible {
+  background: var(--c-tint);
+  transform: translateX(3px);
+  outline: none;
+}
+
+.cardIcon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--c-sky);
+  color: var(--c-ink);
+}
+
+.cardIcon svg { width: 19px; height: 19px; }
+
+.cardText { display: grid; gap: 3px; min-width: 0; }
+
+.cardText strong {
+  font: 650 14.5px/1.25 var(--font-heading);
+}
+
+.cardText span {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--c-ink-soft);
+}
+
+.cardArrow {
+  width: 17px;
+  height: 17px;
+  color: var(--c-terra);
+  transition: transform 0.4s var(--c-spring);
+}
+
+.cardLink:hover .cardArrow { transform: translate(2px, -2px); }
+
+/* ---------- 모바일 하단 시트 ---------- */
+.sheet {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 206px; /* 히어로 하단 지도 바(장소 칩)·CTA 위 */
+  z-index: 70;
+  pointer-events: none;
+}
+
+.sheetInner {
+  padding: 14px 12px 10px;
+  border-radius: 24px;
+  background: var(--c-glass-strong);
+  backdrop-filter: blur(22px) saturate(1.6);
+  -webkit-backdrop-filter: blur(22px) saturate(1.6);
+  box-shadow: var(--c-card-shadow);
+  pointer-events: auto;
+  animation: sheetIn 0.6s var(--c-spring) both;
+}
+
+@keyframes sheetIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+.sheetHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sheetHead .cardKicker { margin-bottom: 6px; }
+
+.sheetClose {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin: -4px -2px 0 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--c-tint);
+  color: var(--c-ink);
+  cursor: pointer;
+}
+
+.sheetClose svg { width: 18px; height: 18px; }
+
+/* ---------- 장소 칩 ---------- */
+.chips {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chip {
+  padding: 8px 13px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--c-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--c-ink);
+  font: 600 12.5px/1 var(--font-heading);
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--c-line);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.45s var(--c-spring);
+}
+
+.chip:hover { transform: translateY(-2px); }
+
+.chip[data-active] {
+  background: var(--c-ink-solid);
+  color: var(--c-paper-solid);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--c-gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card, .sheetInner { animation: none; }
+}
