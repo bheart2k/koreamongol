@@ -1,6 +1,6 @@
 // 자사·협력 서비스 교차 홍보 데이터 — 원본은 pedia-factory/template.
 // 내용을 바꾸면 사용 중인 전 저장소(sisepedia·carepedia·petpedia·hangulhub·
-// koreamongol·total-calculator·kidsland)에 같은 파일을 복제해 동기화한다.
+// koreamongol·total-calculator·kidsland·gjyouth-main·jobs-station·luminori)에 같은 파일을 복제해 동기화한다.
 // tagline: 한국어(기본) / taglineEn: hangulhub en 로케일용 / taglineMn: koreamongol용.
 export const FAMILY_SITES = [
   {
@@ -68,6 +68,15 @@ export const FAMILY_SITES = [
     url: 'https://kidsland.co.kr',
     color: '#FF6B6B',
   },
+  {
+    id: 'luminori',
+    name: '루미노리',
+    nameEn: 'Luminori',
+    tagline: '어린이 인지·학습 콘텐츠 플랫폼',
+    taglineEn: 'Cognitive learning play for kids (Korean)',
+    url: 'https://luminori.kr',
+    color: '#7c3aed',
+  },
 ];
 
 // 사이트별 노출 대상(순서 = 표시 순서). 자기 자신은 넣지 않는다.
@@ -81,6 +90,8 @@ export const FAMILY_SHOW_MAP = {
   hangulhub: ['sisepedia', 'carepedia', 'petpedia', 'everycalc', 'kidsland', 'koreamongol'],
   koreamongol: ['hangulhub', 'kidsland'],
   kidsland: ['sisepedia', 'carepedia', 'petpedia', 'everycalc', 'hangulhub', 'koreamongol'],
+  // luminori: /company "블루밍하트의 서비스들"에 노출. kidsland는 협력 서비스라 /partner에서 따로 추천.
+  luminori: ['hangulhub', 'sisepedia', 'carepedia', 'petpedia', 'everycalc', 'koreamongol'],
 };
 
 // 유입 측정용 UTM 부착 링크 (utm_source = 보내는 사이트 id)
