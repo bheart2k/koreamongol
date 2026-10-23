@@ -98,7 +98,7 @@ export const mongoliaPrep = {
     phone: '02-798-3464',
     phone2: '02-798-1950',
     email: 'seoul@mfa.gov.mn',
-    website: 'http://www.mongolembassy.com',
+    website: 'https://seoul.embassy.mn',
   },
   checklist: [
     { id: 'prep-passport', label: 'Паспорт шалгах', sub: '6+ сар хүчинтэй' },

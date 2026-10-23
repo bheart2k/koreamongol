@@ -24,6 +24,7 @@
 
 ## 이력
 
+- **2026-10-23** `RECHECK_INGEST_TOKEN` 추가 — 월간 팩트 재검증 클라우드 루틴이 결과를 올리는 `POST /api/ingest/recheck`의 Bearer 토큰(그 API는 inbox `type=recheck` INSERT만 가능). 무작위 32바이트 hex를 클로드가 생성해 로컬 `.env`에 적고 `infisical-env.mjs --push`로 dev(13키)·prod(31키) 등록, 비교로 값 일치 확인. 루틴 프롬프트에도 같은 값이 들어간다 — 토큰을 바꾸면 루틴 프롬프트도 같이 고친다.
 - **2026-10-08** `DESIGN_LAB_PASSWORD`를 **prod에만** 등록(홈 리디자인 시안 `/design-lab` Basic Auth 잠금, `src/lib/design-lab-auth.js`). dev에는 넣지 않음 — 로컬 dev는 잠그지 않는 설계(값 없으면 dev 통과, prod는 404). prod 30키. Vercel 자동싱크 succeeded(15:03Z). CLI exe(`C:\workspace\util\nodejs\…\infisical.exe`) 토큰 → `select-organization` → `POST /api/v3/secrets/raw/<KEY>`로 처리. 참고: 이 레포에 `.infisical.json`이 현재 없음(위 표의 '연결 파일'과 불일치 — 확인 필요).
 - **2026-09-02** `FEEDBACK_WEBHOOK_URL` 키를 로컬 `.env`에 빈 값으로 추가(표준 피드백 모듈의 Discord 호환 웹훅, 전 사이트 공용 채널) — 값 결정·Infisical dev/prod 등록은 웹훅 통합 작업에서 일괄 예정. 같은 날 표준 UI 교체로 feedback 테이블 표준 컬럼 13종 추가(DDL 적용 대기 — 스펙 §6 참조), 8/31 이력의 fb-* 제약은 해소됨.
 - **2026-08-31** Infisical 연동(1차, BLOOMINGHEART 조직): 프로젝트 생성, 로컬 `.env`의 DOPPLER_* 잔재 3줄 제거(우리 Doppler에 koreamongol 없음 — 외부 다운로드본 흔적) + FEEDBACK_HUB_TOKEN 추가, dev/prod 12키 업로드, prod NEXTAUTH_URL을 운영값으로 교체.

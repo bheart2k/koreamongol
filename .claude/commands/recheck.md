@@ -55,7 +55,8 @@ KoreaMongol은 한국 체류 몽골인 대상 정보 사이트다. 잘못된 정
 content에는 반드시 **[현재 표기(파일 위치 포함)] / [확인 내용] / [출처 URL] / [확인일]** 네 가지를 넣는다.
 
 2. 실행: `node scripts/recheck-queue.mjs scripts/recheck-items.json`
-   - 같은 제목의 미처리 항목이 있으면 스크립트가 알아서 건너뛴다.
+   - 사이트 API(`/api/ingest/recheck`)로 보낸다. 토큰은 환경변수 `RECHECK_INGEST_TOKEN`(로컬은 `.env`, 클라우드 루틴은 프롬프트가 알려 준다). 토큰이 없거나 API 오류면 실패를 요약에 적는다.
+   - 같은 제목의 미처리 항목이 있으면 API가 알아서 건너뛴다.
 3. 큐잉할 것이 0건이면 JSON에 빈 배열 `[]`을 쓰고 스크립트는 실행하지 않아도 된다.
 
 ## 마지막 출력 (로그용)
