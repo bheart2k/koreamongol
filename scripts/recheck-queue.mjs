@@ -1,5 +1,6 @@
 // 팩트 재검증 결과를 admin inbox에 type='recheck'로 큐잉하는 스크립트
-// 사용법: node scripts/recheck-queue.mjs <items.json> [--dry-run]
+// 사용법: node scripts/recheck-queue.mjs --list                  — 미처리 재검증 항목(번호·제목·내용) 출력
+//        node scripts/recheck-queue.mjs <items.json> [--dry-run] — 큐잉
 // items.json 형식: [{ "subject": "...", "content": "...", "priority": "high|medium|low" }]
 // - 사이트 API(POST /api/ingest/recheck)로 보낸다. DB 직접 접속·npm 패키지 없이 돌아가서 클라우드 루틴에서도 쓴다.
 // - env: RECHECK_INGEST_TOKEN(필수), RECHECK_API_BASE(기본 https://koreamongol.com — 로컬 dev는 http://localhost:5005)
@@ -28,11 +29,27 @@ loadEnv('.env');
 
 const LABEL = { queued: 'queued', would_queue: '[dry-run] queued', duplicate: 'skip(미처리 중복 존재)', invalid: 'skip(필드 누락)' };
 
+async function listOpen(base, token) {
+  const res = await fetch(`${base}/api/ingest/recheck`, { headers: { Authorization: `Bearer ${token}` } });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    console.error(`API 오류 ${res.status}: ${data.error || '응답 없음'} (${base})`);
+    process.exit(1);
+  }
+  const items = data.items || [];
+  for (const it of items) {
+    console.log(`#${it.id} [${it.priority}/${it.status}] ${it.subject}\n${it.content}\n`);
+  }
+  console.log(`미처리 재검증 항목 ${items.length}건`);
+}
+
 async function main() {
-  const jsonPath = process.argv[2];
-  const dryRun = process.argv.includes('--dry-run');
-  if (!jsonPath) {
-    console.error('사용법: node scripts/recheck-queue.mjs <items.json> [--dry-run]');
+  const args = process.argv.slice(2);
+  const listMode = args.includes('--list');
+  const dryRun = args.includes('--dry-run');
+  const jsonPath = args.find((a) => !a.startsWith('--'));
+  if (!listMode && !jsonPath) {
+    console.error('사용법: node scripts/recheck-queue.mjs --list | <items.json> [--dry-run]');
     process.exit(1);
   }
   const token = process.env.RECHECK_INGEST_TOKEN;
@@ -40,6 +57,8 @@ async function main() {
     console.error('RECHECK_INGEST_TOKEN이 없습니다 (.env 또는 환경변수 확인)');
     process.exit(1);
   }
+  const base = (process.env.RECHECK_API_BASE || 'https://koreamongol.com').replace(/\/$/, '');
+  if (listMode) return listOpen(base, token);
 
   const items = JSON.parse(readFileSync(resolve(jsonPath), 'utf-8'));
   if (!Array.isArray(items)) {
@@ -51,7 +70,6 @@ async function main() {
     return;
   }
 
-  const base = (process.env.RECHECK_API_BASE || 'https://koreamongol.com').replace(/\/$/, '');
   const res = await fetch(`${base}/api/ingest/recheck`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },

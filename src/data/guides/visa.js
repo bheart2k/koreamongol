@@ -1,7 +1,7 @@
 export const visaMeta = {
   title: 'Визний гарын авлага',
   subtitle: 'E-9, D-2, D-4 виз болон бусад визний мэдээлэл',
-  lastUpdated: '2026.09.02',
+  lastUpdated: '2026.10.23',
 };
 
 export const visaSections = [

@@ -57,14 +57,18 @@
   to { transform: translateX(-33.3333%); }
 }
 
-/* 섬 뒤 먼 층: 섬 모양을 뺀 마스크 */
-.far {
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
+/* 지평선 구름: 양끝과 아래쪽으로 옅어짐 (그라디언트 마스크 — 따로 받는 파일 없음).
+   세로 그라디언트는 그림 상자 기준이라 띠 위치(top 5.2%, 높이 약 9%)에 맞춤 */
+.horizon {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 6%, #000 24%, #000 78%, transparent 96%),
+    linear-gradient(#000 9.5%, transparent 14.5%);
+  mask-image:
+    linear-gradient(to right, transparent 6%, #000 24%, #000 78%, transparent 96%),
+    linear-gradient(#000 9.5%, transparent 14.5%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+  opacity: 0.8;
 }
 
 /* ---------- 구름 그림자: 섬 위만 지나감 ---------- */

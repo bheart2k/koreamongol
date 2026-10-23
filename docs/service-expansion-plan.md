@@ -154,7 +154,7 @@ housing/jobs/arrival 가이드 링크 + apps 가이드 한글허브 딥링크 �
 - 공통 전제: 콘텐츠 공개마다 페이스북 그룹 공유 등 홍보 실행과 짝 지을 것
 
 ### 다음 작업 (우선순위순, 2026-07-15 정리)
-1. [x] **월 1회 팩트 재검증** — 구현 완료 (2026-07-17): `/recheck` 명령(.claude/commands/recheck.md, 체크리스트 9항목) → `scripts/recheck-queue.mjs`로 inbox `type=recheck` 큐잉(미처리 중복 방지) → admin inbox "재검증" 탭. Windows 작업 스케줄러 "KoreaMongol Recheck"가 매월 1일 10:00 `scripts/recheck.cmd`를 헤드리스 실행(놓친 일정은 다음 부팅 시 보충). 로그: `logs/recheck.log`. 수동 실행: Claude Code에서 `/recheck` 또는 `scripts\recheck.cmd`. 자동 수정 절대 금지 — 운영자 확인 후에만 반영
+1. [x] **월 1회 팩트 재검증** — 구현 완료 (2026-07-17): `/recheck` 명령(.claude/commands/recheck.md, 체크리스트 9항목) → `scripts/recheck-queue.mjs`가 사이트 API `POST /api/ingest/recheck`(토큰 `RECHECK_INGEST_TOKEN`, INSERT만)로 inbox `type=recheck` 큐잉(미처리 중복 방지) → admin inbox "재검증" 탭. 2026-10-23부터 클라우드 루틴 「KoreaMongol 팩트 재검증 (월간)」(Opus 5.5, `0 1 1 * *` = 매월 1일 10:00 KST)이 실행 — PC가 꺼져 있어도 돈다. 실행 기록: https://claude.ai/code/routines. 수동 실행: Claude Code에서 `/recheck`. 자동 수정 절대 금지 — 운영자 확인 후에만 반영. (이전 방식: Windows 작업 스케줄러 + `scripts/recheck.cmd` — PC 절전·재시작 때 10월분이 빠져서 교체)
 2. [ ] **질문→답변→tips 영구화 운영 착수** — 접수(inbox `question`) → 조사·출처 검증 → tips.js 추가 → 질문자 이메일 회신. 기술 인프라 완비, 운영만 시작하면 됨
 3. [x] **tips 주제 확장** — 2차 9개 완료, 총 14개 (2026-07-17). 추가 확장은 홍보 반응 보고 진행
 4. [ ] (후순위) 팁/가이드에 검증일·출처 뱃지 표시 ("Шалгасан огноо · Эх сурвалж")

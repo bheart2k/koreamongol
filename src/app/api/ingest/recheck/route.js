@@ -4,8 +4,10 @@ import { and, eq, inArray } from 'drizzle-orm';
 import { db, inbox } from '@/lib/db';
 
 // Monthly fact recheck intake: cloud routine → admin inbox (type='recheck').
-// INSERT only. Skips an item when the same subject is still unresolved (pending/reviewing).
+// GET lists unresolved items so the routine can skip matters already queued (compared by content).
+// POST is INSERT only and also skips an exact-subject match as a backstop.
 const PRIORITIES = ['low', 'medium', 'high'];
+const OPEN_STATUSES = ['pending', 'reviewing'];
 const MAX_ITEMS = 50;
 
 function checkAuth(request) {
@@ -20,6 +22,30 @@ function checkAuth(request) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
   return null;
+}
+
+export async function GET(request) {
+  const authError = checkAuth(request);
+  if (authError) return authError;
+
+  try {
+    const items = await db
+      .select({
+        id: inbox.id,
+        status: inbox.status,
+        priority: inbox.priority,
+        subject: inbox.subject,
+        content: inbox.content,
+        createdAt: inbox.createdAt,
+      })
+      .from(inbox)
+      .where(and(eq(inbox.type, 'recheck'), inArray(inbox.status, OPEN_STATUSES)))
+      .orderBy(inbox.id);
+    return NextResponse.json({ items });
+  } catch (error) {
+    console.error('Recheck list error:', error);
+    return NextResponse.json({ error: 'server_error' }, { status: 500 });
+  }
 }
 
 export async function POST(request) {
@@ -50,7 +76,7 @@ export async function POST(request) {
         .where(and(
           eq(inbox.type, 'recheck'),
           eq(inbox.subject, subject),
-          inArray(inbox.status, ['pending', 'reviewing']),
+          inArray(inbox.status, OPEN_STATUSES),
         ))
         .limit(1);
       if (dup) {

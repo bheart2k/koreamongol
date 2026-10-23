@@ -8,6 +8,7 @@ const SMOKE = [styles.s1, styles.s2, styles.s3, styles.s4];
 
 // CSS 마스크는 CORS 모드로 받는다 → 일반 요청과 캐시가 섞이지 않게 쿼리로 분리 (CLAUDE.md R2 CORS 캐시 함정)
 const maskUrl = (u) => `url("${u}?mask")`;
+const polygon = (pts) => `polygon(${pts.map(([x, y]) => `${x}% ${y}%`).join(', ')})`;
 const mask = (value) => ({ WebkitMaskImage: value, maskImage: value });
 const poseList = (track) => [...new Set(track.segments.map((s) => s.pose))];
 
@@ -154,10 +155,11 @@ export default function HeroMotion({ data, paused }) {
     <div ref={rootRef} className={styles.motion} data-ready={ready || undefined} data-paused={!running || undefined} aria-hidden="true">
       {load && (
         <>
-          {/* 섬 뒤 먼 구름 — 섬 모양을 뺀 자리에만 */}
-          <div className={`${styles.layer} ${styles.far}`} style={mask(`linear-gradient(#000 0 0), ${maskUrl(data.maskIsland)}`)}>
-            <CloudStrip cloud={data.clouds.far} base={data.base} />
+          {/* 지평선 구름 — 양끝·아래로 옅어지고, 솟은 건물(아파트·병원) 뒤로 지나감 */}
+          <div className={`${styles.layer} ${styles.horizon}`}>
+            <CloudStrip cloud={data.clouds.horizon} base={data.base} />
           </div>
+          <Art src={data.baseImage} className={styles.baseOccluder} style={{ clipPath: polygon(data.horizonOccluder) }} />
           {/* 연못 빛 반사 */}
           <div className={styles.pond}
             style={{ left: `${pond[0]}%`, top: `${pond[1]}%`, width: `${pond[2]}%`, height: `${pond[3]}%`, ...mask(maskUrl(data.pond.mask)) }}>

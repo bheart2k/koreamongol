@@ -1,7 +1,7 @@
 export const emergencyMeta = {
   title: 'Яаралтай утасны дугаарууд',
   subtitle: 'Солонгост амьдрахад хэрэг болох бүх утасны дугаар — нэг хуудсанд',
-  lastUpdated: '2026.09.02',
+  lastUpdated: '2026.10.23',
 };
 
 export const emergencySections = [
@@ -165,7 +165,7 @@ export const embassyContacts = [
     label: 'БНСУ дахь Монголын Элчин сайдын яам',
     labelKo: '주한 몽골 대사관',
     description: 'Паспорт, нотариат, иргэний бүртгэл, консулын үйлчилгээ',
-    hours: 'Ажлын өдөр 09:00-12:00, 14:00-18:00',
+    hours: 'Ажлын өдөр 09:00-12:30, 13:30-18:00 · Консулын хэлтэс 09:30-12:30, 13:30-17:30',
     mongolian: true,
     icon: 'flag',
     address: 'Сөүл хот, Ёнсан-гу, Ханнам-дон',
