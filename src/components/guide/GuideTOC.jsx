@@ -7,7 +7,8 @@ import { cn } from '@/lib/utils';
 export function GuideTOC({ sections = [], className }) {
   const [activeId, setActiveId] = useState('');
   const [mobile, setMobile] = useState(false);
-  const [open, setOpen] = useState(false);
+  // 폰에서도 목차는 열린 채로 시작한다 (섹션이 접혀 있어 목차가 내용으로 가는 입구 — 사용자 결정 2026-10-26)
+  const [open, setOpen] = useState(true);
   const listId = useId();
   useEffect(() => {
     const media = window.matchMedia('(max-width: 639px)');

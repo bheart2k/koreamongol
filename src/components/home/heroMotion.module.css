@@ -58,14 +58,14 @@
 }
 
 /* 지평선 구름: 양끝과 아래쪽으로 옅어짐 (그라디언트 마스크 — 따로 받는 파일 없음).
-   세로 그라디언트는 그림 상자 기준이라 띠 위치(top 5.2%, 높이 약 9%)에 맞춤 */
+   세로 그라디언트는 그림 상자 기준이라 띠 위치에 맞춘 --hz-a(여기까지 진함)·--hz-b(여기서 사라짐)를 데이터에서 받는다 */
 .horizon {
   -webkit-mask-image:
     linear-gradient(to right, transparent 6%, #000 24%, #000 78%, transparent 96%),
-    linear-gradient(#000 9.5%, transparent 14.5%);
+    linear-gradient(#000 var(--hz-a), transparent var(--hz-b));
   mask-image:
     linear-gradient(to right, transparent 6%, #000 24%, #000 78%, transparent 96%),
-    linear-gradient(#000 9.5%, transparent 14.5%);
+    linear-gradient(#000 var(--hz-a), transparent var(--hz-b));
   -webkit-mask-composite: source-in;
   mask-composite: intersect;
   opacity: 0.8;
@@ -79,12 +79,13 @@
   mask-repeat: no-repeat;
 }
 
+/* 크기·위치는 그림마다 다름(데이터 shade = [top, 폭, 높이] %) */
 .cloudShade {
   position: absolute;
-  top: 8%;
+  top: var(--shade-top);
   left: 0;
-  width: 44%;
-  height: 72%;
+  width: var(--shade-w);
+  height: var(--shade-h);
   background: radial-gradient(ellipse at center, var(--cloud-shade) 0%, transparent 68%);
   animation: shade 52s linear infinite;
   will-change: transform;
@@ -148,6 +149,22 @@
   50% { opacity: 0.85; }
 }
 
+/* 밤 창문: 꺼진 창 그림이 잠깐 덮였다 사라짐 → 일부 창이 꺼졌다 다시 켜짐 */
+.winOff {
+  position: absolute;
+  opacity: 0;
+  animation: winOff calc(var(--sec) * 1s) ease-in-out calc(var(--delay) * 1s) infinite;
+}
+
+@keyframes winOff {
+  0%, 58% { opacity: 0; }
+  62%, 88% { opacity: 1; }
+  92%, 100% { opacity: 0; }
+}
+
+/* 밤: 연못 반짝임은 달빛 정도로 옅게 */
+.motion[data-night] .sheen { opacity: 0.4; }
+
 /* ---------- 굴뚝 연기: 퍼프 3개가 시차를 두고 피어오름 ---------- */
 .puff {
   position: absolute;
@@ -157,9 +174,10 @@
   will-change: transform;
 }
 
+/* 오르는 거리(상자 기준 %)는 그림마다 다름 — 데이터 smoke.rise */
 @keyframes rise {
   from { transform: translate(0, 0); }
-  to { transform: translate(1.4%, -8%); }
+  to { transform: translate(var(--rise-x), var(--rise-y)); }
 }
 
 .smoke {

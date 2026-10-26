@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Coffee, Heart, RefreshCw, Users } from 'lucide-react';
 import ExchangeTicker from './ExchangeTicker';
+import LoopVideo from './LoopVideo';
 import base from './home.module.css';
 import styles from './sections.module.css';
 import fx from './finale.module.css';
@@ -101,7 +102,7 @@ export function Updates({ heading, items, exchange }) {
   );
 }
 
-export function Finale({ title, about, community, donate, art, alt }) {
+export function Finale({ title, about, community, donate, art, alt, loop, labels }) {
   return (
     <section className={fx.finale} aria-labelledby="home-finale">
       <div className={fx.finalePanel}>
@@ -123,10 +124,17 @@ export function Finale({ title, about, community, donate, art, alt }) {
           </div>
         </div>
         <div className={fx.finaleArt}>
-          <picture data-zoom="">
-            <source media="(max-aspect-ratio: 1/1)" srcSet={art.mobile} />
-            <img src={art.desktop} alt={alt} loading="lazy" decoding="async" />
-          </picture>
+          {/* 그림과 루프 영상을 같이 확대(data-zoom). 영상은 폰(639px 이하, 그림 칸 9:16)에서 세로판(-m) */}
+          <div className={fx.finaleZoom} data-zoom="">
+            <picture>
+              <source media="(max-aspect-ratio: 1/1)" srcSet={art.mobile} />
+              <img src={art.desktop} alt={alt} loading="lazy" decoding="async" />
+            </picture>
+            {loop && (
+              <LoopVideo base={loop.base} name={loop.name} labels={labels} smallQuery="(max-width: 639px)"
+                pauseClassName={fx.finalePause} />
+            )}
+          </div>
         </div>
       </div>
 

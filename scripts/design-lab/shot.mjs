@@ -2,7 +2,7 @@
 // usage: node scripts/design-lab/shot.mjs <plan.json>  (사용자 Chrome 과 무관한 별도 프로필로 실행)
 // plan: { url, out, width, height, dpr, mobile, theme, reduced, noCache, settle, port,
 //         steps: [{ y | yVh | sel(+offset), wait, name, eval, mouse: {x,y}|{sel}, measure, after, afterWait }] }
-// 출력: <out>/<name>.jpg + report.json (pageHeight · viewports · errors · bytesKB · totalKB · art)
+// 출력: <out>/<name>.jpg + report.json (pageHeight · viewports · errors · bytesKB · totalKB · art · top=큰 파일 15개)
 import { spawn } from 'node:child_process';
 import { mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
@@ -112,6 +112,11 @@ report.totalKB = Math.round(total / 1024);
 report.art = Object.entries(bytes)
   .filter(([u]) => /\/design-lab\/.+\.(webp|png|jpg|mp4|json)$/.test(u))
   .map(([u, v]) => `${u.split('/design-lab/').pop()} ${Math.round(v.n / 1024)}KB`);
+// 전송량이 큰 파일 15개 (용량 원인 찾기용)
+report.top = Object.entries(bytes)
+  .sort((a, b) => b[1].n - a[1].n)
+  .slice(0, 15)
+  .map(([u, v]) => `${Math.round(v.n / 1024)}KB ${v.type} ${u.length > 120 ? `${u.slice(0, 117)}...` : u}`);
 writeFileSync(join(plan.out, 'report.json'), JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
 

@@ -103,6 +103,8 @@ export default function Chapters({ chapters, guideMap, copy, crop, miniImg, asse
         <h2 id="home-chapters" className={styles.headTitle}>{copy.chaptersTitle}</h2>
       </header>
 
+      {/* 폰(639px 이하)에서는 옆으로 넘기는 카드 줄, 그 밖에서는 상자 없이(display: contents) 세로 배치 그대로 */}
+      <div className={styles.track}>
       {chapters.map((c, i) => (
         <article key={c.id} className={`${base.wrap} ${styles.chapter}`} data-side={i % 2 ? 'right' : 'left'}
           data-chapter="" aria-labelledby={`home-ch-${c.id}`}>
@@ -113,12 +115,16 @@ export default function Chapters({ chapters, guideMap, copy, crop, miniImg, asse
               {c.loop && resolvedTheme !== 'dark' && (
                 <LoopVideo base={assetBase} name={c.loop} labels={{ pause: copy.pause, play: copy.play }} />
               )}
-              {/* 밤 장면: .dark 에서 낮 장면 위로 크로스페이드 + 느린 드리프트 (밤에는 낮 루프를 받지 않음) */}
+              {/* 밤 장면: .dark 에서 낮 장면 위로 크로스페이드 (밤에는 낮 루프를 받지 않음).
+                  밤 루프가 있으면 그 위에 밤 루프, 없으면 느린 드리프트 */}
               {nightSeen && (
                 <img src={c.img.replace('.webp', '-night.webp')} srcSet={srcSet(c.img.replace('.webp', '-night.webp'))}
                   sizes={SIZES} alt="" aria-hidden="true" loading="lazy"
-                  decoding="async" className={`${styles.still} ${styles.night} ${styles.drift}`}
+                  decoding="async" className={`${styles.still} ${styles.night} ${c.loopNight ? '' : styles.drift}`}
                   onLoad={(e) => { e.currentTarget.dataset.loaded = ''; }} />
+              )}
+              {c.loopNight && resolvedTheme === 'dark' && (
+                <LoopVideo base={assetBase} name={c.loopNight} labels={{ pause: copy.pause, play: copy.play }} night />
               )}
             </div>
           </div>
@@ -159,6 +165,7 @@ export default function Chapters({ chapters, guideMap, copy, crop, miniImg, asse
           </div>
         </article>
       ))}
+      </div>
 
       <MiniMap chapters={chapters} crop={crop} img={near ? miniImg : null}
         night={near && nightSeen ? miniImg.replace('.webp', '-night.webp') : null}

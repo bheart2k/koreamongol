@@ -18,6 +18,8 @@
   color: var(--c-ink);
 }
 
+.track { display: contents; }
+
 .chapter {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -67,7 +69,8 @@
 }
 
 :global(.dark) .night[data-loaded] { opacity: 1; }
-:global(.dark) .pause { display: none; }
+/* 장소 장면의 낮 루프 버튼만 다크에서 숨김 (마지막 장면 루프는 밤 그림이라 다크에서도 보임) */
+:global(.dark) .mediaInner .pause:not([data-night]) { display: none; }
 
 /* 루프 영상이 없는 장면: 아주 느린 카메라 드리프트 */
 .drift {
@@ -86,6 +89,9 @@
 }
 
 .video[data-shown] { opacity: 1; }
+
+/* 밤 루프: 밤 정지 그림(z-index 1) 위 */
+.video[data-night] { z-index: 2; }
 
 .pause {
   position: absolute;
@@ -235,7 +241,38 @@
 }
 
 @media (max-width: 639px) {
+  .chapters { padding-bottom: 56px; }
+  .head { margin-bottom: 24px; }
   .media { border-radius: 22px; }
-  .no { font-size: 92px; top: 4px; left: auto; right: 0; }
-  .line { font-size: 15.5px; }
+  .no { font-size: 64px; top: -2px; left: auto; right: 0; }
+  .title { font-size: 28px; }
+  .line { margin: 6px 0 14px; font-size: 14.5px; }
+  .card { grid-template-columns: 40px 1fr 18px; gap: 12px; padding: 12px 14px 12px 12px; }
+  .cardIcon { width: 40px; height: 40px; }
+
+  /* 장소 챕터: 옆으로 넘기는 카드 (다음 카드가 살짝 보여 넘길 수 있다는 걸 알 수 있게) */
+  .track {
+    display: flex;
+    gap: 12px;
+    padding: 0 16px 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .track::-webkit-scrollbar { display: none; }
+
+  .track > .chapter {
+    flex: 0 0 86%;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    gap: 16px;
+    align-content: start;
+    scroll-snap-align: start;
+  }
+
+  .track > .chapter .text { padding-top: 0; }
 }

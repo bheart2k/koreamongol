@@ -56,6 +56,8 @@ export function Pins({ places, guideMap, active, setActive, portrait, inert }) {
         const isActive = active === p.id;
         const side = p.d[0] > 58 ? 'left' : 'right';
         const vert = p.d[1] < 22 ? 'below' : p.d[1] > 56 ? 'above' : 'middle';
+        // 세로 화면: 양끝 핀은 이름표를 안쪽으로 정렬해 화면 밖으로 나가지 않게
+        const malign = p.m[0] < 14 ? 'start' : p.m[0] > 86 ? 'end' : undefined;
         return (
           <div
             key={p.id}
@@ -64,6 +66,7 @@ export function Pins({ places, guideMap, active, setActive, portrait, inert }) {
             data-active={isActive || undefined}
             data-side={side}
             data-vert={vert}
+            data-malign={malign}
             style={{ '--dx': p.d[0], '--dy': p.d[1], '--mx': p.m[0], '--my': p.m[1], '--i': i }}
             onPointerEnter={(e) => { if (e.pointerType === 'mouse' && !portrait) open(p.id); }}
             onPointerLeave={(e) => { if (e.pointerType === 'mouse' && !portrait) scheduleClose(); }}

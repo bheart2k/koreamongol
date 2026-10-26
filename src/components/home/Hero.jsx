@@ -13,9 +13,9 @@ import styles from './hero.module.css';
 import cx from './heroCopy.module.css';
 import ux from './heroUi.module.css';
 
-// 히어로 — 한 화면: 서울 섬 기준 그림 + 움직임 레이어(데스크톱 낮) 위에 핀 지도와 문구.
+// 히어로 — 한 화면: 서울 섬 기준 그림 + 움직임 레이어(가로·세로 그림별) 위에 핀 지도와 문구.
 // H1·리드는 서버 렌더링 그대로 첫 페인트에 보이고, 핀은 뜨자마자 누를 수 있다(CSS 순차 등장 0.6초 이내).
-export default function Hero({ hero, art, motion, places, guideMap, copy, alt }) {
+export default function Hero({ hero, art, motion, motionMobile, places, guideMap, copy, alt }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [portrait, setPortrait] = useState(false);
@@ -30,8 +30,8 @@ export default function Hero({ hero, art, motion, places, guideMap, copy, alt })
   const [nightSeen, setNightSeen] = useState(false);
   useEffect(() => { if (night) setNightSeen(true); }, [night]);
 
-  // 움직임은 데스크톱 낮만 (밤·모바일은 그림 준비 전까지 정지 그림). 모션 축소·데이터 절약이면 정지.
-  const motionOn = mounted && !portrait && !night && !reduced && !saveData;
+  // 움직임: 가로 화면은 데스크톱 그림용, 세로 화면은 모바일 그림용 데이터. 모션 축소·데이터 절약이면 정지.
+  const motionOn = mounted && !reduced && !saveData;
 
   useEffect(() => {
     setMounted(true);
@@ -93,7 +93,7 @@ export default function Hero({ hero, art, motion, places, guideMap, copy, alt })
             <div className={styles.box}>
               <div className={styles.scene}>
                 <Art desktop={art.desktop} mobile={art.mobile} alt={alt} priority withNight={nightSeen} />
-                {motionOn && <HeroMotion data={motion} paused={motionPaused} />}
+                {motionOn && <HeroMotion key={portrait ? 'm' : 'd'} data={portrait ? motionMobile : motion} paused={motionPaused} night={night} />}
               </div>
               <Pins places={places} guideMap={guideMap} active={active} setActive={setActive} portrait={portrait} />
             </div>

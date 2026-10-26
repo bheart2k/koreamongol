@@ -110,34 +110,27 @@
   box-shadow: 0 0 0 3px var(--c-gold), var(--c-pin-shadow);
 }
 
-/* ---------- 세로 화면: 점만 (터치 44px), 라벨은 스크린리더 전용 ---------- */
+/* ---------- 세로 화면: 점 + 작은 이름표 (양끝 핀은 이름표를 안쪽으로 정렬) ---------- */
 @media (max-aspect-ratio: 1/1) {
   .pin {
     left: calc(var(--mx) * 1%);
     top: calc(var(--my) * 1%);
   }
 
-  .pinBtn {
-    width: 44px;
-    height: 44px;
-    justify-content: center;
-    transform: translate(-50%, 50%);
-  }
+  .pinBtn { transform: translate(-50%, 6px); }
 
   .label {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
+    margin-bottom: 9px;
+    padding: 4px 8px;
+    font-size: 11px;
   }
 
-  .dot { width: 16px; height: 16px; }
-  .dot::before { display: none; }
+  .dot { width: 12px; height: 12px; }
+  .dot::before { height: 7px; }
   .pin[data-active] .dot { background: var(--c-terra); }
+
+  .pin[data-malign='start'] .pinBtn { align-items: flex-start; transform: translate(-6px, 6px); }
+  .pin[data-malign='end'] .pinBtn { align-items: flex-end; transform: translate(calc(-100% + 6px), 6px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -19,8 +19,8 @@ function Art({ src, className, style, imgRef }) {
   );
 }
 
-function CloudStrip({ cloud, base }) {
-  const src = `${base}/${cloud.name}.webp`;
+function CloudStrip({ cloud, base, night }) {
+  const src = `${base}/${cloud.name}${night ? '-night' : ''}.webp`;
   return (
     <div className={styles.strip} style={{ '--top': cloud.top, '--tw': cloud.w, '--sec': cloud.sec }}>
       <Art src={src} />
@@ -33,7 +33,11 @@ function CloudStrip({ cloud, base }) {
 // 히어로 움직임 레이어 — 기준 그림 위, 핀 아래. 첫 화면(load) 이후 그림을 받고, 다 받으면 페이드인하며 시작한다.
 // 탈것은 rAF 로 transform·opacity 만 바꾸고, 나머지(구름·연기·불빛·연못)는 CSS 애니메이션.
 // 멈춤: 일시정지 버튼(paused) · 히어로가 화면 밖 · 탭 숨김 · 로딩 중.
-export default function HeroMotion({ data, paused }) {
+// 밤(night): 같은 움직임에 밤 그림(-night)을 쓰고, 구름 그림자 대신 창문 일부가 꺼졌다 켜진다.
+// data 는 그림마다 하나 — 데스크톱(16:9) heroMotion · 모바일(9:16) heroMotionMobile. 좌표는 모두 그 그림 상자 기준 %.
+export default function HeroMotion({ data, paused, night }) {
+  const nm = (name) => (night ? `${name}-night` : name);
+  const shadowK = night ? data.night.shadow : 1;
   const rootRef = useRef(null);
   const els = useRef({});
   const clock = useRef(0);
@@ -114,7 +118,7 @@ export default function HeroMotion({ data, paused }) {
       // 그림자는 바퀴 닿는 점(바닥) 기준, 회전 없음
       const gy = y + hp * s * (1 - st.refY);
       shadow.style.transform = `translate3d(${x + W * 0.002}px, ${gy + H * 0.002}px, 0) scale(${s}) translate(${-ws / 2}px, ${-hs}px)`;
-      shadow.style.opacity = st.alpha * st.shadow;
+      shadow.style.opacity = st.alpha * st.shadow * shadowK;
     };
 
     const frame = (now) => {
@@ -133,7 +137,7 @@ export default function HeroMotion({ data, paused }) {
     };
     raf = requestAnimationFrame(frame);
     return () => { cancelAnimationFrame(raf); ro.disconnect(); };
-  }, [running, tracks, widths, data]);
+  }, [running, tracks, widths, data, shadowK]);
 
   const vehicle = (poses) => (
     <>
@@ -143,23 +147,33 @@ export default function HeroMotion({ data, paused }) {
           style={{ width: `${(widths[p] * data.sprites[p].shadow[0]) / data.sprites[p].px[0]}%` }} />
       ))}
       {poses.map((p) => (
-        <Art key={p} src={`${data.base}/${p}.webp`} className={styles.sprite}
+        <Art key={p} src={`${data.base}/${nm(p)}.webp`} className={styles.sprite}
           imgRef={(el) => { els.current[p] = el; }} style={{ width: `${widths[p]}%` }} />
       ))}
     </>
   );
 
   const pond = data.pond.box;
+  const baseImage = night ? data.night.baseImage : data.baseImage;
 
   return (
-    <div ref={rootRef} className={styles.motion} data-ready={ready || undefined} data-paused={!running || undefined} aria-hidden="true">
+    <div ref={rootRef} className={styles.motion} data-ready={ready || undefined} data-paused={!running || undefined}
+      data-night={night || undefined} aria-hidden="true">
       {load && (
         <>
           {/* 지평선 구름 — 양끝·아래로 옅어지고, 솟은 건물(아파트·병원) 뒤로 지나감 */}
-          <div className={`${styles.layer} ${styles.horizon}`}>
-            <CloudStrip cloud={data.clouds.horizon} base={data.base} />
+          <div className={`${styles.layer} ${styles.horizon}`}
+            style={{ '--hz-a': `${data.clouds.horizon.fade[0]}%`, '--hz-b': `${data.clouds.horizon.fade[1]}%` }}>
+            <CloudStrip cloud={data.clouds.horizon} base={data.base} night={night} />
           </div>
-          <Art src={data.baseImage} className={styles.baseOccluder} style={{ clipPath: polygon(data.horizonOccluder) }} />
+          {data.horizonOccluder && (
+            <Art src={baseImage} className={styles.baseOccluder} style={{ clipPath: polygon(data.horizonOccluder) }} />
+          )}
+          {/* 밤: 켜진 창 일부가 잠깐 꺼졌다 다시 켜짐 */}
+          {night && data.night.windows.map((w) => (
+            <Art key={w.name} src={`${data.base}/${w.name}.webp`} className={styles.winOff}
+              style={{ left: `${w.box[0]}%`, top: `${w.box[1]}%`, width: `${w.box[2]}%`, height: `${w.box[3]}%`, '--sec': w.sec, '--delay': w.delay }} />
+          ))}
           {/* 연못 빛 반사 */}
           <div className={styles.pond}
             style={{ left: `${pond[0]}%`, top: `${pond[1]}%`, width: `${pond[2]}%`, height: `${pond[3]}%`, ...mask(maskUrl(data.pond.mask)) }}>
@@ -172,9 +186,10 @@ export default function HeroMotion({ data, paused }) {
           ))}
           {/* 굴뚝 연기 */}
           {[0, 1, 2].map((n) => (
-            <div key={n} className={styles.puff} style={{ '--n': n }}>
+            <div key={n} className={styles.puff}
+              style={{ '--n': n, '--rise-x': `${data.smoke.rise[0]}%`, '--rise-y': `${data.smoke.rise[1]}%` }}>
               {data.smoke.puffs.map((p, k) => (
-                <Art key={p.name} src={`${data.base}/${p.name}.webp`} className={`${styles.smoke} ${SMOKE[k]}`}
+                <Art key={p.name} src={`${data.base}/${nm(p.name)}.webp`} className={`${styles.smoke} ${SMOKE[k]}`}
                   style={{ left: `${data.smoke.at[0]}%`, top: `${data.smoke.at[1]}%`, width: `${p.w}%` }} />
               ))}
             </div>
@@ -182,22 +197,26 @@ export default function HeroMotion({ data, paused }) {
           {/* 비행기 */}
           <div className={styles.layer}>{vehicle(planePoses)}</div>
           {/* 버스 — 지하차도 입구에서 터널 위로 비어져 나오는 지붕은 숨김 */}
-          <div className={`${styles.layer} ${styles.busLayer}`} style={mask(holeMask(data.busHide))}>{vehicle(busPoses)}</div>
+          <div className={`${styles.layer} ${styles.busLayer}`} style={data.busHide ? mask(holeMask(data.busHide)) : undefined}>
+            {vehicle(busPoses)}
+          </div>
           {/* 앞가림: 지하차도 입구 · 연못 정원 나무(기준 그림을 잘라 덮음) */}
           {data.occluders.filter((o) => o.base).map((o) => (
-            <Art key="base-occluder" src={data.baseImage} className={styles.baseOccluder}
-              style={{ clipPath: `polygon(${o.clip.map(([x, y]) => `${x}% ${y}%`).join(', ')})` }} />
+            <Art key={`base-occluder-${o.clip[0].join('-')}`} src={baseImage} className={styles.baseOccluder} style={{ clipPath: polygon(o.clip) }} />
           ))}
           {data.occluders.filter((o) => !o.base).map((o) => (
-            <Art key={o.name} src={`${data.base}/${o.name}.webp`} className={styles.occluder}
+            <Art key={o.name} src={`${data.base}/${nm(o.name)}.webp`} className={styles.occluder}
               style={{ left: `${o.box[0]}%`, top: `${o.box[1]}%`, width: `${o.box[2]}%`, height: `${o.box[3]}%`, ...(o.cut ? mask(holeMask([o.cut])) : null) }} />
           ))}
-          {/* 구름 그림자 — 섬 위만 (탈것·앞가림 위로 지나감) */}
-          <div className={`${styles.layer} ${styles.island}`} style={mask(maskUrl(data.maskIsland))}>
-            <span className={styles.cloudShade} />
-          </div>
+          {/* 구름 그림자 — 섬 위만 (탈것·앞가림 위로 지나감). 밤에는 해가 없어 뺀다 */}
+          {!night && (
+            <div className={`${styles.layer} ${styles.island}`} style={mask(maskUrl(data.maskIsland))}>
+              <span className={styles.cloudShade}
+                style={{ '--shade-top': `${data.shade[0]}%`, '--shade-w': `${data.shade[1]}%`, '--shade-h': `${data.shade[2]}%` }} />
+            </div>
+          )}
           {/* 섬 밑면 앞 가까운 구름 */}
-          <div className={styles.layer}><CloudStrip cloud={data.clouds.near} base={data.base} /></div>
+          <div className={styles.layer}><CloudStrip cloud={data.clouds.near} base={data.base} night={night} /></div>
         </>
       )}
     </div>

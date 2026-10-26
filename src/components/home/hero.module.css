@@ -108,21 +108,21 @@
 @media (max-aspect-ratio: 1/1) {
   .hero { --copy-h: 178px; }
 
+  /* 45° 그림(좌우 구름 여백 포함)은 항상 화면 폭을 덮는다(자이로 틸트 여유 2%) — 옆에 빈 하늘 띠가 생기지 않게.
+     세로 위치: 기본은 아래에 붙이고, 화면이 낮거나 넓으면(작은 폰·태블릿) 섬 윗면(그림 높이의 약 31% — 건물 꼭대기·핀 이름표)이
+     문구 바로 아래에 오도록 내린다. 그때 잘리는 건 그림 아래 구름바다뿐이다 */
   .box {
-    top: auto;
-    bottom: 0;
+    --box-h: calc(102cqw * 16 / 9);
+    top: max(calc(100cqh - var(--box-h)), calc(var(--copy-h) + 6px - var(--box-h) * 0.31));
     aspect-ratio: 9 / 16;
-    /* 섬 윗면(이미지 높이의 약 15%)이 문구 아래에서 시작하도록 */
-    width: min(100%, calc((var(--stage-h) - var(--copy-h)) / 0.85 * 9 / 16));
+    width: 102cqw;
     transform: translateX(-50%);
   }
 
-  /* 이미지 위·옆 가장자리를 하늘 그라디언트에 녹인다 */
+  /* 그림 위 가장자리만 하늘 그라디언트에 녹인다 (좌우는 그림 자체가 구름) */
   .art {
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%), linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
-    mask-image: linear-gradient(to bottom, transparent 0, #000 9%), linear-gradient(to right, transparent 0, #000 5%, #000 95%, transparent 100%);
-    -webkit-mask-composite: source-in;
-    mask-composite: intersect;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 9%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 9%);
   }
 }
 

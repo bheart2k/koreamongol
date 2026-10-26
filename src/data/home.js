@@ -8,7 +8,7 @@
 //     d   : 데스크톱 착지 이미지 k1-end.webp (1672×941)
 //     m   : 모바일 착지 이미지 m1-end.webp (941×1672)
 //     mini: 전경 k0-start.webp (1672×940) — 챕터 미니맵 마커용
-// - C 에서 새로 쓴 몽골어 문구(copy·places·chapters·alts)는 원어민 검수 필요.
+// - C 에서 새로 쓴 몽골어 문구(copy·places·chapters·alts)는 원어민 대신 에이전트가 검수함(2026-10-26, 사용자 결정 2026-10-23).
 
 import {
   FileText, MapPin, Heart, Banknote, BookOpen, Users, Briefcase, Home, GraduationCap,
@@ -30,10 +30,12 @@ export const hero = {
 
 // 히어로 기준 그림 (핀 좌표 기준 이미지). 밤 장면은 다크 테마를 실제로 쓸 때만 받는다.
 // 데스크톱 낮 = 기준 그림 3차판(2차판 + 섬 밑면을 구름에 잠기게 — 섬 윗면은 2차판 픽셀 그대로라 핀 좌표 유지).
-// 밤·모바일은 새 판 준비 전까지 착지 이미지.
+// 데스크톱 밤 = 3차판을 밤으로 다시 칠한 판(배치 그대로 — 낮 그림과 윤곽 어긋남 0px 확인).
+// 모바일(9:16) = 섬 45° 판(2026-10-26 사용자 선택 — 시안 30°·45°·60° 중). 섬 가운데·위 하늘(문구 자리)·아래 구름바다(버튼 자리),
+//   섬 밑면은 구름에 잠김. 금빛 항로는 비행기가 머리 방향 그대로 따라 내려오도록 왼쪽 위 → 오른쪽 아래로 다시 그렸다. 밤 판은 위치 어긋남 0px.
 export const heroArt = {
-  desktop: { day: `${A}/hero-base-day-v3.webp`, night: `${A}/k1-end-night.webp` },
-  mobile: { day: `${A}/m1-end.webp`, night: `${A}/m1-end-night.webp` },
+  desktop: { day: `${A}/hero-base-day-v3.webp`, night: `${A}/hero-base-night-v3.webp` },
+  mobile: { day: `${A}/hero-m-base-day-v1.webp`, night: `${A}/hero-m-base-night-v1.webp` },
 };
 
 // 히어로 움직임 레이어 (c-final §3) — 데스크톱 낮 전용. 그림은 home/v1/hero/, 좌표는 전부 그림 상자 기준 %.
@@ -117,11 +119,11 @@ export const heroMotion = {
       [75.66, 55.15], [75.94, 55.9], [75.97, 56.48], [77.75, 56.48], [77.75, 48.88], [72.43, 48.88]],
   ],
   // 굴뚝 연기: 꼭대기에서 1→4 순서로 커지고 옅어짐 (w = 표시 폭 %)
-  smoke: { at: [48.74, 28.91], puffs: [{ name: 'smoke-1', w: 0.84 }, { name: 'smoke-2', w: 1.32 }, { name: 'smoke-3', w: 1.91 }, { name: 'smoke-4', w: 2.03 }] },
+  smoke: { at: [48.74, 28.91], rise: [1.4, -8], puffs: [{ name: 'smoke-1', w: 0.84 }, { name: 'smoke-2', w: 1.32 }, { name: 'smoke-3', w: 1.91 }, { name: 'smoke-4', w: 2.03 }] },
   // 구름 띠(가로 반복 타일) — w·h = 타일 표시 크기 %, top = 띠 위치 %, sec = 타일 하나만큼 흐르는 시간
   clouds: {
     // 지평선 구름: 작은 구름 띠가 천천히 흐르며 양끝·아래로 옅어진다(사용자 제안, 2026-10-23). 아파트·병원 뒤로 지나감.
-    horizon: { name: 'cloud-far', w: 34, top: 5.2, sec: 120 },
+    horizon: { name: 'cloud-far', w: 34, top: 5.2, sec: 120, fade: [9.5, 14.5] }, // fade: 여기까지 진함 → 여기서 사라짐(상자 %)
     near: { name: 'cloud-near', w: 70.45, h: 50.48, top: 76, sec: 80 },
   },
   // 지평선 구름 위에 덮는 솟은 건물(아파트 3동·병원) 윤곽 — 섬 마스크 윗선에서 땀(상자 기준 %)
@@ -145,14 +147,130 @@ export const heroMotion = {
     [68.96, 12.01], [69.8, 12.11], [70.63, 12.22], [71.47, 12.33], [71.95, 12.43], [72.13, 12.54], [72.19, 14.88], [72.25, 14.98],
     [75.9, 14.98], [75.9, 15.09],
   ],
+  // 밤(다크 테마): 같은 움직임에 밤 그림을 쓴다 — 탈것·구름·연기·터널 앞가림은 파일 이름 뒤에 -night.
+  //   낮 그림을 낮·밤 기준 그림(위치가 같은 두 장)에서 맞춘 색 변환으로 다시 칠했고, 비행기엔 항공등, 버스엔 미등·실내등을 더했다.
+  //   windows: 밤 그림의 켜진 창 일부를 덮어 잠깐 꺼진 것처럼 보이게 하는 그림(box = 그림 상자 기준 %, sec·delay = 초).
+  night: {
+    baseImage: `${A}/hero-base-night-v3.webp`,
+    shadow: 0.4, // 달빛 그림자는 옅게
+    windows: [
+      { name: 'win-1', box: [39.65, 11.16, 2.51, 2.34], sec: 13, delay: 1 },
+      { name: 'win-2', box: [44.14, 14.03, 2.75, 2.13], sec: 17, delay: 6 },
+      { name: 'win-3', box: [50.36, 18.92, 2.63, 2.34], sec: 11, delay: 3 },
+      { name: 'win-4', box: [44.14, 20.72, 2.75, 2.13], sec: 19, delay: 10 },
+      { name: 'win-5', box: [60.05, 17.53, 1.91, 1.7], sec: 15, delay: 4 },
+      { name: 'win-6', box: [68.9, 18.6, 2.15, 2.13], sec: 12, delay: 8 },
+      { name: 'win-7', box: [68.9, 24.02, 2.15, 2.02], sec: 21, delay: 2 },
+      { name: 'win-8', box: [25, 48.35, 2.51, 2.13], sec: 14, delay: 7 },
+      { name: 'win-9', box: [36.78, 45.16, 2.63, 2.76], sec: 18, delay: 5 },
+      { name: 'win-10', box: [42.17, 52.92, 2.63, 2.34], sec: 16, delay: 9 },
+    ],
+  },
   baseImage: `${A}/hero-base-day-v3.webp`, // 기준 그림(앞가림용, heroArt 와 같은 파일이라 캐시 재사용)
   maskIsland: `${HM}/mask-island-v2.webp`, // 섬 윗면만(밑면은 구름에 잠김 — 구름 그림자가 밑면 자리 구름 위로 지나가지 않게)
+  shade: [8, 44, 72], // 구름 그림자 타원: top · 폭 · 높이(상자 %)
   pond: { mask: `${HM}/mask-pond.webp`, box: [66.15, 65.99, 14.83, 11.37] },
   // 낮 불빛 — 구급차 경광등 · 관제탑 항공등 · 편의점 (x, y = 중심 %, w·h = 크기 %)
   lights: [
     { kind: 'beacon', x: 67.45, y: 26.85, w: 1.3, h: 2.3, sec: 1.2 },
     { kind: 'beacon', x: 24.16, y: 17.9, w: 0.9, h: 1.6, sec: 2.6, delay: 0.7 },
     { kind: 'warm', x: 75.5, y: 47.8, w: 6.6, h: 6.4, sec: 4.6 },
+  ],
+};
+
+// 모바일(세로 9:16, 섬 45° 그림) 움직임 — 데스크톱과 같은 구성, 좌표는 모바일 그림 상자 기준 %.
+//   모바일 그림의 물체 크기는 데스크톱 그림의 약 0.6배(섬 폭·지하차도 폭으로 잼) → 탈것·연기·구름 크기와 오르는 거리를 그 비율로 맞춤.
+//   활주로 방향은 데스크톱과 같은 약 14°라 비행기 그림을 돌리지 않는다. aspect = 경로 거리 계산용 상자 비율.
+export const heroMotionMobile = {
+  base: HM,
+  sprites: heroMotion.sprites,
+  // 비행기: 화면 밖 왼쪽 위 → 금빛 항로(모바일 그림에 새로 그린 선) 위를 따라 하강(그림 가운데가 선 위)
+  //   → 선 끝(활주로 끝, 10.95, 44.74)보다 그림 반 높이(0.69%) 위 → 바퀴가 활주로 끝에 닿음 → 감속 → 정차 6초 → 페이드
+  //   데스크톱과 같게: 활주로 왼쪽 끝에 착지 → 진행 방향 오른쪽(화면 아래쪽) 차선으로 들어가 그 차선을 따라 활주로 끝까지.
+  //   모바일 그림의 그 차선 = 아래쪽 흰 실선과 첫 번째 점선 사이(기울기 약 0.42, 그림의 흰 표시를 뽑아 잼). 바퀴(ref 1)를 차선 가운데보다 1.5px 아래.
+  //   (사용자 지적 3회, 2026-10-26: "비행기는 오른쪽 차선을 따라서 끝까지 가야할거아냐")
+  plane: {
+    aspect: [9, 16],
+    cycle: 20,
+    segments: [
+      {
+        pose: 'plane-approach', dur: 4.6, ease: 'linear', w: [4.08, 4.08], ref: 0.5, noShadow: true,
+        path: [[-3.08, 24.64], [-1.28, 29.9], [-0.86, 31.07], [-0.43, 32.18], [0.03, 33.26], [0.51, 34.29], [1, 35.27],
+          [1.52, 36.21], [2.06, 37.11], [2.62, 37.96], [3.2, 38.77], [3.8, 39.53], [4.42, 40.25], [5.06, 40.93], [5.73, 41.56],
+          [6.41, 42.15], [7.11, 42.69], [7.84, 43.19], [8.58, 43.64], [10.95, 44.05]],
+      },
+      { pose: 'plane-roll', dur: 5.2, ease: 'out', w: [3.95, 3.95], path: [[10.95, 44.74], [12.96, 45.71], [23.59, 48.2]] },
+      { pose: 'plane-roll', dur: 6.0, ease: 'linear', w: [3.95, 3.95], path: [[23.59, 48.2]] },
+      { pose: 'plane-roll', dur: 1.2, ease: 'linear', w: [3.95, 3.95], fadeOut: 1, path: [[23.59, 48.2]] },
+    ],
+  },
+  // 버스: 데스크톱과 같게 섬 앞쪽 가장자리(지하철역 앞, 48.88, 66.39)에서 나타나 → 꺾지 않고 일직선 → 한옥 왼쪽 지하차도 입구 안으로.
+  //   (사용자 지시 2026-10-26: "버스가는 길을 좀더 오른쪽으로 틀어", "버스 자체도 좀 오른쪽으로 틀어", "왜 직진이 아니고 꺽는 동작이 있어?"
+  //    → 출발점은 그대로, 도착점을 입구 안쪽 오른쪽으로, 그림 회전 -6° → -2°, 방향 틀기 삭제)
+  bus: {
+    aspect: [9, 16],
+    cycle: 16,
+    offset: 3,
+    segments: [
+      { pose: 'bus-in', dur: 10.4, ease: 'linear', w: [3.6, 2.1], rot: -2, fadeIn: 0.05, fadeOut: 0.12, path: [[48.88, 66.39], [76.09, 57]] },
+    ],
+  },
+  // 앞가림(기준 그림을 다각형으로 잘라 버스 위에 덮음)
+  occluders: [
+    // 연못 정원 앞쪽 나무: 윗선 = 나무 윤곽, 아랫선 = 버스 경로선 + 6px (경로보다 낮은 나무는 높이 0)
+    {
+      base: true,
+      clip: [
+        [55.47, 63.76], [55.9, 62.8], [56.54, 62.2], [57.49, 61.96], [58.45, 62.2], [58.77, 61.9], [59.09, 61.48], [59.83, 61.24],
+        [60.57, 61.36], [61.42, 60.53], [62.38, 60.17], [63.12, 60.05], [63.97, 60.17], [64.82, 60.41], [65.36, 60.77], [65.78, 59.99],
+        [66.42, 59.57], [67.06, 59.45], [67.69, 59.69], [68.23, 59.99], [68.23, 60.05], [67.38, 60.35], [66.52, 60.65], [65.67, 60.94],
+        [64.82, 61.24], [63.97, 61.54], [63.12, 61.84], [62.27, 62.14], [61.42, 62.44], [60.57, 62.74], [59.72, 62.98], [58.87, 63.28],
+        [58.02, 63.58], [57.17, 63.88], [56.32, 64.17], [55.47, 64.47],
+      ],
+    },
+    // 지하차도 덮개(입구 위·양옆 기둥, 입구 구멍 제외) — 입구 안으로 들어가는 버스의 지붕·옆을 가림
+    {
+      base: true,
+      clip: [[73.63, 55.75], [74.39, 55.5], [75.45, 55.36], [76.66, 55.41], [77.58, 55.75], [78.18, 56.26], [78.26, 56.6],
+        [77.89, 56.78], [76.51, 57.15], [76.37, 56.64], [76.2, 56.16], [75.77, 55.86], [75.24, 55.77], [74.71, 55.86],
+        [74.34, 56.1], [74.2, 56.46]],
+    },
+  ],
+  // 굴뚝 연기: 꼭대기(49.63, 43.76)에서 피어오름 — 크기·오르는 거리는 데스크톱의 0.6배
+  smoke: {
+    at: [49.63, 43.76], rise: [1.49, -2.69],
+    puffs: [{ name: 'smoke-1', w: 0.89 }, { name: 'smoke-2', w: 1.4 }, { name: 'smoke-3', w: 2.04 }, { name: 'smoke-4', w: 2.17 }],
+  },
+  clouds: {
+    // 지평선(구름바다 먼 끝, 약 24~27%) 위 작은 구름 띠 — 섬 건물(32% 아래)과 겹치지 않아 앞가림 없음
+    horizon: { name: 'cloud-far', w: 36, top: 23.2, sec: 120, fade: [24.65, 26.2] },
+    // 섬 앞쪽 끝(약 69%)을 살짝 덮으며 지나가는 가까운 구름
+    near: { name: 'cloud-near', w: 75, top: 68, sec: 80 },
+  },
+  night: {
+    baseImage: `${A}/hero-m-base-night-v1.webp`,
+    shadow: 0.4,
+    // 밤 그림의 켜진 창 묶음(아파트 4 · 병원 양쪽 날개 2 · 학교 2 · 은행 1)을 낮 그림 색 변환으로 덮는 그림
+    windows: [
+      { name: 'win-m-1', box: [37.94, 38.64, 2.98, 1.56], sec: 13, delay: 1 },
+      { name: 'win-m-2', box: [51.12, 37.92, 2.98, 1.56], sec: 17, delay: 6 },
+      { name: 'win-m-3', box: [51.97, 34.33, 2.98, 1.56], sec: 11, delay: 3 },
+      { name: 'win-m-4', box: [37.94, 35.05, 2.98, 1.56], sec: 19, delay: 10 },
+      { name: 'win-m-5', box: [66.1, 41.27, 2.76, 1.56], sec: 15, delay: 4 },
+      { name: 'win-m-6', box: [74.71, 41.03, 2.76, 1.56], sec: 12, delay: 8 },
+      { name: 'win-m-7', box: [34.54, 50.6, 3.19, 1.56], sec: 21, delay: 2 },
+      { name: 'win-m-8', box: [40.06, 52.75, 3.19, 1.56], sec: 14, delay: 7 },
+      { name: 'win-m-9', box: [79.49, 46.11, 3.19, 1.56], sec: 18, delay: 5 },
+    ],
+  },
+  baseImage: `${A}/hero-m-base-day-v1.webp`, // heroArt.mobile.day 와 같은 파일
+  maskIsland: `${HM}/mask-island-m-v1.webp`,
+  shade: [36, 60, 30],
+  pond: { mask: `${HM}/mask-pond-m-v1.webp`, box: [65.89, 59.81, 18.07, 7.48] },
+  lights: [
+    { kind: 'beacon', x: 69.7, y: 42.0, w: 1.38, h: 0.78, sec: 1.2 }, // 구급차
+    { kind: 'beacon', x: 22.93, y: 38.07, w: 0.96, h: 0.54, sec: 2.6, delay: 0.7 }, // 관제탑
+    { kind: 'warm', x: 77.8, y: 52.2, w: 7.0, h: 2.15, sec: 4.6 }, // 편의점
   ],
 };
 
@@ -226,7 +344,7 @@ export const donate = {
   link: { label: 'Дэмжих', href: '/donate' },
 };
 
-// 새 문구 (원어민 검수 필요)
+// 새 문구 (에이전트 검수 2026-10-26 — 일시정지만 고침)
 export const copy = {
   mapTitle: 'Таны шинэ хороолол',
   mapHint: 'Цэг дээр дарж хэрэгтэй гарын авлагаа сонгоорой',
@@ -235,50 +353,51 @@ export const copy = {
   chaptersKicker: 'Газрын зураг',
   chaptersTitle: 'Газар бүр — нэг гарын авлага',
   finaleTitle: 'Хоёр нутаг, нэг зам',
-  pause: 'Зогсоох',
+  pause: 'Түр зогсоох',
   play: 'Тоглуулах',
   close: 'Хаах',
 };
 
 // 지도 핀 — guides: guides[].id
 export const places = [
-  { id: 'home', name: 'Нутаг руу', guides: ['community'], d: [6, 17], m: [11, 27] },
-  { id: 'airport', name: 'Нисэх буудал', guides: ['visa', 'arrival'], d: [31, 25], m: [29, 29] },
-  { id: 'apartments', name: 'Орон сууц', guides: ['housing'], d: [46, 9], m: [46, 17] },
-  { id: 'hospital', name: 'Эмнэлэг', guides: ['hospital', 'emergency'], d: [67, 14], m: [77, 25] },
-  { id: 'bank', name: 'Банк', guides: ['money', 'exchange'], d: [81, 29], m: [87, 38] },
-  { id: 'store', name: '24 цагийн дэлгүүр', guides: ['apps'], d: [78, 44], m: [81, 47] },
-  { id: 'factory', name: 'Үйлдвэр', guides: ['jobs', 'severance'], d: [58, 37], m: [57, 41] },
-  { id: 'school', name: 'Сургууль', guides: ['topik'], d: [36, 47], m: [28, 45] },
-  { id: 'subway', name: 'Метро, автобус', guides: ['transport'], d: [51, 63], m: [42, 63] },
-  { id: 'hanok', name: 'Ханок', guides: ['korean'], d: [84, 58], m: [83, 61] },
+  // m = 모바일 45° 그림 기준 % (건물 지붕 위, Нутаг руу 는 금빛 항로 위)
+  { id: 'home', name: 'Нутаг руу', guides: ['community'], d: [6, 17], m: [3.8, 39.5] },
+  { id: 'airport', name: 'Нисэх буудал', guides: ['visa', 'arrival'], d: [31, 25], m: [30, 41.6] },
+  { id: 'apartments', name: 'Орон сууц', guides: ['housing'], d: [46, 9], m: [47.3, 34.5] },
+  { id: 'hospital', name: 'Эмнэлэг', guides: ['hospital', 'emergency'], d: [67, 14], m: [70.7, 38.2] },
+  { id: 'bank', name: 'Банк', guides: ['money', 'exchange'], d: [81, 29], m: [84.2, 45] },
+  { id: 'store', name: '24 цагийн дэлгүүр', guides: ['apps'], d: [78, 44], m: [79.7, 51.7] },
+  { id: 'factory', name: 'Үйлдвэр', guides: ['jobs', 'severance'], d: [58, 37], m: [59, 47.2] },
+  { id: 'school', name: 'Сургууль', guides: ['topik'], d: [36, 47], m: [34.7, 51.7] },
+  { id: 'subway', name: 'Метро, автобус', guides: ['transport'], d: [51, 63], m: [50, 59] },
+  { id: 'hanok', name: 'Ханок', guides: ['korean'], d: [84, 58], m: [85.1, 58.5] },
 ];
 
-// 장소별 섹션 — img: 클로즈업, loop: 루프 영상 이름(없으면 정지 이미지만)
+// 장소별 섹션 — img: 클로즈업, loop: 루프 영상 이름(없으면 정지 이미지만), loopNight: 다크 모드 밤 루프 이름(없으면 밤 정지 그림)
 export const chapters = [
   {
     id: 'steppe', no: '01', title: 'Нутгаасаа', line: 'Аялал эхлэхээс өмнө — виз, шалгалт.',
-    img: `${A}/c1-steppe.webp`, loop: 'loop-c1', guides: ['visa', 'topik'], mini: [17, 54],
+    img: `${A}/c1-steppe.webp`, loop: 'loop-c1', loopNight: 'loop-c1-night', guides: ['visa', 'topik'], mini: [17, 54],
   },
   {
     id: 'arrive', no: '02', title: 'Ирэх', line: 'Онгоцноос буугаад хотод чөлөөтэй зорчих хүртэл.',
-    img: `${A}/c2-airport.webp`, loop: null, guides: ['arrival', 'transport'], mini: [61, 47],
+    img: `${A}/c2-airport.webp`, loop: 'loop-c2', loopNight: 'loop-c2-night', guides: ['arrival', 'transport'], mini: [61, 47],
   },
   {
     id: 'living', no: '03', title: 'Амьдрах', line: 'Байр, банк, өдөр тутмын хэрэгтэй зүйлс.',
-    img: `${A}/c3-living.webp`, loop: 'loop-c3', guides: ['housing', 'money', 'exchange', 'apps'], mini: [68, 38],
+    img: `${A}/c3-living.webp`, loop: 'loop-c3', loopNight: 'loop-c3-night-v5', guides: ['housing', 'money', 'exchange', 'apps'], mini: [68, 38],
   },
   {
     id: 'work', no: '04', title: 'Ажиллах', line: 'Цалин, гэрээ, тэтгэмж — таны эрх.',
-    img: `${A}/c4-work.webp`, loop: 'loop-c4', guides: ['jobs', 'severance'], mini: [75, 52],
+    img: `${A}/c4-work.webp`, loop: 'loop-c4', loopNight: 'loop-c4-night', guides: ['jobs', 'severance'], mini: [75, 52],
   },
   {
     id: 'health', no: '05', title: 'Эрүүл байх', line: 'Эмнэлэг, яаралтай тусламж — сандралгүйгээр.',
-    img: `${A}/c5-health.webp`, loop: 'loop-c5', guides: ['hospital', 'emergency'], mini: [80, 41],
+    img: `${A}/c5-health.webp`, loop: 'loop-c5', loopNight: 'loop-c5-night', guides: ['hospital', 'emergency'], mini: [80, 41],
   },
   {
     id: 'culture', no: '06', title: 'Хэл ба соёл', line: 'Сурах бичигт байдаггүй Солонгос.',
-    img: `${A}/c6-culture.webp`, loop: 'loop-c6', guides: ['korean'], extra: { label: 'Түргэн хариулт', href: '/tips' }, mini: [88, 63],
+    img: `${A}/c6-culture.webp`, loop: 'loop-c6', loopNight: 'loop-c6-night', guides: ['korean'], extra: { label: 'Түргэн хариулт', href: '/tips' }, mini: [88, 63],
   },
 ];
 
@@ -288,6 +407,8 @@ export const miniCrop = { x0: 6, x1: 96, y0: 30, y1: 86 };
 
 // 마무리 섹션 밤 장면
 export const finaleArt = { desktop: `${A}/k0-start-night.webp`, mobile: `${A}/m0-start-night.webp` };
+// 마지막 장면 루프 영상(그록, 첫=끝 프레임 6초): loop-finale.mp4(16:9) · loop-finale-m.mp4(9:16, 폰)
+export const finaleLoop = { base: A, name: 'loop-finale' };
 
 export const alts = {
   settle: 'Нисэх буудал, орон сууц, эмнэлэг, банк, дэлгүүр, үйлдвэр, сургууль, метро, ханок бүхий Сөүлийн хороолол',

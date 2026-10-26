@@ -1,5 +1,5 @@
 // 히어로 탈것 움직임 계산 — 경로(상자 기준 %)를 따라 시각별 위치·폭·투명도를 낸다.
-// 거리는 16:9 상자 비율(x%×16, y%×9)로 재서 화면 크기와 무관하게 같은 속도로 움직인다.
+// 거리는 상자 비율(가로 그림 x%×16, y%×9 · 세로 그림은 track.aspect = [9, 16])로 재서 화면 크기와 무관하게 같은 속도로 움직인다.
 
 const EASE = {
   linear: (u) => u,
@@ -10,14 +10,14 @@ const EASE = {
 
 const XFADE = 0.24; // 자세 전환 크로스페이드(초)
 
-function buildPath(points) {
+function buildPath(points, aspect) {
   const lens = [0];
   for (let i = 1; i < points.length; i++) {
-    const dx = (points[i][0] - points[i - 1][0]) * 16;
-    const dy = (points[i][1] - points[i - 1][1]) * 9;
+    const dx = (points[i][0] - points[i - 1][0]) * aspect[0];
+    const dy = (points[i][1] - points[i - 1][1]) * aspect[1];
     lens.push(lens[i - 1] + Math.hypot(dx, dy));
   }
-  return { points, lens, total: lens[lens.length - 1] };
+  return { points, lens, total: lens[lens.length - 1], aspect };
 }
 
 function pointAt(path, u) {
@@ -37,7 +37,7 @@ function tangentAt(path, e) {
   const d = 0.006;
   const a = pointAt(path, Math.max(0, e - d));
   const b = pointAt(path, Math.min(1, e + d));
-  return (Math.atan2((b[1] - a[1]) * 9, (b[0] - a[0]) * 16) * 180) / Math.PI;
+  return (Math.atan2((b[1] - a[1]) * path.aspect[1], (b[0] - a[0]) * path.aspect[0]) * 180) / Math.PI;
 }
 
 // headings: 자세 그림별 머리 방향(°). rot: 'path' 이면 진행 방향 - 머리 방향만큼 그림을 돌린다.
@@ -45,8 +45,9 @@ function tangentAt(path, e) {
 export function compileTrack(track, headings = {}) {
   let t = 0;
   let lastTurn = 0;
+  const aspect = track.aspect || [16, 9];
   const segs = track.segments.map((s) => {
-    const seg = { ...s, t0: t, t1: t + s.dur, path: buildPath(s.path), ease: EASE[s.ease] || EASE.linear };
+    const seg = { ...s, t0: t, t1: t + s.dur, path: buildPath(s.path, aspect), ease: EASE[s.ease] || EASE.linear };
     if (seg.rot === 'path') {
       seg.heading = headings[seg.pose] || 0;
       lastTurn = tangentAt(seg.path, 1) - seg.heading;

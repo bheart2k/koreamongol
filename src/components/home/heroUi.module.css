@@ -129,25 +129,13 @@
 
 :global(.dark) .toggleKnob { transform: translateX(38px); }
 
-/* ---------- 세로 화면 (모바일): 지도 바는 CTA 위 ---------- */
+/* ---------- 세로 화면 (모바일): 핀에 이름표가 있어 안내·칩 줄은 빼고, 낮/밤은 헤더 버튼만 ---------- */
 @media (max-aspect-ratio: 1/1) {
   .controls { top: 14px; right: 12px; gap: 8px; }
-
-  .mapBar {
-    left: 12px;
-    right: 12px;
-    bottom: 136px;
-    gap: 6px;
-  }
-
-  .mapHint { padding: 6px 11px 6px 9px; font-size: 12px; }
-  .mapHint strong { display: none; }
-  .chipsBar > ul { flex-wrap: nowrap; }
-}
-
-/* 낮은 세로 화면(375×667 등): 섬이 작아져 안내 문구가 아래쪽 핀을 가리므로 칩만 남긴다 */
-@media (max-aspect-ratio: 1/1) and (max-height: 720px) {
-  .mapHint { display: none; }
+  .pause { width: 38px; height: 38px; } /* 움직임 일시정지 — 문구 오른쪽 하늘에 작게 */
+  .pause svg { width: 15px; height: 15px; }
+  .mapBar { display: none; }
+  .toggle { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

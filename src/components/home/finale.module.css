@@ -143,6 +143,17 @@
   mask-image: linear-gradient(180deg, transparent 0%, #000 24%);
 }
 
+.finaleZoom {
+  position: absolute;
+  inset: 0;
+}
+
+/* 루프 일시정지 버튼: 그림 위쪽은 패널 색으로 흐려지므로 오른쪽 아래에 */
+.finalePause {
+  top: auto;
+  bottom: 14px;
+}
+
 .finaleArt picture,
 .finaleArt img {
   position: absolute;
@@ -288,6 +299,9 @@
 }
 
 @media (max-width: 639px) {
+  .updates { padding: 48px 0; }
+  /* 환율 카드: 제목과 숫자 사이 빈 공간 줄이기 (데스크톱은 옆 카드 높이에 맞추려고 최소 높이를 둠) */
+  .exchange { min-height: 0; gap: 18px; padding: 24px; }
   .finalePanel { width: calc(100% - 16px); border-radius: 22px; background: linear-gradient(180deg, var(--c-finale-top-m) 0%, var(--c-finale-mid-m) 40%); }
   .finaleArt { aspect-ratio: 9 / 16; margin-top: -64px; }
   .donate { flex-direction: column; align-items: flex-start; }
