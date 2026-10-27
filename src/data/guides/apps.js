@@ -1,17 +1,17 @@
 export const appsMeta = {
   title: 'Хэрэгтэй апп & хэрэгсэл',
   subtitle: 'Солонгосын амьдралд заавал хэрэгтэй апп, вэбсайт, тооцоолуурууд',
-  lastUpdated: '2026.07.14',
+  lastUpdated: '2026.10.27',
 };
 
 export const appsSections = [
-  { id: 'apps-essential', title: 'Заавал суулгах апп' },
-  { id: 'apps-shopping', title: 'Худалдаа & хүргэлт' },
-  { id: 'apps-transport', title: 'Тээвэр & газрын зураг' },
-  { id: 'apps-translate', title: 'Орчуулга & толь бичиг' },
-  { id: 'apps-tools', title: 'Тооцоолуур & хэрэгсэл' },
-  { id: 'apps-websites', title: 'Хэрэгтэй вэбсайтууд' },
-  { id: 'apps-tips', title: 'Апп суулгах зөвлөгөө' },
+  { id: 'apps-essential', title: 'Заавал суулгах апп', label: 'Заавал' },
+  { id: 'apps-shopping', title: 'Худалдаа & хүргэлт', label: 'Худалдаа' },
+  { id: 'apps-transport', title: 'Тээвэр & газрын зураг', label: 'Тээвэр' },
+  { id: 'apps-translate', title: 'Орчуулга & толь бичиг', label: 'Орчуулга' },
+  { id: 'apps-tools', title: 'Тооцоолуур & хэрэгсэл', label: 'Тооцоолуур' },
+  { id: 'apps-websites', title: 'Хэрэгтэй вэбсайтууд', label: 'Вэбсайт' },
+  { id: 'apps-tips', title: 'Апп суулгах зөвлөгөө', label: 'Зөвлөгөө' },
 ];
 
 export const essentialApps = [
@@ -44,7 +44,7 @@ export const shoppingApps = [
     description: 'Солонгосын хамгийн том онлайн дэлгүүр. "Rocket Delivery" — маргааш хүргэнэ. Хоол, ахуйн бараа, электроник гэх мэт бүх зүйл.',
     playStore: 'https://play.google.com/store/apps/details?id=com.coupang.mobile',
     category: 'Онлайн дэлгүүр',
-    tip: '와우 회원: сард ₩4,990-аар үнэгүй хүргэлт + Coupang Play',
+    tip: '와우 회원: сард ₩7,890-аар үнэгүй хүргэлт + Coupang Play',
   },
   {
     name: 'Baemin (배달의민족)',
@@ -52,7 +52,7 @@ export const shoppingApps = [
     playStore: 'https://play.google.com/store/apps/details?id=com.sampleapp',
     website: 'https://www.baemin.com',
     category: 'Хоол хүргэлт',
-    tip: '배민클럽: сард ₩4,990-аар хүргэлтийн хураамж хөнгөлөлт',
+    tip: '배민클럽: сард ₩3,990-аар үнэгүй хүргэлт',
   },
   {
     name: 'Danggeun (당근)',
@@ -108,7 +108,7 @@ export const translateApps = [
     playStore: 'https://play.google.com/store/apps/details?id=com.nhn.android.naverdic',
     website: 'https://dict.naver.com',
     category: 'Толь бичиг',
-    tip: 'Солонгос ↔ Англи толь бичиг. Үг бүрийн утга, жишээ, дуудлага бий.',
+    tip: 'Монгол ↔ Солонгос толь бичиг бий (dict.naver.com/mnkodict). Үг бүрийн утга, жишээ, дуудлага.',
   },
 ];
 
@@ -150,9 +150,9 @@ export const usefulWebsites = [
     description: '100+ үнэгүй хангыл фонт — өөрийн текстээ бичиж үзээд татах',
   },
   {
-    href: 'https://www.gov.kr/portal/foreigner/ko',
+    href: 'https://www.gov.kr',
     title: '정부24 (Засгийн газрын үйлчилгээ)',
-    description: 'Гадаадын иргэний бүртгэл, гэрчилгээ авах — 14 төрлийн онлайн минвон',
+    description: 'Засгийн газрын онлайн үйлчилгээ, гэрчилгээ авах',
   },
   {
     href: 'https://www.easylaw.go.kr',
@@ -163,7 +163,7 @@ export const usefulWebsites = [
 
 export const appTips = [
   'Play Store-оос апп татаж авахдаа Wi-Fi-тай газар татаж авах нь дата хэмнэнэ',
-  'Апп бүр Солонгос утасны дугаар шаардана — утас нээлгэсний дараа суулгаарай',
+  'Зарим апп (Coupang, Baemin г.м.) Солонгос дугаараар баталгаажуулалт шаардана — утас нээлгэсний дараа суулгаарай (KakaoTalk гадаад дугаараар ч болно)',
   'Хэлний тохиргоо: Settings (설정) → Language → English/한국어 сонгох',
   'Сонирхолгүй мэдэгдэл (알림) ихтэй бол: Settings → Apps → тухайн апп → Notifications → хаах',
   'Төлбөрийн карт бүртгэх: Солонгосын дебит/кредит карт хэрэгтэй',

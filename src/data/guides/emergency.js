@@ -1,16 +1,25 @@
 export const emergencyMeta = {
   title: 'Яаралтай утасны дугаарууд',
   subtitle: 'Солонгост амьдрахад хэрэг болох бүх утасны дугаар — нэг хуудсанд',
-  lastUpdated: '2026.10.23',
+  lastUpdated: '2026.10.27',
 };
 
 export const emergencySections = [
-  { id: 'em-urgent', title: 'Яаралтай тусламж (24 цаг)' },
-  { id: 'em-foreigner', title: 'Гадаадын иргэдэд зориулсан' },
-  { id: 'em-labor', title: 'Хөдөлмөр / Хууль' },
-  { id: 'em-translate', title: 'Орчуулга / Зөвлөгөө' },
-  { id: 'em-life', title: 'Өдөр тутмын амьдрал' },
-  { id: 'em-embassy', title: 'Элчин сайдын яам' },
+  { id: 'em-urgent', title: 'Яаралтай тусламж (24 цаг)', label: 'Яаралтай (24 цаг)' },
+  { id: 'em-foreigner', title: 'Гадаадын иргэдэд зориулсан', label: 'Гадаадын иргэдэд' },
+  { id: 'em-labor', title: 'Хөдөлмөр / Хууль', label: 'Хөдөлмөр / Хууль' },
+  { id: 'em-translate', title: 'Орчуулга / Зөвлөгөө', label: 'Орчуулга' },
+  { id: 'em-life', title: 'Өдөр тутмын амьдрал', label: 'Өдөр тутам' },
+  { id: 'em-embassy', title: 'Элчин сайдын яам', label: 'Элчин сайдын яам' },
+];
+
+// 2026-10-27 사실 확인: 119 "화재구조구급"(korea.kr), 120 다산콜 365일 24시간·외국어 평일 09-18·9번(mediahub.seoul.go.kr 2026-09-23),
+//   129 보건복지상담센터(bokjiro), 건강보험 1577-1000(nhis.or.kr), 대사관 95 Dokseodang-ro(seoul.embassy.mn), 똑똑112(bokjiro 2025-05-29)
+// [앞, 굵게, 뒤]
+export const urgentNote = [
+  '119 (эмнэлэг/гал) эсвэл 112 (цагдаа) руу ',
+  'солонгос хэл мэдэхгүй байсан ч',
+  ' заавал залга. Ярьж чадахгүй бол 112-т залгаад дурын товч дарна — "보이는 112" мессежийн холбоосоор байршлаа илгээж болно.',
 ];
 
 // 24시간 긴급
@@ -19,7 +28,7 @@ export const urgentContacts = [
     number: '119',
     label: 'Яаралтай тусламж / Гал',
     labelKo: '응급 / 소방',
-    description: 'Түлэнхийн дуудлага, яаралтай эмнэлгийн тусламж, гал унтраах',
+    description: 'Гал түймэр, аврах ажиллагаа, түргэн тусламж',
     hours: '24 цаг, 365 өдөр',
     mongolian: false,
     icon: 'ambulance',
@@ -69,11 +78,12 @@ export const foreignerContacts = [
     important: true,
   },
   {
-    number: '02-120 → 9 → 5',
+    number: '02-120',
+    dialNote: 'Залгаад 9 (гадаад хэл) сонгоно',
     label: 'Дасан лавлах (Сөүл)',
     labelKo: '120 다산콜센터',
     description: 'Сөүл хотын захиргааны лавлах, тээвэр, татвар, иргэний гомдол',
-    hours: 'Ажлын өдөр 09:00-18:00',
+    hours: '24 цаг, 365 өдөр',
     mongolianHours: 'Монгол хэл: Ажлын өдөр 09:00-18:00',
     mongolian: true,
     icon: 'building',
@@ -140,9 +150,9 @@ export const lifeContacts = [
   },
   {
     number: '129',
-    label: 'Эрүүл мэндийн лавлах',
-    labelKo: '보건복지콜센터',
-    description: 'Эрүүл мэндийн даатгал, нийгмийн халамж, эмнэлгийн мэдээлэл',
+    label: 'Халамж, эрүүл мэндийн лавлах',
+    labelKo: '보건복지상담센터',
+    description: 'Нийгмийн халамж, эрүүл мэндийн төрийн үйлчилгээний лавлах (эрүүл мэндийн даатгалын асуулт: 1577-1000)',
     hours: 'Ажлын өдөр 09:00-18:00',
     mongolian: false,
     icon: 'heart',
@@ -168,8 +178,8 @@ export const embassyContacts = [
     hours: 'Ажлын өдөр 09:00-12:30, 13:30-18:00 · Консулын хэлтэс 09:30-12:30, 13:30-17:30',
     mongolian: true,
     icon: 'flag',
-    address: 'Сөүл хот, Ёнсан-гу, Ханнам-дон',
-    url: 'http://seoul.embassy.mn',
+    address: 'Сөүл хот, Ёнсан-гу, Доксодан-ро 95 (Ханнам-дон)',
+    url: 'https://seoul.embassy.mn',
   },
 ];
 
@@ -196,7 +206,7 @@ export const emergencyLinks = [
     description: '법률구조공단 — үнэгүй хуулийн зөвлөгөө',
   },
   {
-    href: 'http://seoul.embassy.mn',
+    href: 'https://seoul.embassy.mn',
     title: 'Монголын Элчин сайдын яам',
     description: 'БНСУ дахь Монголын ЭСЯ',
   },

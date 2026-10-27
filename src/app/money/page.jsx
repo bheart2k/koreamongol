@@ -147,7 +147,7 @@ export default function MoneyPage() {
                   {financeBasics.bankAccount.onlineBanks.map((bank) => (
                     <div key={bank.name} className="flex items-start gap-2 text-sm">
                       <span className={bank.available ? 'text-status-success' : 'text-status-error'}>
-                        {bank.available ? '&#10003;' : '&#10007;'}
+                        {bank.available ? '✓' : '✗'}
                       </span>
                       <div>
                         <span className="font-medium text-foreground">{bank.name}</span>

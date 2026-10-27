@@ -1,22 +1,62 @@
-import { GuideBreadcrumb } from '@/components/guide/GuideBreadcrumb';
-import { GuideSection } from '@/components/guide/GuideSection';
-import Image from 'next/image';
-import styles from './visa.module.css';
-import { FileText, Clock, AlertTriangle, ArrowRightLeft, TrendingUp, ArrowDown } from 'lucide-react';
-import {
-  GuideTOC, GuideNav, CheckList,
-  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
-} from '@/components/guide';
+// 비자 가이드 — /topik·/jobs 와 같은 틀(guide-c). 기록: docs/guides-redesign.md
+// 제목(H1)·섹션 id·구조화 데이터·조회수 기록은 개편 전과 같다. E-9·D-2·D-4 는 탭 대신 각자 섹션으로 펼친다(#visa-e9 등 주소 그대로).
+import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker, RelatedTips } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
-  visaMeta, visaSections, mongoliaPrep,
+  GuideCPage, GuideCHero, GuideCNav, GuideCSection, GuideCTail,
+  Cols, Cols3, SubTitle, Lead, CFine, CTable, CSteps, CList, CNote, CLinks, ChoiceCards,
+} from '@/components/guide-c/GuideC';
+import { CStats } from '@/components/guide-c/GuideCParts';
+import GuideCHeroArt from '@/components/guide-c/GuideCHeroArt';
+import GuideCCheckList from '@/components/guide-c/GuideCCheckList';
+import { HOME_ASSET_BASE, copy as homeCopy } from '@/data/home';
+import {
+  visaMeta, visaSections, visaTypes, mongoliaPrep,
   rejectionReasons, illegalStayWarnings, usefulLinks,
   visaCostInfo, workplaceChange, longTermPaths,
 } from '@/data/guides/visa';
-import { visaTypes } from '@/data/guides/visa';
-import VisaTabs from './VisaTabs';
 
 const BASE_URL = 'https://koreamongol.com';
+
+const [hikoreaLink, , visaPortalLink] = usefulLinks;
+const visaKeys = Object.keys(visaTypes); // e9, d2, d4
+const costOf = (key) => visaCostInfo.visas[visaKeys.indexOf(key)];
+
+// 첫 화면 답 카드 — 숫자·문구는 모두 기존 데이터에서 가져온다(새 사실 없음)
+const choiceFor = { e9: 'Ажил', d2: 'Их сургууль', d4: 'Хэл сургалт' };
+const choices = visaKeys.map((key) => {
+  const cost = costOf(key);
+  return {
+    for: choiceFor[key],
+    title: visaTypes[key].label.split(' ')[0],
+    facts: [visaTypes[key].description, `Оршин суух: ${cost.stay}`, `Шийдвэрлэх хугацаа: ${cost.processing}`],
+    section: `visa-${key}`,
+    moreLabel: 'Дэлгэрэнгүй',
+  };
+});
+
+const no = (id) => String(visaSections.findIndex((x) => x.id === id) + 1).padStart(2, '0');
+
+const costRows = visaCostInfo.visas.map((v) => [
+  v.type,
+  v.stayExtra ? `${v.stay}. ${v.stayExtra}` : v.stay,
+  v.processing,
+  v.cost,
+  v.finance || '—',
+]);
+
+function Place({ place }) {
+  return (
+    <CNote title={place.name}>
+      <p>{place.note}</p>
+      <p><strong>Хаяг:</strong> {place.address}</p>
+      <p><strong>Утас:</strong> <a href={`tel:${place.phone}`}>{place.phone}</a></p>
+      {place.phone2 && <p><strong>{place.phone2Label}:</strong> <a href={`tel:${place.phone2}`}>{place.phone2}</a></p>}
+      {place.email && <p><strong>И-мэйл:</strong> {place.email}</p>}
+      <p><strong>Вэб:</strong> <a href={place.website} target="_blank" rel="noopener noreferrer">{place.website}</a></p>
+    </CNote>
+  );
+}
 
 export default function VisaPage() {
   return (
@@ -30,236 +70,122 @@ export default function VisaPage() {
         description="Солонгост ажиллах E-9 виз авах үе шат"
         steps={visaTypes.e9.steps}
       />
-    <main className={`${styles.page} min-h-content`}>
       <GuideViewTracker guideId="visa" />
-      <section className={styles.hero}>
-        <div className={styles.heroInner}>
-          <GuideBreadcrumb label={'Виз'} />
-          <div className={styles.welcome}>
-            <div>
-              <h1>{visaMeta.title}</h1>
-              <p className={styles.subtitle}>{visaMeta.subtitle}</p>
-              <p className={styles.updated}>Сүүлд шинэчилсэн: {visaMeta.lastUpdated}</p>
-              <a href="#visa-types" className={styles.startLink}>Визний төрлүүд<ArrowDown aria-hidden="true" /></a>
-            </div>
-            <Image src="/images/guides/visa-mazaalai-l.png" alt="Бичиг баримтаа шалгаж буй Мазаалай"
-              width={1024} height={1536} sizes="(min-width: 768px) 240px, 140px" priority className={styles.mascot} />
-          </div>
-        </div>
-      </section>
-      <div className={styles.layout}>
-        <aside className={styles.sidebar}>
-          <GuideTOC sections={visaSections} className={styles.toc} />
-        </aside>
-        <div className={styles.content}>
-        {/* Visa Types */}
-        <GuideSection id="visa-types">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Визний төрлүүд</h2>
-          <VisaTabs />
-        </GuideSection>
+      <GuideCPage>
+        <GuideCHero
+          breadcrumbLabel="Виз"
+          kicker="Гарын авлага"
+          title={visaMeta.title}
+          subtitle={visaMeta.subtitle}
+          updated={visaMeta.lastUpdated}
+          updatedLabel="Сүүлд шинэчилсэн"
+          art={(
+            <GuideCHeroArt image={`${HOME_ASSET_BASE}/c1-steppe.webp`} alt="" loop="loop-c1" loopNight="loop-c1-night" base={HOME_ASSET_BASE}
+              labels={{ pause: homeCopy.pause, play: homeCopy.play }} />
+          )}
+          links={[hikoreaLink, visaPortalLink]}
+          linksLabel="Албан ёсны сайт:"
+        />
+        <GuideCNav sections={visaSections} label="Агуулга" />
 
-        {/* Cost & Duration */}
-        <GuideSection id="visa-cost">
-          <h2 className="text-title text-navy dark:text-sky mb-6">
-            <Clock className="w-6 h-6 inline mr-2" />
-            {visaCostInfo.title}
-          </h2>
+        <GuideCSection id="visa-types" no={no('visa-types')} title="Визний төрлүүд">
+          <ChoiceCards cards={choices} />
+        </GuideCSection>
 
-          <div className={styles.costGrid}>
-            {visaCostInfo.visas.map((v) => (
-              <div key={v.type} className="p-4 rounded-lg border border-border bg-card">
-                <h3 className="text-base font-semibold font-heading text-foreground mb-3">{v.type}</h3>
-                <div className="grid sm:grid-cols-2 gap-2 text-sm">
-                  <div>
-                    <span className="text-muted-foreground">Оршин суух:</span>
-                    <p className="font-medium text-foreground">{v.stay}</p>
-                    {v.stayExtra && (
-                      <p className="text-xs text-gold-dark mt-1">{v.stayExtra}</p>
-                    )}
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Шийдвэрлэх хугацаа:</span>
-                    <p className="font-medium text-foreground">{v.processing}</p>
-                  </div>
-                  <div>
-                    <span className="text-muted-foreground">Хураамж:</span>
-                    <p className="font-medium text-foreground">{v.cost}</p>
-                  </div>
-                  {v.finance && (
-                    <div>
-                      <span className="text-muted-foreground">Санхүүгийн баталгаа:</span>
-                      <p className="font-medium text-foreground">{v.finance}</p>
-                    </div>
-                  )}
+        {visaKeys.map((key) => {
+          const visa = visaTypes[key];
+          const id = `visa-${key}`;
+          return (
+            <GuideCSection key={key} id={id} no={no(id)} title={visa.label}>
+              <Lead>{visa.description}</Lead>
+              <Cols>
+                <div>
+                  <SubTitle>Шаардлагатай бичиг баримт</SubTitle>
+                  <GuideCCheckList items={visa.documents} storageKey={`visa-${key}-docs`} />
                 </div>
-              </div>
-            ))}
-          </div>
+                <div>
+                  <SubTitle>Визний үе шат</SubTitle>
+                  <CSteps steps={visa.steps} />
+                </div>
+              </Cols>
+              <CNote tone="warn" title="Анхааруулга"><CList items={visa.warnings} /></CNote>
+            </GuideCSection>
+          );
+        })}
 
-          {/* Extension */}
-          <div className="p-5 rounded-lg border-2 border-gold/30 bg-gold/5">
-            <h3 className="text-lg font-semibold font-heading text-foreground mb-3">
-              {visaCostInfo.extension.title}
-            </h3>
-            <div className="grid sm:grid-cols-2 gap-3 text-sm">
-              <div>
-                <span className="text-muted-foreground">Хураамж:</span>
-                <p className="font-bold text-foreground text-lg">{visaCostInfo.extension.cost}</p>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Хаана:</span>
-                <p className="font-medium text-foreground">{visaCostInfo.extension.where}</p>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Хэзээ:</span>
-                <p className="font-medium text-foreground">{visaCostInfo.extension.when}</p>
-              </div>
-              <div>
-                <span className="text-muted-foreground">Онлайн:</span>
-                <p className="font-medium text-foreground">{visaCostInfo.extension.online}</p>
-              </div>
+        <GuideCSection id="visa-cost" no={no('visa-cost')} title={visaCostInfo.title}>
+          <CTable headers={['Виз', 'Оршин суух', 'Шийдвэрлэх хугацаа', 'Хураамж', 'Санхүүгийн баталгаа']} rows={costRows} />
+          <CNote title={visaCostInfo.extension.title}>
+            <p><strong>Хураамж:</strong> {visaCostInfo.extension.cost}</p>
+            <p><strong>Хаана:</strong> {visaCostInfo.extension.where}</p>
+            <p><strong>Хэзээ:</strong> {visaCostInfo.extension.when}</p>
+            <p><strong>Онлайн:</strong> {visaCostInfo.extension.online}</p>
+          </CNote>
+        </GuideCSection>
+
+        <GuideCSection id="visa-workplace" no={no('visa-workplace')} title={workplaceChange.title}>
+          <Cols>
+            <div>
+              <CStats small items={workplaceChange.limits.map((l) => ({ label: l.period, value: l.count }))} />
+              <CNote tone="warn" title={workplaceChange.deadline}><p><strong>{workplaceChange.deadlineWarning}</strong></p></CNote>
+              <CNote title="Тоонд оруулахгүй тохиолдол"><p>{workplaceChange.exceptions}</p></CNote>
             </div>
-          </div>
-        </GuideSection>
+            <div>
+              <SubTitle>Хэрхэн хүсэлт гаргах</SubTitle>
+              <CList items={workplaceChange.howTo} />
+              <SubTitle>Шаардлагатай бичиг баримт</SubTitle>
+              <CList items={workplaceChange.requiredDocs} />
+            </div>
+          </Cols>
+        </GuideCSection>
 
-        {/* Workplace Change */}
-        <GuideSection id="visa-workplace">
-          <h2 className="text-title text-navy dark:text-sky mb-6">
-            <ArrowRightLeft className="w-6 h-6 inline mr-2" />
-            {workplaceChange.title}
-          </h2>
-
-          <div className="grid sm:grid-cols-2 gap-4 mb-4">
-            {workplaceChange.limits.map((limit) => (
-              <div key={limit.period} className="p-4 rounded-lg border border-border bg-card text-center">
-                <p className="text-sm text-muted-foreground">{limit.period}</p>
-                <p className="text-lg font-bold text-navy dark:text-sky">{limit.count}</p>
-              </div>
-            ))}
-          </div>
-
-          <WarningBox className={styles.warning} title={workplaceChange.deadline}>
-            <p className="font-semibold">{workplaceChange.deadlineWarning}</p>
-          </WarningBox>
-
-          <TipBox className={styles.tip} title="Тоонд оруулахгүй тохиолдол">
-            <p>{workplaceChange.exceptions}</p>
-          </TipBox>
-
-          <div className="mt-4 p-4 rounded-lg border border-border bg-card">
-            <h3 className="text-sm font-semibold text-foreground mb-2">Хэрхэн хүсэлт гаргах:</h3>
-            <ul className="space-y-1 mb-3">
-              {workplaceChange.howTo.map((item, i) => (
-                <li key={i} className="text-sm text-muted-foreground">&#8226; {item}</li>
-              ))}
-            </ul>
-            <h3 className="text-sm font-semibold text-foreground mb-2">Шаардлагатай бичиг баримт:</h3>
-            <ul className="space-y-1">
-              {workplaceChange.requiredDocs.map((doc, i) => (
-                <li key={i} className="text-sm text-muted-foreground">&#8226; {doc}</li>
-              ))}
-            </ul>
-          </div>
-        </GuideSection>
-
-        {/* Long-term Stay Paths */}
-        <GuideSection id="visa-longterm">
-          <h2 className="text-title text-navy dark:text-sky mb-6">
-            <TrendingUp className="w-6 h-6 inline mr-2" />
-            {longTermPaths.title}
-          </h2>
-          <p className="text-muted-foreground mb-6">{longTermPaths.intro}</p>
-
-          <div className="space-y-4 mb-6">
+        <GuideCSection id="visa-longterm" no={no('visa-longterm')} title={longTermPaths.title}>
+          <Lead>{longTermPaths.intro}</Lead>
+          <Cols3>
             {longTermPaths.paths.map((path) => (
-              <div key={path.name} className="p-5 rounded-lg border border-border bg-card">
-                <h3 className="text-lg font-semibold font-heading text-foreground mb-2">{path.name}</h3>
-                <p className="text-sm text-muted-foreground mb-3">{path.summary}</p>
-                <h4 className="text-sm font-semibold text-foreground mb-2">Болзол:</h4>
-                <ul className="space-y-1 mb-3">
-                  {path.requirements.map((r, i) => (
-                    <li key={i} className="text-sm text-muted-foreground">&#8226; {r}</li>
-                  ))}
-                </ul>
-                {path.note && <p className="text-xs text-gold-dark">{path.note}</p>}
+              <div key={path.name}>
+                <SubTitle>{path.name}</SubTitle>
+                <Lead>{path.summary}</Lead>
+                <CFine><strong>Болзол</strong></CFine>
+                <CList items={path.requirements} />
+                {path.note && <CFine>{path.note}</CFine>}
               </div>
             ))}
-          </div>
+          </Cols3>
+          <Cols>
+            <CNote tone="warn" title="Жил бүр өөрчлөгдөнө"><p>{longTermPaths.warning}</p></CNote>
+            <CNote title="Одооноос бэлдэх зүйлс"><CList items={longTermPaths.checklist} /></CNote>
+          </Cols>
+        </GuideCSection>
 
-          <WarningBox className={styles.warning} title="Жил бүр өөрчлөгдөнө">
-            <p>{longTermPaths.warning}</p>
-          </WarningBox>
+        <GuideCSection id="visa-mongolia-prep" no={no('visa-mongolia-prep')} title="Монголоос бэлтгэх зүйлс">
+          <GuideCCheckList items={mongoliaPrep.checklist} storageKey="visa-mongolia-prep" />
+          <Cols>
+            <Place place={mongoliaPrep.visaCenter} />
+            <Place place={mongoliaPrep.embassy} />
+          </Cols>
+        </GuideCSection>
 
-          <TipBox className={styles.tip} title="Одооноос бэлдэх зүйлс">
-            <ul className="space-y-1">
-              {longTermPaths.checklist.map((item, i) => (
-                <li key={i}>&#8226; {item}</li>
-              ))}
-            </ul>
-          </TipBox>
-        </GuideSection>
+        <GuideCSection id="visa-rejection" no={no('visa-rejection')} title="Татгалзах шалтгаан">
+          <CNote tone="warn" title="Виз татгалзах гол шалтгаанууд"><CList items={rejectionReasons} /></CNote>
+        </GuideCSection>
 
-        {/* Mongolia Preparation */}
-        <GuideSection id="visa-mongolia-prep">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Монголоос бэлтгэх зүйлс</h2>
+        <GuideCSection id="visa-illegal" no={no('visa-illegal')} title="Хууль бус оршин суух">
+          <CNote tone="warn" title="Хууль бус оршин суухын үр дагавар"><CList items={illegalStayWarnings} /></CNote>
+        </GuideCSection>
 
-          <TipBox className={styles.tip} title="Монгол Улсын ЭСЯ (Сөүл)">
-            <p><strong>Хаяг:</strong> {mongoliaPrep.embassy.address}</p>
-            <p><strong>Утас:</strong> <a href={`tel:${mongoliaPrep.embassy.phone}`} className="underline">{mongoliaPrep.embassy.phone}</a></p>
-            <p><strong>И-мэйл:</strong> {mongoliaPrep.embassy.email}</p>
-            {mongoliaPrep.embassy.website && (
-              <p><strong>Вэб:</strong> <a href={mongoliaPrep.embassy.website} target="_blank" rel="noopener noreferrer" className="underline">{mongoliaPrep.embassy.website}</a></p>
-            )}
-          </TipBox>
+        <GuideCSection id="visa-links" no={no('visa-links')} title="Хэрэгтэй линкүүд">
+          <CLinks links={usefulLinks} />
+        </GuideCSection>
 
-          <div className="mt-6">
-            <CheckList items={mongoliaPrep.checklist} storageKey="visa-mongolia-prep" />
-          </div>
-        </GuideSection>
-
-        {/* Rejection Reasons */}
-        <GuideSection id="visa-rejection">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Татгалзах шалтгаан</h2>
-          <WarningBox className={styles.warning} title="Виз татгалзах гол шалтгаанууд">
-            <ul className="space-y-1">
-              {rejectionReasons.map((reason, i) => (
-                <li key={i}>&#8226; {reason}</li>
-              ))}
-            </ul>
-          </WarningBox>
-        </GuideSection>
-
-        {/* Illegal Stay */}
-        <GuideSection id="visa-illegal">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Хууль бус оршин суух</h2>
-          <WarningBox className={styles.warning} title="Хууль бус оршин суухын үр дагавар">
-            <ul className="space-y-1">
-              {illegalStayWarnings.map((w, i) => (
-                <li key={i}>&#8226; {w}</li>
-              ))}
-            </ul>
-          </WarningBox>
-        </GuideSection>
-
-        {/* Useful Links */}
-        <GuideSection id="visa-links">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линкүүд</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {usefulLinks.map((link) => (
-              <LinkCard key={link.href} {...link} />
-            ))}
-          </div>
-        </GuideSection>
-
-        <RelatedTips slugs={['e9-reentry', 'e9-to-e74', 'visa-extension']} />
-
-        <ReportBanner pageUrl="/visa" />
-        <DonateBanner />
-        <ShareButtons />
-        <GuideNav currentGuideId="visa" />
-        </div>
-      </div>
-    </main>
+        <GuideCTail>
+          <RelatedTips slugs={['korea-visa-in-mongolia', 'e9-reentry', 'e9-to-e74', 'visa-extension']} />
+          <ReportBanner pageUrl="/visa" />
+          <DonateBanner />
+          <ShareButtons />
+          <GuideNav currentGuideId="visa" />
+        </GuideCTail>
+      </GuideCPage>
     </>
   );
 }

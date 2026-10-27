@@ -1,16 +1,16 @@
 export const koreanLifeMeta = {
   title: 'Бодит Солонгос хэл & Соёл',
   subtitle: 'Сурах бичигт байдаггүй чухал зүйлс, соёлын ялгаа, алдаа',
-  lastUpdated: '2026.02.14',
+  lastUpdated: '2026.10.27',
 };
 
 export const koreanLifeSections = [
-  { id: 'kl-daily', title: 'Өдөр тутмын хэллэг' },
-  { id: 'kl-work', title: 'Ажлын газрын хэллэг' },
-  { id: 'kl-misunderstand', title: 'Буруу ойлголт' },
-  { id: 'kl-culture', title: 'Соёлын ялгаа' },
-  { id: 'kl-mistakes', title: 'Түгээмэл алдаа TOP 5' },
-  { id: 'kl-resources', title: 'Суралцах эх сурвалж' },
+  { id: 'kl-daily', title: 'Өдөр тутмын хэллэг', label: 'Өдөр тутам' },
+  { id: 'kl-work', title: 'Ажлын газрын хэллэг', label: 'Ажлын газар' },
+  { id: 'kl-misunderstand', title: 'Буруу ойлголт', label: 'Буруу ойлголт' },
+  { id: 'kl-culture', title: 'Соёлын ялгаа', label: 'Соёлын ялгаа' },
+  { id: 'kl-mistakes', title: 'Түгээмэл алдаа TOP 5', label: 'Түгээмэл алдаа' },
+  { id: 'kl-resources', title: 'Суралцах эх сурвалж', label: 'Суралцах' },
 ];
 
 export const survivalKorean = {
@@ -25,21 +25,21 @@ export const survivalKorean = {
     { korean: '네 / 아니요', pronunciation: 'Нэ / Аниё', meaning: 'Тийм / Үгүй', situation: 'Хариулт өгөхөд' },
     { korean: '화장실 어디예요?', pronunciation: 'Хваджансиль одиеё?', meaning: 'Ариун цэврийн өрөө хаана байна?', situation: 'Ариун цэвэр хайхад' },
     { korean: '물 주세요', pronunciation: 'Муль чусеё', meaning: 'Ус өгөөч', situation: 'Рестораны, кафенд' },
-    { korean: '여기요!', pronunciation: 'Ёгиё!', meaning: 'Энд байна!', situation: 'Рестораны ажилтныг дуудахад' },
+    { korean: '여기요!', pronunciation: 'Ёгиё!', meaning: 'Уучлаарай! (зөөгч дуудах)', situation: 'Рестораны ажилтныг дуудахад' },
     { korean: '계산이요', pronunciation: 'Кесаниё', meaning: 'Тооцоо хийнэ', situation: 'Рестораны тооцоо хийхэд' },
   ],
   work: [
     { korean: '알겠습니다', pronunciation: 'Альгессымнида', meaning: 'Ойлголоо', situation: 'Даргын заавар ойлгосон үед' },
-    { korean: '수고하셨습니다', pronunciation: 'Сугохасёссымнида', meaning: 'Чин сэтгэлээсээ хүндэтгэе', situation: 'Ажлын дараа', description: 'Шууд орчуулж болохгүй Солонгосын өвөрмөц хэллэг. "Та сайн ажилласан" гэсэн утгатай. Ажил дуусахад бүгд бие биедээ хэлдэг.' },
-    { korean: '먼저 가보겠습니다', pronunciation: 'Монджо кабогессымнида', meaning: 'Би түрүүлж явъя', situation: 'Ажлаас эрт гарахад', description: 'Ажлаас бусдаас түрүүлж гарахад хэлдэг. Монголоор "баяртай" гэж хэлэхийн оронд энийг хэлэх нь зөв.' },
+    { korean: '수고하셨습니다', pronunciation: 'Сугохасёссымнида', meaning: 'Их ажиллалаа / Хичээсэнд баярлалаа', situation: 'Ажлын дараа', description: 'Шууд орчуулж болохгүй Солонгосын өвөрмөц хэллэг. "Та сайн ажилласан" гэсэн утгатай. Ажил дуусахад бүгд бие биедээ хэлдэг.' },
+    { korean: '먼저 가보겠습니다', pronunciation: 'Монджо кабогессымнида', meaning: 'Би түрүүлж явъя', situation: 'Бусдаас түрүүлж гарахад', description: 'Ажлаас бусдаас түрүүлж гарахад хэлдэг. Монголоор "баяртай" гэж хэлэхийн оронд энийг хэлэх нь зөв.' },
     { korean: '잠시만요', pronunciation: 'Чамсиманё', meaning: 'Түр хүлээгээрэй', situation: 'Хүн хүлээлгэхэд' },
     { korean: '다시 한번 말씀해 주세요', pronunciation: 'Таси ханбон мальссымхэ чусеё', meaning: 'Дахин нэг удаа хэлж өгөөч', situation: 'Ойлгохгүй байхад' },
     { korean: '못 알아듣겠어요', pronunciation: 'Мот арадыткессоё', meaning: 'Ойлгохгүй байна', situation: 'Огт ойлгохгүй байхад', description: 'Маш чухал хэллэг! Солонгос хэл ойлгохгүй байгаагаа мэдэгдэхэд хэрэглэнэ.' },
     { korean: '아파서 못 갑니다', pronunciation: 'Апхасо мот камнида', meaning: 'Өвчтэй учир очиж чадахгүй', situation: 'Өвчтэй чөлөө авахад' },
     { korean: '야근이에요', pronunciation: 'Ягыниеё', meaning: 'Илүү цагаар ажиллана', situation: 'Илүү цаг ажиллах үед' },
-    { korean: '월급날이 언제예요?', pronunciation: 'Вольгымнари онджеёё?', meaning: 'Цалин өгөх өдөр хэзээ вэ?', situation: 'Цалингийн талаар асуухад' },
+    { korean: '월급날이 언제예요?', pronunciation: 'Вольгымнари онджеё?', meaning: 'Цалин өгөх өдөр хэзээ вэ?', situation: 'Цалингийн талаар асуухад' },
     { korean: '위험해요!', pronunciation: 'Вихомхэё!', meaning: 'Аюултай!', situation: 'Аюултай нөхцөл байхад' },
-    { korean: '쉬는 날이 언제예요?', pronunciation: 'Свинын нари онджеёё?', meaning: 'Амралтын өдөр хэзээ вэ?', situation: 'Амралтын өдрөө асуухад' },
+    { korean: '쉬는 날이 언제예요?', pronunciation: 'Свинын нари онджеё?', meaning: 'Амралтын өдөр хэзээ вэ?', situation: 'Амралтын өдрөө асуухад' },
   ],
 };
 
@@ -95,7 +95,7 @@ export const culturalPoints = [
   {
     icon: '🍽️',
     title: 'Хоолны соёл',
-    description: 'Ахмад хүнээс түрүүлж хоол идэж эхлэхгүй. Шөлийг аягатай амнаас уудаг. Сүх бэлэг өгдөггүй.',
+    description: 'Ахмад хүнээс түрүүлж хоол идэж эхлэхгүй. Аягаа өргөж уудаггүй, шөлийг халбагаар иддэг.',
   },
 ];
 
@@ -136,7 +136,7 @@ export const learningResources = [
   {
     href: 'https://www.topik.go.kr',
     title: 'TOPIK шалгалт',
-    description: 'Солонгос хэлний мэргэжлийн шалгалт',
+    description: 'Солонгос хэлний түвшин тогтоох шалгалт',
   },
   {
     href: 'https://eps.hrdkorea.or.kr',

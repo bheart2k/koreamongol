@@ -1,21 +1,23 @@
-import { GuideSection } from '@/components/guide/GuideSection';
-import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
-import styles from '@/components/guide/IllustratedGuide.module.css';
-import { BookOpen } from 'lucide-react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import {
-  GuideNav,
-  CultureCard, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, GuideViewTracker,
-} from '@/components/guide';
+// 한국어·문화 가이드 — /topik·/jobs 와 같은 틀(guide-c). 기록: docs/guides-redesign.md
+// 제목(H1·H2)·섹션 id·조회수 기록은 개편 전과 같다. 일상/직장 표현은 탭 대신 각자 섹션(#kl-daily, #kl-work), 접힌 목록은 펼친다.
+import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
 import {
-  koreanLifeMeta, koreanLifeSections,
+  GuideCPage, GuideCHero, GuideCNav, GuideCSection, GuideCTail, CSteps, CNote, CLinks,
+} from '@/components/guide-c/GuideC';
+import { CMethods, CPhrases } from '@/components/guide-c/GuideCParts';
+import GuideCHeroArt from '@/components/guide-c/GuideCHeroArt';
+import { HOME_ASSET_BASE, copy as homeCopy } from '@/data/home';
+import {
+  koreanLifeMeta, koreanLifeSections, survivalKorean,
   koreanMisunderstandings, culturalPoints,
   commonMistakes, learningResources,
 } from '@/data/guides/korean-life';
-import KoreanLifeTabs from './KoreanLifeTabs';
 
 const BASE_URL = 'https://koreamongol.com';
+
+const no = (id) => String(koreanLifeSections.findIndex((x) => x.id === id) + 1).padStart(2, '0');
+const titleOf = (id) => koreanLifeSections.find((x) => x.id === id).title;
 
 export default function KoreanLifePage() {
   return (
@@ -24,85 +26,56 @@ export default function KoreanLifePage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: 'Солонгос хэл & Соёл', url: `${BASE_URL}/korean-life` },
       ]} />
-    <main className={styles.page}>
       <GuideViewTracker guideId="korean-life" />
-      <IllustratedGuideHeader
-        meta={koreanLifeMeta}
-        sections={koreanLifeSections}
-        quickIds={["kl-daily","kl-culture","kl-resources"]}
-        image="/images/guides/korean-life-mazaalai-l.png"
-        icon={BookOpen}
-        breadcrumbLabel={koreanLifeMeta.title}
-      />
+      <GuideCPage>
+        <GuideCHero
+          breadcrumbLabel={koreanLifeMeta.title}
+          kicker="Гарын авлага"
+          title={koreanLifeMeta.title}
+          subtitle={koreanLifeMeta.subtitle}
+          updated={koreanLifeMeta.lastUpdated}
+          updatedLabel="Сүүлд шинэчилсэн"
+          art={(
+            <GuideCHeroArt image={`${HOME_ASSET_BASE}/c6-culture.webp`} alt="" loop="loop-c6" loopNight="loop-c6-night" base={HOME_ASSET_BASE}
+              labels={{ pause: homeCopy.pause, play: homeCopy.play }} />
+          )}
+        />
+        <GuideCNav sections={koreanLifeSections} label="Агуулга" />
 
-      <IllustratedGuideBody sections={koreanLifeSections}>
-        <TipBox title="Дуудлагын тухай" className={styles.tip}>
-          <p>Энд бичигдсэн дуудлага нь практик зориулалттай (монгол хүн хэлэхэд ойлгомжтой байхаар). Эрдэм шинжилгээний транскрипци биш.</p>
-        </TipBox>
+        <GuideCSection id="kl-daily" no={no('kl-daily')} title="Өдөр тутмын хэллэг">
+          <CNote title="Дуудлагын тухай">
+            <p>Энд бичигдсэн дуудлага нь практик зориулалттай (монгол хүн хэлэхэд ойлгомжтой байхаар). Эрдэм шинжилгээний транскрипци биш.</p>
+          </CNote>
+          <CPhrases items={survivalKorean.daily} />
+        </GuideCSection>
 
-        {/* Daily Korean */}
-        <GuideSection id="kl-daily">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Өдөр тутмын хэллэг</h2>
-          <KoreanLifeTabs />
-        </GuideSection>
+        <GuideCSection id="kl-work" no={no('kl-work')} title={titleOf('kl-work')}>
+          <CPhrases items={survivalKorean.work} />
+        </GuideCSection>
 
-        {/* Misunderstandings */}
-        <GuideSection id="kl-misunderstand">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Буруу ойлголт</h2>
-          <Accordion type="single" collapsible className="w-full">
-            {koreanMisunderstandings.map((item, i) => (
-              <AccordionItem key={i} value={`misunderstand-${i}`}>
-                <AccordionTrigger className="text-left">
-                  {item.title}
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {item.description}
-                  </p>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </GuideSection>
+        <GuideCSection id="kl-misunderstand" no={no('kl-misunderstand')} title="Буруу ойлголт">
+          <CMethods items={koreanMisunderstandings.map((m) => ({ title: m.title, text: m.description }))} />
+        </GuideCSection>
 
-        {/* Cultural Points */}
-        <GuideSection id="kl-culture">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Соёлын ялгаа</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {culturalPoints.map((point) => (
-              <CultureCard key={point.title} {...point} />
-            ))}
-          </div>
-        </GuideSection>
+        <GuideCSection id="kl-culture" no={no('kl-culture')} title="Соёлын ялгаа">
+          <CMethods items={culturalPoints.map((c) => ({ title: c.title, text: c.description }))} />
+        </GuideCSection>
 
-        {/* Common Mistakes */}
-        <GuideSection id="kl-mistakes">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Түгээмэл алдаа TOP 5</h2>
-          <div className="space-y-3">
-            {commonMistakes.map((mistake, i) => (
-              <TipBox key={i} title={`${i + 1}. ${mistake.title}`} className={styles.tip}>
-                <p>{mistake.description}</p>
-              </TipBox>
-            ))}
-          </div>
-        </GuideSection>
+        <GuideCSection id="kl-mistakes" no={no('kl-mistakes')} title="Түгээмэл алдаа TOP 5">
+          <CSteps steps={commonMistakes.map((m) => ({ title: m.title, description: m.description }))} />
+        </GuideCSection>
 
-        {/* Learning Resources */}
-        <GuideSection id="kl-resources">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Суралцах эх сурвалж</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {learningResources.map((link) => (
-              <LinkCard key={link.href} {...link} />
-            ))}
-          </div>
-        </GuideSection>
+        <GuideCSection id="kl-resources" no={no('kl-resources')} title="Суралцах эх сурвалж">
+          <CLinks links={learningResources} />
+        </GuideCSection>
 
-        <ReportBanner pageUrl="/korean-life" />
-        <DonateBanner />
-        <ShareButtons />
-        <GuideNav currentGuideId="korean-life" />
-      </IllustratedGuideBody>
-    </main>
+        <GuideCTail>
+          <ReportBanner pageUrl="/korean-life" />
+          <DonateBanner />
+          <ShareButtons />
+          <GuideNav currentGuideId="korean-life" />
+        </GuideCTail>
+      </GuideCPage>
     </>
   );
 }

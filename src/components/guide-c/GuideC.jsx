@@ -1,6 +1,6 @@
 // 세부 가이드 페이지 새 틀 (시안 C 디자인) — 서버 컴포넌트만. 색 토큰은 홈과 같은 home.module.css .root 를 쓴다.
 // 본문은 모두 서버 HTML 에 그대로 나온다(접지 않음). 섹션 id 는 기존 페이지와 같게 써서 앵커 링크를 유지한다.
-import { ArrowDown, ArrowUpRight, ExternalLink, Lightbulb, TriangleAlert } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, ExternalLink, Lightbulb, Phone, TriangleAlert } from 'lucide-react';
 import { GuideBreadcrumb } from '@/components/guide/GuideBreadcrumb';
 import { TableScroll } from '@/components/guide/TableScroll';
 import home from '@/components/home/home.module.css';
@@ -11,7 +11,8 @@ export function GuideCPage({ children }) {
 }
 
 // 머리: 경로 · 제목 · 설명 · 수정일 · 공식 사이트 (+ 데스크톱 오른쪽 그림)
-export function GuideCHero({ breadcrumbLabel, kicker, title, subtitle, updated, updatedLabel, art, links, linksLabel }) {
+// calls: 첫 화면에서 바로 거는 전화 버튼(선택, 예: 119·112)
+export function GuideCHero({ breadcrumbLabel, kicker, title, subtitle, updated, updatedLabel, art, links, linksLabel, calls }) {
   return (
     <header className={s.hero}>
       <div className={s.heroInner}>
@@ -26,6 +27,15 @@ export function GuideCHero({ breadcrumbLabel, kicker, title, subtitle, updated, 
               {links.map((l) => (
                 <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer" className={s.officialLink}>
                   {l.title}<ExternalLink aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+          )}
+          {calls?.length > 0 && (
+            <div className={s.callRow}>
+              {calls.map((c) => (
+                <a key={c.number} href={`tel:${c.number.replace(/[^0-9]/g, '')}`} className={s.callChip}>
+                  <Phone aria-hidden="true" /><strong>{c.number}</strong><span>{c.label}</span>
                 </a>
               ))}
             </div>
@@ -68,9 +78,19 @@ export function GuideCSection({ id, no, title, children }) {
   );
 }
 
+// 짧은 섹션 여러 개를 데스크톱에서 한 줄에 나란히 (예: 도착 1~2일 / 3~7일 / 2~4주). 태블릿·폰은 차례로 쌓인다.
+export function GuideCSectionRow({ children }) {
+  return <div className={s.sectionRow}>{children}</div>;
+}
+
 // 데스크톱 2단 (폰은 1단)
 export function Cols({ children }) {
   return <div className={s.cols}>{children}</div>;
+}
+
+// 데스크톱 3단 (태블릿·폰은 1단)
+export function Cols3({ children }) {
+  return <div className={s.cols3}>{children}</div>;
 }
 
 export function SubTitle({ children }) {
@@ -79,6 +99,11 @@ export function SubTitle({ children }) {
 
 export function Lead({ children }) {
   return <p className={s.lead}>{children}</p>;
+}
+
+// 표·숫자 아래 작은 설명(기준·출처)
+export function CFine({ children }) {
+  return <p className={s.fine}>{children}</p>;
 }
 
 export function CTable({ headers = [], rows = [] }) {
@@ -185,7 +210,7 @@ export function GuideCTail({ children }) {
 // 첫 화면 답: 큰 선택 카드 (예: EPS-TOPIK / TOPIK)
 export function ChoiceCards({ cards }) {
   return (
-    <div className={s.choices}>
+    <div className={s.choices} data-count={cards.length}>
       {cards.map((c) => (
         <article key={c.title} className={s.choice}>
           <p className={s.choiceFor}>{c.for}</p>

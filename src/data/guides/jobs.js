@@ -5,14 +5,14 @@ export const jobsMeta = {
 };
 
 export const jobsSections = [
-  { id: 'jobs-visa-conditions', title: 'Визээр ажлын нөхцөл' },
-  { id: 'jobs-parttime', title: 'Оюутны цагийн ажил (알바) — зөвшөөрөл' },
-  { id: 'jobs-salary', title: 'Цалин / Хамгийн бага цалин' },
-  { id: 'jobs-contract', title: 'Хөдөлмөрийн гэрээ шалгах' },
-  { id: 'jobs-how-to-find', title: 'Ажил хайх арга' },
-  { id: 'jobs-daily', title: 'Өдрийн ажил (일용직) — өөрийгөө хамгаалах' },
-  { id: 'jobs-rights', title: 'Хөдөлмөрийн эрхийн хамгаалалт' },
-  { id: 'jobs-links', title: 'Хэрэгтэй утас / Линк' },
+  { id: 'jobs-visa-conditions', title: 'Визээр ажлын нөхцөл', label: 'Визний нөхцөл' },
+  { id: 'jobs-parttime', title: 'Оюутны цагийн ажил (알바) — зөвшөөрөл', label: 'Оюутны цагийн ажил' },
+  { id: 'jobs-salary', title: 'Цалин / Хамгийн бага цалин', label: 'Цалин' },
+  { id: 'jobs-contract', title: 'Хөдөлмөрийн гэрээ шалгах', label: 'Гэрээ' },
+  { id: 'jobs-how-to-find', title: 'Ажил хайх арга', label: 'Ажил хайх' },
+  { id: 'jobs-daily', title: 'Өдрийн ажил (일용직) — өөрийгөө хамгаалах', label: 'Өдрийн ажил' },
+  { id: 'jobs-rights', title: 'Хөдөлмөрийн эрхийн хамгаалалт', label: 'Эрхийн хамгаалалт' },
+  { id: 'jobs-links', title: 'Хэрэгтэй утас / Линк', label: 'Утас / Линк' },
 ];
 
 // ── Section 1: 비자별 근무 조건 ──
@@ -56,6 +56,7 @@ export const visaWorkConditions = {
 
 // ── Section: 유학생 시간제취업허가 ──
 export const parttimePermit = {
+  officialLink: { href: 'https://www.hikorea.go.kr', title: 'hikorea.go.kr' },
   intro: 'Оюутан (D-2, D-4) виз дээр цагийн ажил хийхийн өмнө заавал цагийн ажлын зөвшөөрөл (시간제취업허가) авах ёстой. Зөвшөөрөлгүй ажиллаж илэрвэл торгууль, албадан гаргалт хүртэл арга хэмжээ авагдана.',
   hoursTable: {
     headers: ['Ангилал', 'Хичээлтэй үед', 'Амралтын өдөр / амралт'],

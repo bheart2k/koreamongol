@@ -1,17 +1,13 @@
-import { GuideSection } from '@/components/guide/GuideSection';
-import appStyles from './apps.module.css';
-import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
-import styles from '@/components/guide/IllustratedGuide.module.css';
-import Link from 'next/link';
-import {
-  Smartphone, ShoppingCart, Bus, Languages, Wrench, Globe,
-  Lightbulb, ExternalLink, ArrowRight, AlertTriangle, Download,
-} from 'lucide-react';
-import {
-  GuideNav, TipBox, WarningBox,
-  LinkCard, ReportBanner, DonateBanner, ShareButtons, GuideViewTracker,
-} from '@/components/guide';
+// 앱·도구 가이드 — /topik·/jobs 와 같은 틀(guide-c). 기록: docs/guides-redesign.md
+// 제목(H1·H2)·섹션 id·조회수 기록은 개편 전과 같다. 앱 카드는 카드 전체가 Play Store(없으면 웹사이트) 링크.
+import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker } from '@/components/guide';
 import { BreadcrumbJsonLd } from '@/components/seo/JsonLd';
+import {
+  GuideCPage, GuideCHero, GuideCNav, GuideCSection, GuideCTail, Cols, CList, CNote, CLinks,
+} from '@/components/guide-c/GuideC';
+import { CMethods } from '@/components/guide-c/GuideCParts';
+import GuideCHeroArt from '@/components/guide-c/GuideCHeroArt';
+import { HOME_ASSET_BASE, copy as homeCopy } from '@/data/home';
 import {
   appsMeta, appsSections, essentialApps, shoppingApps,
   transportApps, translateApps, toolLinks, usefulWebsites,
@@ -20,51 +16,12 @@ import {
 
 const BASE_URL = 'https://koreamongol.com';
 
-function AppCard({ app }) {
-  return (
-    <div className={appStyles.appCard}>
-      <div className={appStyles.appHeading}>
-        <h3 className="text-lg font-semibold font-heading text-foreground">
-          {app.name}
-        </h3>
-        <span className="text-[11px] px-2 py-0.5 rounded-full bg-sky dark:bg-navy-light text-navy dark:text-sky font-medium">
-          {app.category}
-        </span>
-      </div>
-      <p className="text-sm text-muted-foreground mb-3">{app.description}</p>
-      {app.tip && (
-        <p className={appStyles.appTip}>
-          <Lightbulb className="w-3 h-3 inline mr-1" />
-          {app.tip}
-        </p>
-      )}
-      <div className={appStyles.appActions}>
-        {app.playStore && (
-          <a
-            href={app.playStore}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-navy dark:text-sky hover:text-gold transition-colors"
-          >
-            <Download className="w-3 h-3" />
-            Play Store
-          </a>
-        )}
-        {app.website && (
-          <a
-            href={app.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-gold transition-colors"
-          >
-            <ExternalLink className="w-3 h-3" />
-            Вэбсайт
-          </a>
-        )}
-      </div>
-    </div>
-  );
-}
+const no = (id) => String(appsSections.findIndex((x) => x.id === id) + 1).padStart(2, '0');
+// 링크가 둘이면 작은 버튼 2개(Play Store / Вэбсайт), 하나면 같은 버튼 1개 — 어디로 가는지 글자로 보인다
+const appCards = (apps) => apps.map((a) => ({
+  title: a.name, tag: a.category, text: a.description, note: a.tip,
+  links: [a.playStore && { href: a.playStore, label: 'Play Store' }, a.website && { href: a.website, label: 'Вэбсайт' }].filter(Boolean),
+}));
 
 export default function AppsPage() {
   return (
@@ -73,160 +30,64 @@ export default function AppsPage() {
         { name: 'KoreaMongol', url: BASE_URL },
         { name: appsMeta.title, url: `${BASE_URL}/apps` },
       ]} />
-      <main className={styles.page}>
-        <GuideViewTracker guideId="apps" />
-        <IllustratedGuideHeader
-        meta={appsMeta}
-        sections={appsSections}
-        quickIds={["apps-essential","apps-translate","apps-tools"]}
-        image="/images/guides/apps-mazaalai-l.png"
-        icon={Smartphone}
-        breadcrumbLabel={appsMeta.title}
-      />
+      <GuideViewTracker guideId="apps" />
+      <GuideCPage>
+        <GuideCHero
+          breadcrumbLabel={appsMeta.title}
+          kicker="Гарын авлага"
+          title={appsMeta.title}
+          subtitle={appsMeta.subtitle}
+          updated={appsMeta.lastUpdated}
+          updatedLabel="Сүүлд шинэчилсэн"
+          art={(
+            <GuideCHeroArt image={`${HOME_ASSET_BASE}/c3-living.webp`} alt="" loop="loop-c3" loopNight="loop-c3-night-v5" base={HOME_ASSET_BASE}
+              labels={{ pause: homeCopy.pause, play: homeCopy.play }} />
+          )}
+        />
+        <GuideCNav sections={[...appsSections, { id: 'apps-related', label: 'Холбоотой' }]} label="Агуулга" />
 
-        <IllustratedGuideBody sections={appsSections}>
-          {/* Essential Apps */}
-          <GuideSection id="apps-essential">
-            <h2 className="text-title text-navy dark:text-sky mb-6">
-              <Smartphone className="w-6 h-6 inline mr-2" />
-              Заавал суулгах апп
-            </h2>
-            <div className="space-y-4">
-              {essentialApps.map((app) => (
-                <AppCard key={app.name} app={app} />
-              ))}
-            </div>
-          </GuideSection>
+        <GuideCSection id="apps-essential" no={no('apps-essential')} title="Заавал суулгах апп">
+          <CMethods items={appCards(essentialApps)} />
+        </GuideCSection>
 
-          {/* Shopping & Delivery */}
-          <GuideSection id="apps-shopping">
-            <h2 className="text-title text-navy dark:text-sky mb-6">
-              <ShoppingCart className="w-6 h-6 inline mr-2" />
-              Худалдаа & хүргэлт
-            </h2>
-            <div className="space-y-4">
-              {shoppingApps.map((app) => (
-                <AppCard key={app.name} app={app} />
-              ))}
-            </div>
-          </GuideSection>
+        <GuideCSection id="apps-shopping" no={no('apps-shopping')} title="Худалдаа & хүргэлт">
+          <CMethods items={appCards(shoppingApps)} />
+        </GuideCSection>
 
-          {/* Transport & Maps */}
-          <GuideSection id="apps-transport">
-            <h2 className="text-title text-navy dark:text-sky mb-6">
-              <Bus className="w-6 h-6 inline mr-2" />
-              Тээвэр & газрын зураг
-            </h2>
-            <div className="space-y-4">
-              {transportApps.map((app) => (
-                <AppCard key={app.name} app={app} />
-              ))}
-            </div>
-          </GuideSection>
+        <GuideCSection id="apps-transport" no={no('apps-transport')} title="Тээвэр & газрын зураг">
+          <CMethods items={appCards(transportApps)} />
+        </GuideCSection>
 
-          {/* Translation & Dictionary */}
-          <GuideSection id="apps-translate">
-            <h2 className="text-title text-navy dark:text-sky mb-6">
-              <Languages className="w-6 h-6 inline mr-2" />
-              Орчуулга & толь бичиг
-            </h2>
-            <div className="space-y-4">
-              {translateApps.map((app) => (
-                <AppCard key={app.name} app={app} />
-              ))}
-            </div>
-          </GuideSection>
+        <GuideCSection id="apps-translate" no={no('apps-translate')} title="Орчуулга & толь бичиг">
+          <CMethods items={appCards(translateApps)} />
+        </GuideCSection>
 
-          {/* Tools & Calculators */}
-          <GuideSection id="apps-tools">
-            <h2 className="text-title text-navy dark:text-sky mb-6">
-              <Wrench className="w-6 h-6 inline mr-2" />
-              Тооцоолуур & хэрэгсэл
-            </h2>
-            <div className="space-y-3">
-              {toolLinks.map((tool) => (
-                tool.isInternal ? (
-                  <Link
-                    key={tool.href}
-                    href={tool.href}
-                    className="group flex items-start gap-3 p-4 rounded-lg border border-border bg-card hover:shadow-md hover:border-gold/40 transition-all duration-200"
-                  >
-                    <div className="w-9 h-9 rounded-lg bg-sky dark:bg-navy-light flex items-center justify-center shrink-0 group-hover:bg-gold/10 transition-colors">
-                      <Wrench className="w-4 h-4 text-navy dark:text-gold" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-semibold font-heading text-foreground group-hover:text-gold-dark transition-colors">
-                        {tool.title}
-                      </h4>
-                      <p className="text-xs text-muted-foreground mt-0.5">{tool.description}</p>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1 group-hover:text-gold transition-colors" />
-                  </Link>
-                ) : (
-                  <LinkCard key={tool.href} href={tool.href} title={tool.title} description={tool.description} icon={Wrench} />
-                )
-              ))}
-            </div>
-          </GuideSection>
+        <GuideCSection id="apps-tools" no={no('apps-tools')} title="Тооцоолуур & хэрэгсэл">
+          <CMethods items={toolLinks.map((t) => ({ title: t.title, text: t.description, href: t.href, internal: t.isInternal }))} />
+        </GuideCSection>
 
-          {/* Useful Websites */}
-          <GuideSection id="apps-websites">
-            <h2 className="text-title text-navy dark:text-sky mb-6">
-              <Globe className="w-6 h-6 inline mr-2" />
-              Хэрэгтэй вэбсайтууд
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {usefulWebsites.map((site) => (
-                <LinkCard key={site.href} href={site.href} title={site.title} description={site.description} icon={Globe} />
-              ))}
-            </div>
-          </GuideSection>
+        <GuideCSection id="apps-websites" no={no('apps-websites')} title="Хэрэгтэй вэбсайтууд">
+          <CLinks links={usefulWebsites} />
+        </GuideCSection>
 
-          {/* Tips */}
-          <GuideSection id="apps-tips">
-            <h2 className="text-title text-navy dark:text-sky mb-6">Апп суулгах зөвлөгөө</h2>
-            <TipBox title="Зөвлөгөө" className={styles.tip}>
-              <ul className="space-y-1">
-                {appTips.map((tip, i) => (
-                  <li key={i}>&#8226; {tip}</li>
-                ))}
-              </ul>
-            </TipBox>
-            <div className="mt-4">
-              <WarningBox title="Анхааруулга" className={styles.warning}>
-                <p>{appWarning}</p>
-              </WarningBox>
-            </div>
-          </GuideSection>
+        <GuideCSection id="apps-tips" no={no('apps-tips')} title="Апп суулгах зөвлөгөө">
+          <Cols>
+            <div><CNote title="Зөвлөгөө"><CList items={appTips} /></CNote></div>
+            <div><CNote tone="warn" title="Анхааруулга"><p>{appWarning}</p></CNote></div>
+          </Cols>
+        </GuideCSection>
 
-          {/* Related Guides */}
-          <section>
-            <h2 className="text-title text-navy dark:text-sky mb-6">Холбоотой гарын авлага</h2>
-            <div className="grid sm:grid-cols-2 gap-3">
-              {appsLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="group flex items-start gap-3 p-4 rounded-lg border border-border bg-card hover:shadow-md hover:border-gold/40 transition-all duration-200"
-                >
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-sm font-semibold font-heading text-foreground group-hover:text-gold-dark transition-colors">
-                      {link.title}
-                    </h4>
-                    <p className="text-xs text-muted-foreground mt-0.5">{link.description}</p>
-                  </div>
-                  <ArrowRight className="w-4 h-4 text-muted-foreground shrink-0 mt-1 group-hover:text-gold transition-colors" />
-                </Link>
-              ))}
-            </div>
-          </section>
+        <GuideCSection id="apps-related" no={String(appsSections.length + 1).padStart(2, '0')} title="Холбоотой гарын авлага">
+          <CMethods items={appsLinks.map((l) => ({ title: l.title, text: l.description, href: l.href, internal: true }))} />
+        </GuideCSection>
 
+        <GuideCTail>
           <ReportBanner pageUrl="/apps" />
           <DonateBanner />
           <ShareButtons />
           <GuideNav currentGuideId="apps" />
-        </IllustratedGuideBody>
-      </main>
+        </GuideCTail>
+      </GuideCPage>
     </>
   );
 }

@@ -1,20 +1,24 @@
-import { GuideSection } from '@/components/guide/GuideSection';
-import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
-import styles from '@/components/guide/IllustratedGuide.module.css';
-import { Heart } from 'lucide-react';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import {
-  GuideNav, EmergencyBanner, StepList,
-  InfoTable, LinkCard, WarningBox, TipBox, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
-} from '@/components/guide';
+// 병원·응급 가이드 — /topik·/jobs 와 같은 틀(guide-c). 기록: docs/guides-redesign.md
+// 제목(H1·H2)·섹션 id·구조화 데이터·조회수 기록은 개편 전과 같다. 맨 위 고정 응급 띠 대신 첫 섹션이 전화 카드, 상황별 안내는 접지 않고 펼친다.
+import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker, RelatedTips } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
+import {
+  GuideCPage, GuideCHero, GuideCNav, GuideCSection, GuideCTail,
+  Cols, SubTitle, CTable, CSteps, CList, CNote, CLinks, CCards, CContacts,
+} from '@/components/guide-c/GuideC';
+import { CRows, CMethods } from '@/components/guide-c/GuideCParts';
+import GuideCHeroArt from '@/components/guide-c/GuideCHeroArt';
+import { HOME_ASSET_BASE, copy as homeCopy } from '@/data/home';
 import {
   hospitalMeta, hospitalSections, emergencyContacts,
   hospitalSteps, insuranceComparison, interpreterServices,
   situationGuides, pharmacyGuide, undocumentedAccess,
+  insuranceNote, emergencyRoomNote, interpreterNote,
 } from '@/data/guides/hospital';
 
 const BASE_URL = 'https://koreamongol.com';
+
+const no = (id) => String(hospitalSections.findIndex((x) => x.id === id) + 1).padStart(2, '0');
 
 export default function HospitalPage() {
   return (
@@ -28,149 +32,83 @@ export default function HospitalPage() {
         description="Солонгост эмнэлэгт хандах үе шат"
         steps={hospitalSteps}
       />
-    <main className={[styles.page, styles.hospital].join(" ")}>
       <GuideViewTracker guideId="hospital" />
-      <EmergencyBanner
-        sticky
-        items={emergencyContacts.slice(0, 3)}
-      />
+      <GuideCPage>
+        <GuideCHero
+          breadcrumbLabel="Эмнэлэг"
+          kicker="Гарын авлага"
+          title={hospitalMeta.title}
+          subtitle={hospitalMeta.subtitle}
+          updated={hospitalMeta.lastUpdated}
+          updatedLabel="Сүүлд шинэчилсэн"
+          art={(
+            <GuideCHeroArt image={`${HOME_ASSET_BASE}/c5-health.webp`} alt="" loop="loop-c5" loopNight="loop-c5-night" base={HOME_ASSET_BASE}
+              labels={{ pause: homeCopy.pause, play: homeCopy.play }} />
+          )}
+          calls={emergencyContacts.slice(0, 3).map((c) => ({ number: c.number, label: c.label }))}
+        />
+        <GuideCNav sections={hospitalSections} label="Агуулга" />
 
-      <IllustratedGuideHeader meta={hospitalMeta} sections={hospitalSections} quickIds={["hospital-emergency","hospital-steps","hospital-interpreter"]} image="/images/guides/hospital-mazaalai-l.png" icon={Heart} breadcrumbLabel="Эмнэлэг" />
+        <GuideCSection id="hospital-emergency" no={no('hospital-emergency')} title="Яаралтай холбоо барих">
+          <CContacts contacts={emergencyContacts} />
+        </GuideCSection>
 
-      <IllustratedGuideBody sections={hospitalSections}>
-        {/* Emergency Contacts (full list) */}
-        <GuideSection alwaysOpen id="hospital-emergency">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Яаралтай холбоо барих</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {emergencyContacts.map((contact) => (
-              <a
-                key={contact.number}
-                href={`tel:${contact.number}`}
-                className={[styles.contact, "flex items-center gap-3 border border-border hover:shadow-sm transition-all"].join(" ")}
-              >
-                <span className="text-2xl">{contact.emoji}</span>
-                <div>
-                  <p className="text-sm font-semibold font-heading">{contact.label}</p>
-                  <p className="text-lg font-bold text-terracotta">{contact.number}</p>
-                  <p className="text-xs text-muted-foreground">{contact.description}</p>
-                </div>
-              </a>
-            ))}
-          </div>
-        </GuideSection>
+        <GuideCSection id="hospital-steps" no={no('hospital-steps')} title="Эмнэлэгт хандах">
+          <CSteps steps={hospitalSteps} />
+        </GuideCSection>
 
-        {/* Hospital Steps */}
-        <GuideSection id="hospital-steps">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Эмнэлэгт хандах</h2>
-          <StepList steps={hospitalSteps} />
-        </GuideSection>
-
-        {/* Pharmacy Guide */}
-        <GuideSection id="hospital-pharmacy">
-          <h2 className="text-title text-navy dark:text-sky mb-6">{pharmacyGuide.title}</h2>
-          <StepList steps={pharmacyGuide.steps.map((s, i) => ({ title: `${i + 1}`, description: s }))} />
-
-          <div className="mt-4 p-4 rounded-lg border border-border bg-card">
-            <h3 className="text-sm font-semibold text-foreground mb-3">{pharmacyGuide.otc.title}</h3>
-            <div className="grid sm:grid-cols-2 gap-2">
-              {pharmacyGuide.otc.items.map((item) => (
-                <div key={item.name} className="flex justify-between text-sm p-2 rounded-md bg-muted/50">
-                  <span className="font-medium text-foreground">{item.name}</span>
-                  <span className="text-muted-foreground">{item.use}</span>
-                </div>
-              ))}
+        <GuideCSection id="hospital-pharmacy" no={no('hospital-pharmacy')} title={pharmacyGuide.title}>
+          <Cols>
+            <div><CSteps steps={pharmacyGuide.steps.map((t) => ({ title: t }))} /></div>
+            <div>
+              <SubTitle>{pharmacyGuide.otc.title}</SubTitle>
+              <CRows rows={pharmacyGuide.otc.items.map((it) => ({ name: it.name, value: it.use }))} />
+              <CNote title="Анхаар"><p>{pharmacyGuide.tip}</p></CNote>
             </div>
-          </div>
+          </Cols>
+        </GuideCSection>
 
-          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Анхаар">
-            <p>{pharmacyGuide.tip}</p>
-          </TipBox>
-        </GuideSection>
+        <GuideCSection id="hospital-insurance" no={no('hospital-insurance')} title="Даатгалын мэдээлэл">
+          <CTable headers={insuranceComparison.headers} rows={insuranceComparison.rows} />
+          <Cols>
+            <CNote tone="warn" title="Яаралтай (응급실)"><p>{emergencyRoomNote}</p></CNote>
+            <CNote title="Даатгалын зөвлөгөө"><p>{insuranceNote}</p></CNote>
+          </Cols>
+        </GuideCSection>
 
-        {/* Insurance Comparison */}
-        <GuideSection id="hospital-insurance">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Даатгалын мэдээлэл</h2>
-          <InfoTable
-            headers={insuranceComparison.headers}
-            rows={insuranceComparison.rows}
-          />
-          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Даатгалын зөвлөгөө">
-            <p>Гадаадын иргэн 6 сар дээш оршин суувал Үндэсний эрүүл мэндийн даатгал (국민건강보험) заавал (E-9, D-2 визтэй бол ирсэн даруй). Сар бүр ~₩159,000 төлнө (2026 он).</p>
-          </TipBox>
-        </GuideSection>
+        <GuideCSection id="hospital-undocumented" no={no('hospital-undocumented')} title={undocumentedAccess.title}>
+          <CCards items={undocumentedAccess.items.map((it) => ({ title: it.label, text: it.description }))} />
+          <CNote title="Мэдэх зүйл"><p>{undocumentedAccess.warning}</p></CNote>
+        </GuideCSection>
 
-        {/* Undocumented Access */}
-        <GuideSection id="hospital-undocumented">
-          <h2 className="text-title text-navy dark:text-sky mb-6">{undocumentedAccess.title}</h2>
-          <div className="space-y-3 mb-4">
-            {undocumentedAccess.items.map((item) => (
-              <div key={item.label} className="p-4 rounded-lg border border-border bg-card">
-                <p className="text-sm font-semibold text-foreground mb-1">{item.label}</p>
-                <p className="text-sm text-muted-foreground">{item.description}</p>
-              </div>
-            ))}
-          </div>
-          <TipBox title="Мэдэх зүйл" className={styles.tip}>
-            <p>{undocumentedAccess.warning}</p>
-          </TipBox>
-        </GuideSection>
+        <GuideCSection id="hospital-interpreter" no={no('hospital-interpreter')} title="Орчуулга / Тусламж">
+          <CNote title="Утсаар орчуулга авах"><p>{interpreterNote}</p></CNote>
+          <CLinks links={interpreterServices} />
+        </GuideCSection>
 
-        {/* Interpreter Services */}
-        <GuideSection id="hospital-interpreter">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Орчуулга / Тусламж</h2>
-          <TipBox title="1345 дуудах" className={styles.tip}>
-            <p>1345 (гадаадын иргэдийн мэдээллийн төв) руу залгаж орчуулга хүсэх боломжтой. 20 хэлээр үйлчилнэ.</p>
-          </TipBox>
-          <div className="grid sm:grid-cols-2 gap-3 mt-4">
-            {interpreterServices.map((link) => (
-              <LinkCard key={link.href} {...link} />
-            ))}
-          </div>
-        </GuideSection>
+        <GuideCSection id="hospital-situations" no={no('hospital-situations')} title="Тохиолдлоор">
+          <CMethods items={situationGuides.map((g) => ({ title: g.title, text: g.content }))} />
+        </GuideCSection>
 
-        {/* Situation Guides */}
-        <GuideSection id="hospital-situations">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Тохиолдлоор</h2>
-          <Accordion type="single" collapsible className="w-full">
-            {situationGuides.map((guide, i) => (
-              <AccordionItem key={i} value={`situation-${i}`}>
-                <AccordionTrigger className="text-left">
-                  <span className="flex items-center gap-2">
-                    <span>{guide.icon}</span>
-                    <span>{guide.title}</span>
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {guide.content}
-                  </p>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </GuideSection>
+        <GuideCSection id="hospital-tips" no={no('hospital-tips')} title="Зөвлөгөө">
+          <CNote tone="warn" title="Эмнэлэгт очихдоо">
+            <CList items={[
+              'Паспорт / 외국인등록증 заавал авчрах',
+              'Даатгалын карт (건강보험증) авчрах',
+              'Papago апп бэлдэх (орчуулга)',
+              'Өвчний шинж тэмдэг, эмийн нэрийг тэмдэглэх',
+            ]} />
+          </CNote>
+        </GuideCSection>
 
-        {/* Tips */}
-        <GuideSection id="hospital-tips">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Зөвлөгөө</h2>
-          <WarningBox className={styles.warning}>
-            <ul className="space-y-1">
-              <li>• Паспорт / 외국인등록증 заавал авчрах</li>
-              <li>• Даатгалын карт (건강보험증) авчрах</li>
-              <li>• Papago апп бэлдэх (орчуулга)</li>
-              <li>• Өвчний шинж тэмдэг, эмийн нэрийг тэмдэглэх</li>
-            </ul>
-          </WarningBox>
-        </GuideSection>
-
-        <RelatedTips slugs={['hospital-visit', 'emergency-numbers']} />
-
-        <ReportBanner pageUrl="/hospital" />
-        <DonateBanner />
-        <ShareButtons />
-        <GuideNav currentGuideId="hospital" />
-      </IllustratedGuideBody>
-    </main>
+        <GuideCTail>
+          <RelatedTips slugs={['hospital-visit', 'emergency-numbers']} />
+          <ReportBanner pageUrl="/hospital" />
+          <DonateBanner />
+          <ShareButtons />
+          <GuideNav currentGuideId="hospital" />
+        </GuideCTail>
+      </GuideCPage>
     </>
   );
 }

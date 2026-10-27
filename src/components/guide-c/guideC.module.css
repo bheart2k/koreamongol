@@ -72,6 +72,26 @@
 .officialLink:hover { box-shadow: inset 0 0 0 1.5px var(--c-gold), 0 12px 26px -16px rgba(27, 45, 79, 0.6); }
 .officialLink:focus-visible { outline: 3px solid var(--c-gold); outline-offset: 2px; }
 
+.callRow { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+
+.callChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 18px 0 14px;
+  border-radius: 16px;
+  background: var(--c-terra);
+  color: var(--c-on-terra);
+  font: 650 14px/1.2 var(--font-heading);
+  text-decoration: none;
+}
+
+.callChip svg { width: 18px; height: 18px; flex: none; }
+.callChip strong { font: 800 22px/1 var(--font-heading); font-variant-numeric: tabular-nums; }
+.callChip:hover { filter: brightness(0.94); }
+.callChip:focus-visible { outline: 3px solid var(--c-gold); outline-offset: 2px; }
+
 .updated {
   margin: 18px 0 0;
   font-size: 12.5px;
@@ -163,6 +183,17 @@
   scroll-margin-top: calc(var(--navbar-height) + 72px);
 }
 
+.sectionRow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px;
+  width: min(100% - 32px, 1152px);
+  margin: 28px auto 0;
+}
+
+.sectionRow > .section { width: auto; margin: 0; }
+
 .sectionTitle {
   display: flex;
   align-items: baseline;
@@ -187,7 +218,10 @@
 }
 
 .cols > div > .subTitle:first-child,
-.section > .subTitle:first-of-type { margin-top: 0; }
+.sectionTitle + .subTitle { margin-top: 0; }
+
+.cols > div > .note:first-child { margin-top: 0; } /* 2단 오른쪽 칸 맨 위 알림이 왼쪽 칸과 같은 높이에서 시작 */
+.sectionTitle + .note { margin-top: 0; } /* 섹션이 알림 하나로 시작할 때 제목 아래 여백이 겹치지 않게 */
 
 .lead {
   margin: 0 0 18px;
@@ -205,6 +239,32 @@
 }
 
 .cols > div { min-width: 0; }
+
+.cols3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+.cols3 > div { min-width: 0; }
+
+.fine {
+  margin: 10px 0 12px;
+  max-width: 80ch;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--c-ink-soft);
+}
+
+.fine + .cols { margin-top: 26px; }
+.fine + .lead { margin-top: 18px; }
+ul + .cols, .note + .cols { margin-top: 26px; } /* 카드 목록·알림 바로 뒤 2단이 붙지 않게 */
+.note + .links { margin-top: 14px; }
+.tableWrap + .cols { margin-top: 26px; }
+.lead + .cols3 > div > .subTitle:first-child { margin-top: 0; }
+.cols .links, .cols .contacts { grid-template-columns: 1fr; } /* 2단 칸 안에서는 카드가 칸 폭을 다 쓴다 */
+.noteBody a:focus-visible { outline: 3px solid var(--c-gold); outline-offset: 2px; }
 
 /* ---------- 표 ---------- */
 .tableWrap :global(table) { width: 100%; }
@@ -329,6 +389,8 @@
 
 .noteBody { font-size: 14.5px; line-height: 1.6; color: var(--c-ink); }
 .noteBody p { margin: 0; }
+.noteBody p + p { margin-top: 6px; }
+.noteBody a { color: inherit; text-decoration: underline; text-underline-offset: 2px; overflow-wrap: anywhere; }
 .noteBody .list { margin-top: 0; }
 
 /* ---------- 링크 카드 ---------- */
@@ -401,6 +463,7 @@
   text-decoration: none;
 }
 
+.links + .contacts { margin-top: 10px; }
 .contact:focus-visible { outline: 3px solid var(--c-gold); outline-offset: 2px; }
 .contactLabel { font: 650 13px/1.3 var(--font-heading); color: var(--c-on-dark-soft); }
 .contactNumber { font: 800 24px/1.15 var(--font-heading); color: var(--c-gold); font-variant-numeric: tabular-nums; }
@@ -423,6 +486,9 @@
   color: var(--c-on-dark);
   box-shadow: 0 30px 60px -40px rgba(27, 45, 79, 0.9);
 }
+
+.choices[data-count='3'] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.choices:last-child { margin-bottom: 0; }
 
 .choice + .choice { background: color-mix(in srgb, var(--c-ink-solid) 86%, var(--c-terra)); }
 
@@ -482,6 +548,9 @@
   .cols { grid-template-columns: 1fr; gap: 0; }
   .cols > div + div { margin-top: 26px; } /* 1단일 때 두 번째 칸 소제목이 위 내용에 붙지 않게 */
   .cols + .cols { margin-top: 26px; }
+  .cols3 { grid-template-columns: 1fr; gap: 0; }
+  .choices[data-count='3'] { grid-template-columns: 1fr; }
+  .sectionRow { grid-template-columns: 1fr; gap: 28px; }
 }
 
 @media (max-width: 639px) {
@@ -490,6 +559,7 @@
   .heroArt { display: none; } /* 폰: 첫 화면에 답(선택 카드)이 먼저 보이게 그림은 뺀다 */
   .choices { grid-template-columns: 1fr; }
   .section { margin-top: 16px; padding: 20px 16px; border-radius: 22px; }
+  .sectionRow { margin-top: 16px; gap: 16px; }
   .sectionTitle { margin-bottom: 14px; }
   .links { grid-template-columns: 1fr; }
 }

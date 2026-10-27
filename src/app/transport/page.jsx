@@ -1,15 +1,14 @@
-import { GuideSection } from '@/components/guide/GuideSection';
-import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
-import styles from '@/components/guide/IllustratedGuide.module.css';
-import {
-  Train, CreditCard, Bus, Car, Zap, Smartphone, Lightbulb,
-  ExternalLink, Download, Clock, MapPin,
-} from 'lucide-react';
-import {
-  GuideNav, InfoTable,
-  WarningBox, TipBox, StepList, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
-} from '@/components/guide';
+// 교통 가이드 — /topik·/jobs 와 같은 틀(guide-c). 기록: docs/guides-redesign.md
+// 제목(H1·H2)·섹션 id·구조화 데이터·조회수 기록은 개편 전과 같다. 바뀐 것은 배치와 디자인뿐.
+import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker, RelatedTips } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
+import {
+  GuideCPage, GuideCHero, GuideCNav, GuideCSection, GuideCTail,
+  Cols, SubTitle, Lead, CFine, CTable, CSteps, CList, CNote, CLinks,
+} from '@/components/guide-c/GuideC';
+import { CStats, CRows, CMethods } from '@/components/guide-c/GuideCParts';
+import GuideCHeroArt from '@/components/guide-c/GuideCHeroArt';
+import { HOME_ASSET_BASE, copy as homeCopy } from '@/data/home';
 import {
   transportMeta, transportSections, FARE_DATE,
   tmoney, metro, bus, taxi, ktx,
@@ -17,6 +16,15 @@ import {
 } from '@/data/guides/transport';
 
 const BASE_URL = 'https://koreamongol.com';
+
+const no = (id) => String(transportSections.findIndex((x) => x.id === id) + 1).padStart(2, '0');
+
+// 첫 화면 답: 기본요금 세 가지 — 값은 모두 아래 표의 데이터에서
+const fareStats = [
+  { label: `Метро (${metro.fares.headers[1]})`, value: metro.fares.rows[0][1] },
+  { label: `Автобус (${bus.types.rows[0][0].split(' (')[0]})`, value: bus.types.rows[0][2] },
+  { label: `Такси (${taxi.fares.rows[0][0].split(' (')[0]})`, value: taxi.fares.rows[0][1] },
+];
 
 export default function TransportPage() {
   return (
@@ -29,261 +37,122 @@ export default function TransportPage() {
         name="Солонгосын нийтийн тээвэр ашиглах"
         description="T-money карт авах, метро, автобус, такси, KTX ашиглах алхамчилсан гарын авлага."
         steps={[
-          { title: 'T-money карт авах', description: '편의점 эсвэл метро станцаас T-money карт худалдаж авах (₩2,500~₩4,000)' },
+          { title: 'T-money карт авах', description: '편의점 эсвэл метро станцаас T-money карт худалдаж авах (₩3,000~₩5,000)' },
           { title: 'T-money цэнэглэх', description: '편의점 эсвэл метро станцын автоматаар мөнгө цэнэглэх' },
           { title: 'Метро/автобуснд суух', description: 'Карт уншуулж суух, буухдаа дахин уншуулах' },
           { title: 'Такси дуудах', description: 'Kakao T эсвэл TABA апп ашиглан такси захиалах' },
         ]}
       />
-    <main className={styles.page}>
       <GuideViewTracker guideId="transport" />
-      <IllustratedGuideHeader
-        meta={transportMeta}
-        sections={transportSections}
-        quickIds={["tr-card","tr-metro","tr-bus"]}
-        image="/images/guides/transport-mazaalai-l.png"
-        icon={Train}
-        breadcrumbLabel={transportMeta.title}
-      />
+      <GuideCPage>
+        <GuideCHero
+          breadcrumbLabel={transportMeta.title}
+          kicker="Гарын авлага"
+          title={transportMeta.title}
+          subtitle={transportMeta.subtitle}
+          updated={transportMeta.lastUpdated}
+          updatedLabel="Сүүлд шинэчилсэн"
+          art={(
+            <GuideCHeroArt image={`${HOME_ASSET_BASE}/c2-airport.webp`} alt="" loop="loop-c2" loopNight="loop-c2-night" base={HOME_ASSET_BASE}
+              labels={{ pause: homeCopy.pause, play: homeCopy.play }} />
+          )}
+          links={transportLinks.slice(0, 2)}
+          linksLabel="Албан ёсны сайт:"
+        />
+        <GuideCNav sections={transportSections} label="Агуулга" />
 
-      <IllustratedGuideBody sections={transportSections}>
-
-        <div className="text-xs text-muted-foreground text-right">
-          <Clock className="w-3 h-3 inline mr-1" />
-          Үнийн мэдээлэл: {FARE_DATE} огноогоор шалгасан. Үнэ өөрчлөгдөх боломжтой.
-        </div>
-
-        {/* T-money */}
-        <GuideSection id="tr-card">
-          <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
-            <CreditCard className="w-6 h-6" />
-            {tmoney.title}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-4">{tmoney.description}</p>
-
-          <div className="grid sm:grid-cols-2 gap-4 mb-6">
-            <div className="p-4 rounded-lg border border-border bg-card">
-              <h3 className="text-sm font-semibold font-heading text-foreground mb-2">Үнэ</h3>
-              <p className="text-sm text-muted-foreground">{tmoney.price}</p>
+        <GuideCSection id="tr-card" no={no('tr-card')} title={tmoney.title}>
+          <CStats items={fareStats} />
+          <CFine>Үнийн мэдээлэл: {FARE_DATE} огноогоор шалгасан. Үнэ өөрчлөгдөх боломжтой.</CFine>
+          <Lead>{tmoney.description}</Lead>
+          <Cols>
+            <div>
+              <SubTitle>Үнэ</SubTitle>
+              <CList items={[tmoney.price]} />
+              <SubTitle>Хаанаас авах</SubTitle>
+              <CList items={tmoney.where} />
             </div>
-            <div className="p-4 rounded-lg border border-border bg-card">
-              <h3 className="text-sm font-semibold font-heading text-foreground mb-2">Хаанаас авах</h3>
-              <ul className="space-y-1">
-                {tmoney.where.map((w, i) => (
-                  <li key={i} className="text-sm text-muted-foreground">&#8226; {w}</li>
-                ))}
-              </ul>
+            <div>
+              <SubTitle>Цэнэглэх</SubTitle>
+              <CList items={tmoney.charge} />
+              <CNote title="T-money давуу тал"><CList items={tmoney.benefits} /></CNote>
             </div>
-          </div>
+          </Cols>
+        </GuideCSection>
 
-          <div className="p-4 rounded-lg border border-border bg-card mb-4">
-            <h3 className="text-sm font-semibold font-heading text-foreground mb-2">Цэнэглэх</h3>
-            <ul className="space-y-1">
-              {tmoney.charge.map((c, i) => (
-                <li key={i} className="text-sm text-muted-foreground">&#8226; {c}</li>
-              ))}
-            </ul>
-          </div>
+        <GuideCSection id="tr-metro" no={no('tr-metro')} title={metro.title}>
+          <Lead>{metro.description}</Lead>
+          <CTable headers={metro.fares.headers} rows={metro.fares.rows} />
+          <CFine>* {metro.distanceExtra}</CFine>
+          <CFine>{metro.hours}</CFine>
+          <SubTitle>Метрон дотор анхаарах</SubTitle>
+          <CList items={metro.tips} />
+        </GuideCSection>
 
-          <TipBox title="T-money давуу тал" className={styles.tip}>
-            <ul className="space-y-1">
-              {tmoney.benefits.map((b, i) => (
-                <li key={i}>&#8226; {b}</li>
-              ))}
-            </ul>
-          </TipBox>
-        </GuideSection>
-
-        {/* Metro */}
-        <GuideSection id="tr-metro">
-          <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
-            <Train className="w-6 h-6" />
-            {metro.title}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-4">{metro.description}</p>
-
-          <InfoTable
-            headers={metro.fares.headers}
-            rows={metro.fares.rows}
-          />
-          <p className="text-xs text-muted-foreground mt-2 mb-4">
-            * {metro.distanceExtra}
-          </p>
-
-          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <Clock className="w-4 h-4 text-navy dark:text-sky" />
-            {metro.hours}
-          </div>
-
-          <div className="p-4 rounded-lg border border-border bg-card">
-            <h3 className="text-sm font-semibold font-heading text-foreground mb-2">Метрон дотор анхаарах</h3>
-            <ul className="space-y-1">
-              {metro.tips.map((t, i) => (
-                <li key={i} className="text-sm text-muted-foreground">&#8226; {t}</li>
-              ))}
-            </ul>
-          </div>
-        </GuideSection>
-
-        {/* Bus */}
-        <GuideSection id="tr-bus">
-          <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
-            <Bus className="w-6 h-6" />
-            {bus.title}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-4">{bus.description}</p>
-
-          <InfoTable
-            headers={bus.types.headers}
-            rows={bus.types.rows}
-          />
-
-          <div className="mt-6">
-            <h3 className="text-sm font-semibold font-heading text-foreground mb-3">Автобус хэрхэн ашиглах</h3>
-            <StepList steps={bus.howTo} />
-          </div>
-
-          <WarningBox title="Буухдаа карт уншуул!" className={styles.warning}>
-            <p>Автобуснаас буухдаа заавал карт уншуулаарай. Уншуулахгүй бол дараагийн тээвэрт шилжих хөнгөлөлт авахгүй.</p>
-          </WarningBox>
-        </GuideSection>
-
-        {/* Taxi */}
-        <GuideSection id="tr-taxi">
-          <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
-            <Car className="w-6 h-6" />
-            {taxi.title}
-          </h2>
-
-          <InfoTable
-            headers={taxi.fares.headers}
-            rows={taxi.fares.rows}
-          />
-
-          <div className="mt-4 p-4 rounded-lg border border-border bg-card">
-            <h3 className="text-sm font-semibold font-heading text-foreground mb-2">Шөнийн нэмэлт (심야할증)</h3>
-            <div className="space-y-2">
-              {taxi.surcharge.map((s, i) => (
-                <div key={i} className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground">{s.time}</span>
-                  <span className="font-semibold text-terracotta">{s.rate}</span>
-                </div>
-              ))}
+        <GuideCSection id="tr-bus" no={no('tr-bus')} title={bus.title}>
+          <Lead>{bus.description}</Lead>
+          <CTable headers={bus.types.headers} rows={bus.types.rows} />
+          <Cols>
+            <div>
+              <SubTitle>Автобус хэрхэн ашиглах</SubTitle>
+              <CSteps steps={bus.howTo} />
             </div>
-          </div>
-
-          <div className="mt-4 p-4 rounded-lg border border-border bg-card">
-            <h3 className="text-sm font-semibold font-heading text-foreground mb-2">Такси дуудах апп</h3>
-            <div className="space-y-3">
-              {taxi.apps.map((app) => (
-                <div key={app.name} className="flex items-start justify-between gap-2">
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{app.name}</p>
-                    <p className="text-xs text-muted-foreground">{app.description}</p>
-                  </div>
-                  <a
-                    href={app.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="shrink-0 text-xs text-gold-dark hover:text-gold flex items-center gap-1"
-                  >
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
-                </div>
-              ))}
+            <div>
+              <CNote tone="warn" title="Буухдаа карт уншуул!">
+                <p>Автобуснаас буухдаа заавал карт уншуулаарай. Уншуулахгүй бол дараагийн тээвэрт шилжих хөнгөлөлт авахгүй.</p>
+              </CNote>
             </div>
-          </div>
+          </Cols>
+        </GuideCSection>
 
-          <TipBox title="Такси зөвлөгөө" className={styles.tip}>
-            <ul className="space-y-1">
-              {taxi.tips.map((t, i) => (
-                <li key={i}>&#8226; {t}</li>
-              ))}
-            </ul>
-          </TipBox>
-        </GuideSection>
+        <GuideCSection id="tr-taxi" no={no('tr-taxi')} title={taxi.title}>
+          <CTable headers={taxi.fares.headers} rows={taxi.fares.rows} />
+          <CFine>{taxi.note}</CFine>
+          <Cols>
+            <div>
+              <SubTitle>Шөнийн нэмэлт (심야할증)</SubTitle>
+              <CRows rows={taxi.surcharge.map((x) => ({ name: x.time, value: x.rate }))} />
+              <CNote title="Такси зөвлөгөө"><CList items={taxi.tips} /></CNote>
+            </div>
+            <div>
+              <SubTitle>Такси дуудах апп</SubTitle>
+              <CMethods items={taxi.apps.map((a) => ({ title: a.name, text: a.description, href: a.url }))} />
+            </div>
+          </Cols>
+        </GuideCSection>
 
-        {/* KTX */}
-        <GuideSection id="tr-ktx">
-          <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
-            <Zap className="w-6 h-6" />
-            {ktx.title}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-4">{ktx.description}</p>
+        <GuideCSection id="tr-ktx" no={no('tr-ktx')} title={ktx.title}>
+          <Lead>{ktx.description}</Lead>
+          <CTable headers={ktx.routes.headers} rows={ktx.routes.rows} />
+          <Cols>
+            <div>
+              <SubTitle>Тасалбар захиалах</SubTitle>
+              <CSteps steps={ktx.booking} />
+            </div>
+            <div><CNote title="KTX зөвлөгөө"><CList items={ktx.tips} /></CNote></div>
+          </Cols>
+        </GuideCSection>
 
-          <InfoTable
-            headers={ktx.routes.headers}
-            rows={ktx.routes.rows}
-          />
+        <GuideCSection id="tr-apps" no={no('tr-apps')} title="Тээврийн аппууд">
+          <CMethods items={transportApps.map((a) => ({ title: a.name, text: a.description, list: a.features }))} />
+        </GuideCSection>
 
-          <div className="mt-6">
-            <h3 className="text-sm font-semibold font-heading text-foreground mb-3">Тасалбар захиалах</h3>
-            <StepList steps={ktx.booking} />
-          </div>
+        <GuideCSection id="tr-tips" no={no('tr-tips')} title="Зөвлөгөө">
+          <CNote title="Тээврийн зөвлөгөө"><CList items={transportTips} /></CNote>
+        </GuideCSection>
 
-          <TipBox title="KTX зөвлөгөө" className={styles.tip}>
-            <ul className="space-y-1">
-              {ktx.tips.map((t, i) => (
-                <li key={i}>&#8226; {t}</li>
-              ))}
-            </ul>
-          </TipBox>
-        </GuideSection>
+        <GuideCSection id="tr-links" no={no('tr-links')} title="Хэрэгтэй линкүүд">
+          <CLinks links={transportLinks} />
+        </GuideCSection>
 
-        {/* Apps */}
-        <GuideSection id="tr-apps">
-          <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
-            <Smartphone className="w-6 h-6" />
-            Тээврийн аппууд
-          </h2>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {transportApps.map((app) => (
-              <div key={app.name} className="p-4 rounded-lg border border-border bg-card">
-                <h3 className="text-sm font-semibold font-heading text-foreground mb-1">{app.name}</h3>
-                <p className="text-xs text-muted-foreground mb-3">{app.description}</p>
-                <ul className="space-y-1">
-                  {app.features.map((f, i) => (
-                    <li key={i} className="text-xs text-muted-foreground">&#10003; {f}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </GuideSection>
-
-        {/* Tips */}
-        <GuideSection id="tr-tips">
-          <h2 className="text-title text-navy dark:text-sky mb-6 flex items-center gap-2">
-            <Lightbulb className="w-6 h-6" />
-            Зөвлөгөө
-          </h2>
-          <TipBox title="Тээврийн зөвлөгөө" className={styles.tip}>
-            <ul className="space-y-1">
-              {transportTips.map((t, i) => (
-                <li key={i}>&#8226; {t}</li>
-              ))}
-            </ul>
-          </TipBox>
-        </GuideSection>
-
-        {/* Links */}
-        <GuideSection id="tr-links">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линкүүд</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {transportLinks.map((link) => (
-              <LinkCard key={link.href} {...link} />
-            ))}
-          </div>
-        </GuideSection>
-
-        <RelatedTips slugs={['tmoney-card']} />
-
-        <ReportBanner pageUrl="/transport" />
-        <DonateBanner />
-        <ShareButtons />
-        <GuideNav currentGuideId="transport" />
-      </IllustratedGuideBody>
-    </main>
+        <GuideCTail>
+          <RelatedTips slugs={['tmoney-card']} />
+          <ReportBanner pageUrl="/transport" />
+          <DonateBanner />
+          <ShareButtons />
+          <GuideNav currentGuideId="transport" />
+        </GuideCTail>
+      </GuideCPage>
     </>
   );
 }

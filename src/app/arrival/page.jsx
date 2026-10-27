@@ -1,13 +1,15 @@
-import { GuideBreadcrumb } from '@/components/guide/GuideBreadcrumb';
-import { GuideSection } from '@/components/guide/GuideSection';
-import Image from 'next/image';
-import styles from './arrival.module.css';
-import { Smartphone, Building2, Phone, FileCheck, ExternalLink, ArrowDown } from 'lucide-react';
-import {
-  GuideTOC, GuideNav, CheckList,
-  TipBox, WarningBox, InfoTable, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
-} from '@/components/guide';
+// 도착 후 가이드 — /topik·/jobs 와 같은 틀(guide-c). 기록: docs/guides-redesign.md
+// 제목(H1·H2)·섹션 id·구조화 데이터·조회수 기록·체크리스트 저장 키는 개편 전과 같다. 바뀐 것은 배치와 디자인뿐.
+import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker, RelatedTips } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
+import {
+  GuideCPage, GuideCHero, GuideCNav, GuideCSection, GuideCSectionRow, GuideCTail,
+  Cols, Cols3, SubTitle, Lead, CFine, CTable, CList, CNote, CLinks, CCards, CContacts,
+} from '@/components/guide-c/GuideC';
+import { CRows } from '@/components/guide-c/GuideCParts';
+import GuideCHeroArt from '@/components/guide-c/GuideCHeroArt';
+import GuideCCheckList from '@/components/guide-c/GuideCCheckList';
+import { HOME_ASSET_BASE, copy as homeCopy } from '@/data/home';
 import {
   arrivalMeta, arrivalSections, arrivalTimeline,
   arrivalTips, essentialApps, alienRegistration,
@@ -15,6 +17,14 @@ import {
 } from '@/data/guides/arrival';
 
 const BASE_URL = 'https://koreamongol.com';
+
+const no = (id) => String(arrivalSections.findIndex((x) => x.id === id) + 1).padStart(2, '0');
+
+const findItems = alienRegistration.howToFind.items;
+const webFind = findItems.filter((it) => !it.href.startsWith('tel:'));
+const telFind = findItems.filter((it) => it.href.startsWith('tel:'));
+const half = Math.ceil(arrivalTips.length / 2);
+const tipCards = arrivalTips.map((t) => ({ title: t.title, text: t.description }));
 
 export default function ArrivalPage() {
   return (
@@ -31,247 +41,116 @@ export default function ArrivalPage() {
           { title: 'Гадаадын иргэний бүртгэл (외국인등록)', description: '출입국관리사무소-д бүртгүүлэх (90 хоногийн дотор)' },
           { title: 'Банкны данс нээх', description: '외국인등록증 авсны дараа банкны данс нээх' },
           { title: 'Гар утасны гэрээ хийх', description: '외국인등록증-тэй бол 후불 гэрээ хийх боломжтой' },
-          { title: 'Эрүүл мэндийн даатгалд бүртгүүлэх', description: '건강보험 бүртгэл хийлгэх' },
-          { title: '주민센터-д бүртгүүлэх', description: '전입신고 хийх' },
+          { title: 'Эрүүл мэндийн даатгал шалгах', description: 'Автоматаар бүртгэгдэнэ (E-9, D-2 ирсэн өдрөөс, бусад нь 6 сарын дараа)' },
+          { title: 'Хаяг солих бол 체류지 변경신고', description: 'Нүүснээс хойш 15 хоногийн дотор 주민센터 эсвэл 출입국-д' },
         ]}
       />
-    <main className={`${styles.page} min-h-content`}>
       <GuideViewTracker guideId="arrival" />
-      <section className={styles.hero}>
-        <div className={styles.heroInner}>
-          <GuideBreadcrumb label={arrivalMeta.title} />
-          <div className={styles.welcome}>
-            <div className={styles.intro}>
-              <h1>{arrivalMeta.title}</h1>
-              <p className={styles.subtitle}>{arrivalMeta.subtitle}</p>
-              <p className={styles.updated}>Сүүлд шинэчилсэн: {arrivalMeta.lastUpdated}</p>
-              <a href="#arrival-day1" className={styles.startLink}>
-                {arrivalTimeline[0].period}<ArrowDown aria-hidden="true" />
-              </a>
+      <GuideCPage>
+        <GuideCHero
+          breadcrumbLabel={arrivalMeta.title}
+          kicker="Гарын авлага"
+          title={arrivalMeta.title}
+          subtitle={arrivalMeta.subtitle}
+          updated={arrivalMeta.lastUpdated}
+          updatedLabel="Сүүлд шинэчилсэн"
+          art={(
+            <GuideCHeroArt image={`${HOME_ASSET_BASE}/c2-airport.webp`} alt="" loop="loop-c2" loopNight="loop-c2-night" base={HOME_ASSET_BASE}
+              labels={{ pause: homeCopy.pause, play: homeCopy.play }} />
+          )}
+          links={webFind.map((it) => ({ href: it.href, title: it.label }))}
+          linksLabel="Албан ёсны сайт:"
+        />
+        <GuideCNav sections={arrivalSections} label="Агуулга" />
+
+        {/* 첫 화면 답: 언제 무엇을 — 기간별 체크리스트 3개를 나란히 */}
+        <GuideCSectionRow>
+          {arrivalTimeline.map((period) => (
+            <GuideCSection key={period.storageKey} id={period.storageKey} no={no(period.storageKey)} title={period.period}>
+              <GuideCCheckList items={period.items} storageKey={period.storageKey} />
+            </GuideCSection>
+          ))}
+        </GuideCSectionRow>
+
+        <GuideCSection id="arrival-alien" no={no('arrival-alien')} title={alienRegistration.title}>
+          <CRows rows={[
+            { name: 'Хугацаа', value: alienRegistration.deadline },
+            { name: 'Хураамж', value: alienRegistration.cost },
+            { name: 'Хүлээлт', value: alienRegistration.duration },
+          ]} />
+          <Cols>
+            <div>
+              <SubTitle>Шаардлагатай бичиг баримт</SubTitle>
+              <CList items={alienRegistration.required} />
             </div>
-            <Image src="/images/guides/arrival-mazaalai-l-transparent.png"
-              alt="Аяллын чемодантай, тээврийн карт үзүүлж буй Мазаалай"
-              width={1024} height={1536} priority
-              sizes="(min-width: 768px) 240px, 150px" className={styles.mascot} />
-          </div>
-          <div className={styles.quickLinks}>
-            <a href="#arrival-alien" className={styles.quickLink}>
-              <Image src="/images/home/visa.png" alt="" width={1254} height={1254} sizes="72px" className={styles.documentArt} />
-              <span>{alienRegistration.title}</span><ArrowDown aria-hidden="true" />
-            </a>
-            <a href="#arrival-bank" className={styles.quickLink}>
-              <span className={styles.quickIcon} aria-hidden="true"><Building2 strokeWidth={1.4} /></span>
-              <span>{bankRecommendations.title}</span><ArrowDown aria-hidden="true" />
-            </a>
-            <a href="#arrival-phone" className={styles.quickLink}>
-              <span className={styles.quickIcon} aria-hidden="true"><Smartphone strokeWidth={1.4} /></span>
-              <span>{phoneInfo.title}</span><ArrowDown aria-hidden="true" />
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <div className={styles.layout}>
-        <aside className={styles.sidebar}>
-          <GuideTOC sections={arrivalSections} className={styles.toc} />
-        </aside>
-        <div className={styles.content}>
-        {/* Timeline Checklists */}
-        {arrivalTimeline.map((period, index) => (
-          <GuideSection key={period.storageKey} id={period.storageKey} className={styles.timeline}>
-            <h2 className={styles.periodTitle}><span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>{period.period}</h2>
-            <CheckList
-              items={period.items}
-              storageKey={period.storageKey}
-            />
-          </GuideSection>
-        ))}
-
-        {/* Alien Registration Details */}
-        <GuideSection id="arrival-alien">
-          <h2 className="text-title text-navy dark:text-sky mb-6">
-            <FileCheck className="w-6 h-6 inline mr-2" />
-            {alienRegistration.title}
-          </h2>
-
-          <div className="p-5 rounded-lg border border-border bg-card mb-4">
-            <div className="grid sm:grid-cols-3 gap-4 mb-4">
-              <div className="text-center p-3 rounded-md bg-muted/50">
-                <p className="text-xs text-muted-foreground">Хугацаа</p>
-                <p className="text-sm font-semibold text-foreground">{alienRegistration.deadline}</p>
-              </div>
-              <div className="text-center p-3 rounded-md bg-muted/50">
-                <p className="text-xs text-muted-foreground">Хураамж</p>
-                <p className="text-sm font-semibold text-foreground">{alienRegistration.cost}</p>
-              </div>
-              <div className="text-center p-3 rounded-md bg-muted/50">
-                <p className="text-xs text-muted-foreground">Хүлээлт</p>
-                <p className="text-sm font-semibold text-foreground">{alienRegistration.duration}</p>
-              </div>
+            <div>
+              <SubTitle>{alienRegistration.howToFind.title}</SubTitle>
+              <CLinks links={webFind.map((it) => ({ href: it.href, title: it.label, description: it.value }))} />
+              <CContacts contacts={telFind.map((it) => ({ label: it.value, number: it.label }))} />
             </div>
-
-            <p className="text-sm font-medium text-foreground mb-2">Шаардлагатай бичиг баримт:</p>
-            <ul className="space-y-1 mb-4">
-              {alienRegistration.required.map((item, i) => (
-                <li key={i} className="text-sm text-muted-foreground">&#8226; {item}</li>
-              ))}
-            </ul>
-
-            <p className="text-sm font-medium text-foreground mb-2">{alienRegistration.howToFind.title}:</p>
-            <div className="space-y-2">
-              {alienRegistration.howToFind.items.map((item) => (
-                <div key={item.label} className="flex items-center gap-2 text-sm">
-                  <a
-                    href={item.href}
-                    target={item.href.startsWith('tel:') ? undefined : '_blank'}
-                    rel={item.href.startsWith('tel:') ? undefined : 'noopener noreferrer'}
-                    className="font-medium text-gold-dark hover:text-gold flex items-center gap-1"
-                  >
-                    {item.href.startsWith('tel:') ? (
-                      <Phone className="w-3 h-3" />
-                    ) : (
-                      <ExternalLink className="w-3 h-3" />
-                    )}
-                    {item.label}
-                  </a>
-                  <span className="text-muted-foreground">— {item.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <WarningBox className={styles.warning} title="Анхаар!">
+          </Cols>
+          <CNote tone="warn" title="Анхаар!">
             <p>90 хоногийн дотор бүртгүүлэхгүй бол торгууль ногдуулна. Аль болох эрт бүртгүүлэх!</p>
-          </WarningBox>
-        </GuideSection>
+          </CNote>
+        </GuideCSection>
 
-        {/* Bank Recommendations */}
-        <GuideSection id="arrival-bank">
-          <h2 className="text-title text-navy dark:text-sky mb-6">
-            <Building2 className="w-6 h-6 inline mr-2" />
-            {bankRecommendations.title}
-          </h2>
-
-          <div className="p-5 rounded-lg border border-border bg-card mb-4">
-            <p className="text-sm font-medium text-foreground mb-2">Шаардлагатай:</p>
-            <ul className="space-y-1 mb-4">
-              {bankRecommendations.required.map((item, i) => (
-                <li key={i} className="text-sm text-muted-foreground">&#8226; {item}</li>
-              ))}
-            </ul>
-
-            <div className="space-y-4">
-              {bankRecommendations.banks.map((bank) => (
-                <div key={bank.name} className="p-3 rounded-md bg-muted/50">
-                  <p className="text-sm font-semibold text-foreground">{bank.name}</p>
-                  <p className="text-xs text-gold-dark mb-2">{bank.why}</p>
-                  <ul className="space-y-0.5">
-                    {bank.features.map((f, i) => (
-                      <li key={i} className="text-sm text-muted-foreground">&#8226; {f}</li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <TipBox className={styles.tip} title="Зөвлөгөө">
-            <p>{bankRecommendations.tip}</p>
-          </TipBox>
-        </GuideSection>
-
-        {/* Phone / SIM */}
-        <GuideSection id="arrival-phone">
-          <h2 className="text-title text-navy dark:text-sky mb-6">
-            <Smartphone className="w-6 h-6 inline mr-2" />
-            {phoneInfo.title}
-          </h2>
-
-          <div className="grid sm:grid-cols-2 gap-4 mb-4">
-            {/* Prepaid */}
-            <div className="p-5 rounded-lg border border-border bg-card">
-              <h3 className="text-base font-semibold font-heading text-foreground mb-1">
-                {phoneInfo.prepaid.title}
-              </h3>
-              <p className="text-xs text-muted-foreground mb-3">{phoneInfo.prepaid.description}</p>
-              <ul className="space-y-1 mb-3">
-                {phoneInfo.prepaid.items.map((item, i) => (
-                  <li key={i} className="text-sm text-muted-foreground">&#8226; {item}</li>
-                ))}
-              </ul>
-              <p className="text-xs text-muted-foreground">
-                Брэнд: {phoneInfo.prepaid.brands.join(', ')}
-              </p>
-            </div>
-
-            {/* Postpaid */}
-            <div className="p-5 rounded-lg border border-border bg-card">
-              <h3 className="text-base font-semibold font-heading text-foreground mb-1">
-                {phoneInfo.postpaid.title}
-              </h3>
-              <p className="text-xs text-muted-foreground mb-3">{phoneInfo.postpaid.description}</p>
-              <ul className="space-y-1 mb-3">
-                {phoneInfo.postpaid.items.map((item, i) => (
-                  <li key={i} className="text-sm text-muted-foreground">&#8226; {item}</li>
-                ))}
-              </ul>
-              <p className="text-xs font-medium text-foreground mb-1">Санал болгох MVNO:</p>
-              {phoneInfo.postpaid.mvno.map((m) => (
-                <p key={m.name} className="text-xs text-muted-foreground">
-                  &#8226; <span className="font-medium">{m.name}</span> — {m.note}
-                </p>
-              ))}
-            </div>
-          </div>
-
-          <TipBox className={styles.tip} title="KT тусгай нөхцөл">
-            <p className="text-sm">{phoneInfo.postpaid.tip}</p>
-          </TipBox>
-        </GuideSection>
-
-        {/* Tips */}
-        <GuideSection id="arrival-tips">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Амьдралын зөвлөгөө</h2>
-          <div className="space-y-4">
-            {arrivalTips.map((tip) => (
-              <TipBox className={styles.tip} key={tip.title} title={tip.title}>
-                <p>{tip.description}</p>
-              </TipBox>
+        <GuideCSection id="arrival-bank" no={no('arrival-bank')} title={bankRecommendations.title}>
+          <SubTitle>Шаардлагатай</SubTitle>
+          <CList items={bankRecommendations.required} />
+          <Cols3>
+            {bankRecommendations.banks.map((bank) => (
+              <div key={bank.name}>
+                <SubTitle>{bank.name}</SubTitle>
+                <CFine>{bank.why}</CFine>
+                <CList items={bank.features} />
+              </div>
             ))}
-          </div>
-        </GuideSection>
+          </Cols3>
+          <CNote title="Зөвлөгөө"><p>{bankRecommendations.tip}</p></CNote>
+        </GuideCSection>
 
-        {/* Essential Apps */}
-        <GuideSection id="arrival-apps">
-          <h2 className="text-title text-navy dark:text-sky mb-6">
-            <Smartphone className="w-6 h-6 inline mr-2" />
-            Заавал суулгах апп
-          </h2>
-          <InfoTable
-            headers={['Апп', 'Төрөл', 'Тайлбар']}
-            rows={essentialApps}
-          />
-        </GuideSection>
+        <GuideCSection id="arrival-phone" no={no('arrival-phone')} title={phoneInfo.title}>
+          <Cols>
+            <div>
+              <SubTitle>{phoneInfo.prepaid.title}</SubTitle>
+              <CFine>{phoneInfo.prepaid.description}</CFine>
+              <CList items={phoneInfo.prepaid.items} />
+              <CFine>Брэнд: {phoneInfo.prepaid.brands.join(', ')}</CFine>
+            </div>
+            <div>
+              <SubTitle>{phoneInfo.postpaid.title}</SubTitle>
+              <CFine>{phoneInfo.postpaid.description}</CFine>
+              <CList items={phoneInfo.postpaid.items} />
+              <CFine><strong>Санал болгох MVNO</strong></CFine>
+              <CList items={phoneInfo.postpaid.mvno.map((m) => `${m.name} — ${m.note}`)} />
+            </div>
+          </Cols>
+          <CNote title="KT тусгай нөхцөл"><p>{phoneInfo.postpaid.tip}</p></CNote>
+        </GuideCSection>
 
-        {/* Useful Links */}
-        <GuideSection id="arrival-links">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линк</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {arrivalLinks.map((link) => (
-              <LinkCard key={link.href} {...link} />
-            ))}
-          </div>
-        </GuideSection>
+        <GuideCSection id="arrival-tips" no={no('arrival-tips')} title="Амьдралын зөвлөгөө">
+          <Cols>
+            <div><CCards items={tipCards.slice(0, half)} /></div>
+            <div><CCards items={tipCards.slice(half)} /></div>
+          </Cols>
+        </GuideCSection>
 
-        <RelatedTips slugs={['alien-registration', 'phone-sim', 'open-bank-account']} />
+        <GuideCSection id="arrival-apps" no={no('arrival-apps')} title="Заавал суулгах апп">
+          <CTable headers={['Апп', 'Төрөл', 'Тайлбар']} rows={essentialApps} />
+        </GuideCSection>
 
-        <ReportBanner pageUrl="/arrival" />
-        <DonateBanner />
-        <ShareButtons />
-        <GuideNav currentGuideId="arrival" />
-        </div>
-      </div>
-    </main>
+        <GuideCSection id="arrival-links" no={no('arrival-links')} title="Хэрэгтэй линк">
+          <CLinks links={arrivalLinks} />
+        </GuideCSection>
+
+        <GuideCTail>
+          <RelatedTips slugs={['alien-registration', 'phone-sim', 'open-bank-account']} />
+          <ReportBanner pageUrl="/arrival" />
+          <DonateBanner />
+          <ShareButtons />
+          <GuideNav currentGuideId="arrival" />
+        </GuideCTail>
+      </GuideCPage>
     </>
   );
 }

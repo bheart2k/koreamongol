@@ -1,12 +1,15 @@
-import { GuideSection } from '@/components/guide/GuideSection';
-import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
-import styles from '@/components/guide/IllustratedGuide.module.css';
-import { Home, ExternalLink } from 'lucide-react';
-import {
-  GuideNav, CheckList, StepList,
-  InfoTable, WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
-} from '@/components/guide';
+// 주거 가이드 — /topik·/jobs 와 같은 틀(guide-c). 기록: docs/guides-redesign.md
+// 제목(H1·H2)·섹션 id·구조화 데이터·조회수 기록·체크리스트 저장 키는 개편 전과 같다. 바뀐 것은 배치와 디자인뿐.
+import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker, RelatedTips } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
+import {
+  GuideCPage, GuideCHero, GuideCNav, GuideCSection, GuideCTail,
+  Cols, SubTitle, CFine, CTable, CSteps, CList, CNote, CLinks, CContacts,
+} from '@/components/guide-c/GuideC';
+import { CRows, CMethods, CTypeCards } from '@/components/guide-c/GuideCParts';
+import GuideCHeroArt from '@/components/guide-c/GuideCHeroArt';
+import GuideCCheckList from '@/components/guide-c/GuideCCheckList';
+import { HOME_ASSET_BASE, copy as homeCopy } from '@/data/home';
 import {
   housingMeta, housingSections, housingTypes, costSystem,
   housingSearchMethods, contractSteps, housingChecklist,
@@ -15,6 +18,9 @@ import {
 } from '@/data/guides/housing';
 
 const BASE_URL = 'https://koreamongol.com';
+
+const no = (id) => String(housingSections.findIndex((x) => x.id === id) + 1).padStart(2, '0');
+const officialLinks = housingLinks.filter((l) => /iros\.go\.kr|klac\.or\.kr/.test(l.href));
 
 export default function HousingPage() {
   return (
@@ -28,206 +34,94 @@ export default function HousingPage() {
         description="Байр хайхаас эхлээд гэрээ байгуулах хүртэлх алхмууд"
         steps={contractSteps}
       />
-    <main className={styles.page}>
       <GuideViewTracker guideId="housing" />
-      <IllustratedGuideHeader meta={housingMeta} sections={housingSections} quickIds={["housing-types","housing-cost-system","housing-contract"]} image="/images/guides/housing-mazaalai-l.png" icon={Home} breadcrumbLabel="Байр" />
+      <GuideCPage>
+        <GuideCHero
+          breadcrumbLabel="Байр"
+          kicker="Гарын авлага"
+          title={housingMeta.title}
+          subtitle={housingMeta.subtitle}
+          updated={housingMeta.lastUpdated}
+          updatedLabel="Сүүлд шинэчилсэн"
+          art={(
+            <GuideCHeroArt image={`${HOME_ASSET_BASE}/c3-living.webp`} alt="" loop="loop-c3" loopNight="loop-c3-night-v5" base={HOME_ASSET_BASE}
+              labels={{ pause: homeCopy.pause, play: homeCopy.play }} />
+          )}
+          links={officialLinks}
+          linksLabel="Албан ёсны сайт:"
+        />
+        <GuideCNav sections={housingSections} label="Агуулга" />
 
-      <IllustratedGuideBody sections={housingSections}>
-        {/* Housing Types */}
-        <GuideSection id="housing-types">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Байрны төрлүүд</h2>
-          <InfoTable
-            headers={housingTypes.comparison.headers}
-            rows={housingTypes.comparison.rows}
+        <GuideCSection id="housing-types" no={no('housing-types')} title="Байрны төрлүүд">
+          <CTable headers={housingTypes.comparison.headers} rows={housingTypes.comparison.rows} />
+          <CFine>{housingTypes.note}</CFine>
+          <SubTitle>Дэлгэрэнгүй</SubTitle>
+          <CTypeCards
+            items={housingTypes.details.map((t) => ({ title: t.title, text: t.description, pros: t.pros, cons: t.cons }))}
+            prosLabel="Давуу" consLabel="Сул"
           />
-          <p className="text-xs text-muted-foreground mt-2">{housingTypes.note}</p>
+        </GuideCSection>
 
-          <div className="grid sm:grid-cols-2 gap-4 mt-6">
-            {housingTypes.details.map((type) => (
-              <div key={type.title} className="p-4 rounded-lg border border-border bg-card">
-                <p className="text-lg mb-1">{type.icon} <span className="text-sm font-semibold font-heading">{type.title}</span></p>
-                <p className="text-xs text-muted-foreground mb-3">{type.description}</p>
-                <div className="space-y-2 text-xs">
-                  <div>
-                    <p className="font-medium text-green-600 dark:text-green-400 mb-1">Давуу:</p>
-                    <ul className="space-y-0.5 text-muted-foreground">
-                      {type.pros.map((p, i) => <li key={i}>+ {p}</li>)}
-                    </ul>
-                  </div>
-                  <div>
-                    <p className="font-medium text-red-500 mb-1">Сул:</p>
-                    <ul className="space-y-0.5 text-muted-foreground">
-                      {type.cons.map((c, i) => <li key={i}>- {c}</li>)}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </GuideSection>
-
-        {/* Cost System */}
-        <GuideSection id="housing-cost-system">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Барьцаа / Түрээс / 관리비</h2>
-
-          <div className="space-y-3 mb-6">
-            {costSystem.concepts.map((c) => (
-              <div key={c.title} className="p-4 rounded-lg border border-border bg-card">
-                <p className="text-sm font-semibold text-foreground mb-1">{c.icon} {c.title}</p>
-                <p className="text-sm text-muted-foreground">{c.description}</p>
-                <p className="text-xs text-gold-dark mt-1">{c.example}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="p-4 rounded-lg border border-border bg-card">
-            <h3 className="text-sm font-semibold text-foreground mb-1">{costSystem.maintenanceFee.title}</h3>
-            <p className="text-xs text-muted-foreground mb-3">{costSystem.maintenanceFee.description}</p>
-            <div className="space-y-1.5">
-              {costSystem.maintenanceFee.items.map((item) => (
-                <div key={item.name} className="flex justify-between text-sm p-2 rounded-md bg-muted/50">
-                  <span className="font-medium text-foreground">{item.name}</span>
-                  <span className="text-muted-foreground">{item.included}</span>
-                </div>
-              ))}
+        <GuideCSection id="housing-cost-system" no={no('housing-cost-system')} title="Барьцаа / Түрээс / 관리비">
+          <CMethods items={costSystem.concepts.map((c) => ({ title: c.title, text: c.description, note: c.example }))} />
+          <Cols>
+            <div>
+              <SubTitle>{costSystem.maintenanceFee.title}</SubTitle>
+              <CFine>{costSystem.maintenanceFee.description}</CFine>
+              <CRows rows={costSystem.maintenanceFee.items.map((it) => ({ name: it.name, value: it.included }))} />
             </div>
-          </div>
+            <div><CNote tone="warn" title="Өвөл анхааруулга"><p>{costSystem.winterWarning}</p></CNote></div>
+          </Cols>
+        </GuideCSection>
 
-          <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Өвөл анхааруулга">
-            <p>{costSystem.winterWarning}</p>
-          </WarningBox>
-        </GuideSection>
+        <GuideCSection id="housing-how-to-find" no={no('housing-how-to-find')} title="Байр хайх арга">
+          <CMethods items={housingSearchMethods.map((m) => ({ title: m.title, tag: m.target, text: m.description, href: m.url }))} />
+        </GuideCSection>
 
-        {/* How to Find */}
-        <GuideSection id="housing-how-to-find">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Байр хайх арга</h2>
-          <div className="space-y-3">
-            {housingSearchMethods.map((method) => (
-              <div key={method.title} className="p-4 rounded-lg border border-border bg-card">
-                <div className="flex items-start justify-between gap-3">
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{method.title}</p>
-                    <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-sky dark:bg-navy-light text-navy dark:text-sky mt-1">
-                      {method.target}
-                    </span>
-                    <p className="text-sm text-muted-foreground mt-2">{method.description}</p>
-                  </div>
-                  {method.url && (
-                    <a href={method.url} target="_blank" rel="noopener noreferrer" className="shrink-0 text-terracotta hover:text-terracotta/80">
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </GuideSection>
+        <GuideCSection id="housing-contract" no={no('housing-contract')} title="Гэрээний чеклист">
+          <Cols>
+            <div><CSteps steps={contractSteps} /></div>
+            <div><GuideCCheckList items={housingChecklist} storageKey="housing-contract" /></div>
+          </Cols>
+          <CNote tone="warn" title="Анхааруулга"><CList items={housingContractWarnings} /></CNote>
+        </GuideCSection>
 
-        {/* Contract */}
-        <GuideSection id="housing-contract">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Гэрээний чеклист</h2>
-          <StepList steps={contractSteps} />
-          <div className="mt-6">
-            <CheckList items={housingChecklist} storageKey="housing-contract" />
-          </div>
-          <WarningBox className={[styles.warning, "mt-4"].join(" ")} title="Анхааруулга">
-            <ul className="space-y-1">
-              {housingContractWarnings.map((w, i) => (
-                <li key={i}>&#8226; {w}</li>
-              ))}
-            </ul>
-          </WarningBox>
-        </GuideSection>
+        <GuideCSection id="housing-move-in" no={no('housing-move-in')} title="Нүүж орсны дараа">
+          <SubTitle>Хог ангилал (분리수거)</SubTitle>
+          <CMethods items={moveInLife.garbageCategories.map((g) => ({ title: g.type, text: g.rule, note: g.note }))} />
+          <CNote tone="warn" title="Анхаар"><p>{moveInLife.garbageWarning}</p></CNote>
+          <Cols>
+            <div>
+              <SubTitle>Дуу чимээний дүрэм (층간소음)</SubTitle>
+              <CList items={moveInLife.noiseRules} />
+            </div>
+            <div>
+              <SubTitle>Гарах үед</SubTitle>
+              <CList items={moveInLife.movingOutTips} />
+            </div>
+          </Cols>
+        </GuideCSection>
 
-        {/* Move-in Life */}
-        <GuideSection id="housing-move-in">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Нүүж орсны дараа</h2>
+        <GuideCSection id="housing-warnings" no={no('housing-warnings')} title="Залилан сэрэмжлүүлэг">
+          <Cols>
+            <div><CNote tone="warn" title="Залилангаас сэргийлэх"><CList items={scamWarnings} /></CNote></div>
+            <div><CNote title="Хэмнэх зөвлөгөө"><CList items={savingTips} /></CNote></div>
+          </Cols>
+        </GuideCSection>
 
-          <h3 className="text-base font-semibold font-heading mb-3">Хог ангилал (분리수거)</h3>
-          <div className="grid sm:grid-cols-2 gap-3 mb-3">
-            {moveInLife.garbageCategories.map((cat) => (
-              <div key={cat.type} className="p-3 rounded-lg border border-border bg-card">
-                <p className="text-sm font-semibold">{cat.icon} {cat.type}</p>
-                <p className="text-xs text-muted-foreground mt-1">{cat.rule}</p>
-                <p className="text-xs text-muted-foreground">{cat.note}</p>
-              </div>
-            ))}
-          </div>
-          <WarningBox className={styles.warning}>
-            <p>{moveInLife.garbageWarning}</p>
-          </WarningBox>
+        <GuideCSection id="housing-links" no={no('housing-links')} title="Хэрэгтэй утас / Линк">
+          <CContacts contacts={housingContacts} />
+          <CLinks links={housingLinks} />
+        </GuideCSection>
 
-          <h3 className="text-base font-semibold font-heading mt-6 mb-3">Дуу чимээний дүрэм (층간소음)</h3>
-          <div className="p-4 rounded-lg border border-border bg-card">
-            <ul className="space-y-1">
-              {moveInLife.noiseRules.map((r, i) => (
-                <li key={i} className="text-sm text-muted-foreground">&#8226; {r}</li>
-              ))}
-            </ul>
-          </div>
-
-          <TipBox className={[styles.tip, "mt-6"].join(" ")} title="Гарах үед">
-            <ul className="space-y-1">
-              {moveInLife.movingOutTips.map((t, i) => (
-                <li key={i}>&#8226; {t}</li>
-              ))}
-            </ul>
-          </TipBox>
-        </GuideSection>
-
-        {/* Scam Warnings */}
-        <GuideSection id="housing-warnings">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Залилан сэрэмжлүүлэг</h2>
-          <WarningBox title="Залилангаас сэргийлэх" className={styles.warning}>
-            <ul className="space-y-1">
-              {scamWarnings.map((w, i) => (
-                <li key={i}>&#8226; {w}</li>
-              ))}
-            </ul>
-          </WarningBox>
-          <TipBox className={[styles.tip, "mt-4"].join(" ")} title="Хэмнэх зөвлөгөө">
-            <ul className="space-y-1">
-              {savingTips.map((t, i) => (
-                <li key={i}>&#8226; {t}</li>
-              ))}
-            </ul>
-          </TipBox>
-        </GuideSection>
-
-        {/* Links */}
-        <GuideSection id="housing-links">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй утас / Линк</h2>
-          <div className="grid sm:grid-cols-2 gap-3 mb-6">
-            {housingContacts.map((contact) => (
-              <a
-                key={contact.number}
-                href={`tel:${contact.number}`}
-                className="flex items-center gap-3 p-4 rounded-lg border border-border bg-card hover:border-terracotta/40 hover:shadow-sm transition-all"
-              >
-                <span className="text-2xl">{contact.emoji}</span>
-                <div>
-                  <p className="text-sm font-semibold font-heading">{contact.label}</p>
-                  <p className="text-lg font-bold text-terracotta">{contact.number}</p>
-                  <p className="text-xs text-muted-foreground">{contact.description}</p>
-                </div>
-              </a>
-            ))}
-          </div>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {housingLinks.map((link) => (
-              <LinkCard key={link.href} {...link} />
-            ))}
-          </div>
-        </GuideSection>
-
-        <RelatedTips slugs={['housing-deposit']} />
-
-        <ReportBanner pageUrl="/housing" />
-        <DonateBanner />
-        <ShareButtons />
-        <GuideNav currentGuideId="housing" />
-      </IllustratedGuideBody>
-    </main>
+        <GuideCTail>
+          <RelatedTips slugs={['housing-deposit']} />
+          <ReportBanner pageUrl="/housing" />
+          <DonateBanner />
+          <ShareButtons />
+          <GuideNav currentGuideId="housing" />
+        </GuideCTail>
+      </GuideCPage>
     </>
   );
 }
