@@ -1,7 +1,7 @@
 export const housingMeta = {
   title: 'Байр ба орон сууц',
   subtitle: 'Байрны төрөл, барьцаа/түрээс, гэрээ, амьдрал',
-  lastUpdated: '2026.10.27',
+  lastUpdated: '2026.11.09',
 };
 
 export const housingSections = [
@@ -206,10 +206,13 @@ export const housingContacts = [
   { label: 'Монгол ЭСЯ', number: '02-798-3464', emoji: '🇲🇳', description: 'Элчин сайдын яам (Сөүл)' },
 ];
 
+// 등기부 인터넷 열람 ₩700 = 현행(「등기사항증명서 등 수수료규칙」 마지막 개정 2025-08-01 시행, 국가법령정보센터).
+// 인상안: 법원행정처공고 제2026-222호(2026-09-28 입법예고, 의견 마감 11-09) — 인터넷 열람 ₩1,100(안 제3조제2항). 2026-11-09 원문 확인.
+// 공포·시행되면 금액 교체(tips.js housing-deposit 같이) — 구글 캘린더 2026-11-24
 export const housingLinks = [
   { href: 'https://www.zigbang.com', title: '직방', description: 'Байр хайх апп — зураг, үнэ, газрын зураг' },
   { href: 'https://www.dabangapp.com', title: '다방', description: 'Байр хайх апп — шүүлтүүртэй хайлт' },
-  { href: 'https://www.iros.go.kr', title: '인터넷등기소', description: '등기부등본 онлайн авах (₩700)' },
+  { href: 'https://www.iros.go.kr', title: '인터넷등기소', description: '등기부등본 онлайн авах (₩700 — ₩1,100 болгох төсөл зарлагдсан, батлагдаагүй)' },
   { href: 'https://www.klac.or.kr', title: '법률구조공단', description: 'Үнэгүй хуулийн зөвлөгөө' },
   { href: 'https://www.everycalc.pe.kr/pyeong', title: '평수 계산기 — EVERYCALC', description: 'Пён(평) ↔ м² хөрвүүлэх. Байрны зарын талбайг ойлгоход хэрэгтэй' },
   { href: 'https://www.everycalc.pe.kr/rent-convert', title: '전월세 전환 계산기 — EVERYCALC', description: 'Чонсэ ↔ сарын түрээс хөрвүүлж аль нь ашигтайг харьцуулах' },
