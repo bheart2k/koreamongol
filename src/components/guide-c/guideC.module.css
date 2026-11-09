@@ -260,6 +260,7 @@
 .fine + .cols { margin-top: 26px; }
 .fine + .lead { margin-top: 18px; }
 ul + .cols, .note + .cols { margin-top: 26px; } /* 카드 목록·알림 바로 뒤 2단이 붙지 않게 */
+.cols + .cols { margin-top: 32px; } /* 2단이 연달아 올 때 아래 2단 소제목이 위 목록에 붙지 않게 */
 .note + .links { margin-top: 14px; }
 .tableWrap + .cols { margin-top: 26px; }
 .lead + .cols3 > div > .subTitle:first-child { margin-top: 0; }
@@ -538,6 +539,7 @@ ul + .cols, .note + .cols { margin-top: 26px; } /* 카드 목록·알림 바로 
   width: min(100% - 32px, 1152px);
   margin: 28px auto 0;
   display: grid;
+  grid-template-columns: minmax(0, 1fr); /* 관련 팁 카드의 긴 글이 칸을 폰 화면 밖으로 밀지 않게 */
   gap: 16px;
 }
 

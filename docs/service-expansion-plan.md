@@ -158,14 +158,15 @@ housing/jobs/arrival 가이드 링크 + apps 가이드 한글허브 딥링크 �
 사용자 결정: "1. 바로 할 것 2개는 바로 하자. 2. 3번은 루틴을 걸든, 아니면 구글 캘린더에 등록하든 해보자. 3. 4번같은건 그냥 지금 작성해둬도 되지 않아? 4. 5번도 디자인 하자. 5. 6번도 앞에 것들 마친뒤에 하나씩 해보자."
 1. [x] 비자 가이드 사실 오류 수정 — 한국 비자 접수처가 "몽골 대사관"으로 돼 있던 것 → 울란바토르 KVAC·대사관 지정 대행법인 접수, 주몽골 한국대사관 발급. E-9 단계 순서(사전교육 → 비자)·EPS 번역("가족 허가 제도" → 고용허가제)·구직 등록 설명. "몽골에서 준비" 칸에 KVAC·주몽골 한국대사관 연락처
 2. [x] 몽골 현지 예비 이주자용 팁 — `/tips/korea-visa-in-mongolia`, `/tips/eps-topik-in-mongolia`
-3. [ ] /topik 몽골 현지 시험 정보 + 본문 오류 — 11/9(디자인 관찰 끝) 구글 캘린더 일정
+3. [x] /topik 몽골 현지 시험 정보 + 본문 오류 (2026-11-09) — 디자인 판정·변경 내용 `docs/topik-redesign.md`
 4. [x] 연말정산 팁 — `/tips/year-end-tax-settlement` (2026년 소득분은 현행 규칙, 2026 세제개편안은 2027년 소득분부터)
 5. [x] /jobs 새 디자인 — 기록 `docs/jobs-redesign.md`
    - 사용자 결정(나머지 가이드): "나머지 가이드도 새 디자인 (추천), 팁 2개 이어서 쓰기" → 8개 가이드 사실 확인·수정 + 새 디자인, /money는 사실 수정만(디자인은 11/9 뒤). 기록 `docs/guides-redesign.md`
+   - [x] /money 새 디자인 (2026-11-09) — 이로써 가이드 페이지 모두 새 틀(guide-c)
 6. [ ] 페이스북 공유 묶음 — 앞 작업 끝난 뒤 하나씩
 
 ### 다음 작업 (우선순위순, 2026-07-15 정리)
-1. [x] **월 1회 팩트 재검증** — 구현 완료 (2026-07-17): `/recheck` 명령(.claude/commands/recheck.md, 체크리스트 9항목) → `scripts/recheck-queue.mjs`가 사이트 API `POST /api/ingest/recheck`(토큰 `RECHECK_INGEST_TOKEN`, INSERT만)로 inbox `type=recheck` 큐잉(미처리 중복 방지) → admin inbox "재검증" 탭. 2026-10-23부터 클라우드 루틴 「KoreaMongol 팩트 재검증 (월간)」(Opus 5.5, `0 1 1 * *` = 매월 1일 10:00 KST)이 실행 — PC가 꺼져 있어도 돈다. 실행 기록: https://claude.ai/code/routines. 수동 실행: Claude Code에서 `/recheck`. 자동 수정 절대 금지 — 운영자 확인 후에만 반영. (이전 방식: Windows 작업 스케줄러 + `scripts/recheck.cmd` — PC 절전·재시작 때 10월분이 빠져서 교체)
+1. [x] **월 1회 팩트 재검증** — 구현 완료 (2026-07-17): `/recheck` 명령(.claude/commands/recheck.md, 체크리스트 10항목 — 10번 몽골 TOPIK·EPS-TOPIK은 2026-11-09 추가) → `scripts/recheck-queue.mjs`가 사이트 API `POST /api/ingest/recheck`(토큰 `RECHECK_INGEST_TOKEN`, INSERT만)로 inbox `type=recheck` 큐잉(미처리 중복 방지) → admin inbox "재검증" 탭. 2026-10-23부터 클라우드 루틴 「KoreaMongol 팩트 재검증 (월간)」(Opus 5.5, `0 1 1 * *` = 매월 1일 10:00 KST)이 실행 — PC가 꺼져 있어도 돈다. 실행 기록: https://claude.ai/code/routines. 수동 실행: Claude Code에서 `/recheck`. 자동 수정 절대 금지 — 운영자 확인 후에만 반영. (이전 방식: Windows 작업 스케줄러 + `scripts/recheck.cmd` — PC 절전·재시작 때 10월분이 빠져서 교체)
 2. [ ] **질문→답변→tips 영구화 운영 착수** — 접수(inbox `question`) → 조사·출처 검증 → tips.js 추가 → 질문자 이메일 회신. 기술 인프라 완비, 운영만 시작하면 됨
 3. [x] **tips 주제 확장** — 2차 9개 완료, 총 14개 (2026-07-17). 추가 확장은 홍보 반응 보고 진행
 4. [ ] (후순위) 팁/가이드에 검증일·출처 뱃지 표시 ("Шалгасан огноо · Эх сурвалж")

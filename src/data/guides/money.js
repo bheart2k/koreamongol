@@ -5,20 +5,21 @@ export const moneyMeta = {
 };
 
 export const moneySections = [
-  { id: 'money-comparison', title: 'Шилжүүлгийн арга харьцуулалт' },
-  { id: 'money-methods', title: 'Арга бүрийн дэлгэрэнгүй' },
-  { id: 'money-finance', title: 'Санхүүгийн үндсэн мэдлэг' },
-  { id: 'money-insurance', title: '4 нийгмийн даатгал' },
-  { id: 'money-warnings', title: 'Анхааруулга' },
-  { id: 'money-tips', title: 'Зөвлөгөө' },
-  { id: 'money-links', title: 'Хэрэгтэй линкүүд' },
+  { id: 'money-comparison', title: 'Шилжүүлгийн арга харьцуулалт', label: 'Харьцуулалт' },
+  { id: 'money-methods', title: 'Арга бүрийн дэлгэрэнгүй', label: 'Арга бүр' },
+  { id: 'money-finance', title: 'Санхүүгийн үндсэн мэдлэг', label: 'Банк, карт' },
+  { id: 'money-insurance', title: '4 нийгмийн даатгал', label: 'Даатгал' },
+  { id: 'money-warnings', title: 'Анхааруулга', label: 'Анхааруулга' },
+  { id: 'money-tips', title: 'Зөвлөгөө', label: 'Зөвлөгөө' },
+  { id: 'money-links', title: 'Хэрэгтэй линкүүд', label: 'Линк' },
 ];
 
+// GME·Hanpass 수수료는 공식 수수료표를 확인하지 못해 숫자를 적지 않는다(2026-10 재검증) — 칸은 "앱에서 확인"
 export const remittanceComparison = {
   headers: ['Арга', 'Хураамж', 'Хурд', 'MNT шууд', 'Тав тухтай байдал'],
   rows: [
-    ['GME Remittance', '', '1-2 өдөр', 'Тийм', 'Апп (Монгол хэлтэй)'],
-    ['Hanpass (한패스)', '', 'Дунджаар 3 мин', 'Тийм', 'Апп (Монгол хэлтэй)'],
+    ['GME Remittance', 'Аппаас шалгана', '1-2 өдөр', 'Тийм', 'Апп (Монгол хэлтэй)'],
+    ['Hanpass (한패스)', 'Аппаас шалгана', 'Дунджаар 3 мин', 'Тийм', 'Апп (Монгол хэлтэй)'],
     ['Western Union', 'Дүнгээс хамаарна', 'Шууд~1 өдөр', 'Тийм', 'Онлайн / Банк'],
     ['Банк шилжүүлэг', '₩13,000~33,000+', '2-5 өдөр', 'Үгүй', 'Банканд очих'],
   ],

@@ -1,12 +1,14 @@
-import { GuideSection } from '@/components/guide/GuideSection';
-import { IllustratedGuideHeader, IllustratedGuideBody } from '@/components/guide/IllustratedGuide';
-import styles from '@/components/guide/IllustratedGuide.module.css';
-import { Banknote, ThumbsUp, ThumbsDown, ExternalLink, Building2, CreditCard, Landmark, ShieldCheck, AlertTriangle, CircleDollarSign } from 'lucide-react';
-import {
-  GuideNav, InfoTable,
-  WarningBox, TipBox, LinkCard, ReportBanner, DonateBanner, ShareButtons, RelatedTips, GuideViewTracker,
-} from '@/components/guide';
+// 송금·금융 가이드 — /topik·/jobs 와 같은 틀(guide-c). 기록: docs/guides-redesign.md
+// 제목(H1·H2)·섹션 id·구조화 데이터·조회수 기록은 개편 전과 같다. 바뀐 것은 배치와 디자인뿐.
+import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker, RelatedTips } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
+import {
+  GuideCPage, GuideCHero, GuideCNav, GuideCSection, GuideCSectionRow, GuideCTail,
+  Cols, SubTitle, Lead, CFine, CTable, CSteps, CList, CNote, CLinks,
+} from '@/components/guide-c/GuideC';
+import { CRows, CMethods, CTypeCards } from '@/components/guide-c/GuideCParts';
+import GuideCHeroArt from '@/components/guide-c/GuideCHeroArt';
+import { HOME_ASSET_BASE, copy as homeCopy } from '@/data/home';
 import {
   moneyMeta, moneySections, remittanceComparison,
   remittanceMethods, exchangeTips, financeWarnings, moneyLinks,
@@ -14,6 +16,17 @@ import {
 } from '@/data/guides/money';
 
 const BASE_URL = 'https://koreamongol.com';
+
+const no = (id) => String(moneySections.findIndex((x) => x.id === id) + 1).padStart(2, '0');
+const officialLinks = moneyLinks.filter((l) => /gmeremit|hanpass|nps\.or\.kr/.test(l.href));
+const { bankAccount, cards, atm, tugrikWarning } = financeBasics;
+const { refund } = insuranceInfo;
+
+// 반환일시금 안내 줄 "제목: 설명" → 단계 카드
+const refundSteps = refund.steps.map((line) => {
+  const i = line.indexOf(': ');
+  return i > 0 ? { title: line.slice(0, i), description: line.slice(i + 2) } : { title: line };
+});
 
 export default function MoneyPage() {
   return (
@@ -32,263 +45,94 @@ export default function MoneyPage() {
           { title: 'Мөнгө шилжүүлэх', description: 'Дүн оруулж, ханш шалгаад шилжүүлэг хийх' },
         ]}
       />
-    <main className={styles.page}>
       <GuideViewTracker guideId="money" />
-      <IllustratedGuideHeader
-        meta={moneyMeta}
-        sections={moneySections}
-        quickIds={["money-comparison","money-finance","money-warnings"]}
-        image="/images/guides/money-mazaalai-l.png"
-        icon={Banknote}
-        breadcrumbLabel={moneyMeta.title}
-      />
+      <GuideCPage>
+        <GuideCHero
+          breadcrumbLabel={moneyMeta.title}
+          kicker="Гарын авлага"
+          title={moneyMeta.title}
+          subtitle={moneyMeta.subtitle}
+          updated={moneyMeta.lastUpdated}
+          updatedLabel="Сүүлд шинэчилсэн"
+          art={(
+            <GuideCHeroArt image={`${HOME_ASSET_BASE}/c3-living.webp`} alt="" loop="loop-c3" loopNight="loop-c3-night-v5" base={HOME_ASSET_BASE}
+              labels={{ pause: homeCopy.pause, play: homeCopy.play }} />
+          )}
+          links={officialLinks}
+          linksLabel="Албан ёсны сайт:"
+        />
+        <GuideCNav sections={moneySections} label="Агуулга" />
 
-      <IllustratedGuideBody sections={moneySections}>
-        {/* Comparison Table */}
-        <GuideSection id="money-comparison">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Шилжүүлгийн арга харьцуулалт</h2>
-          <InfoTable
-            headers={remittanceComparison.headers}
-            rows={remittanceComparison.rows}
+        <GuideCSection id="money-comparison" no={no('money-comparison')} title="Шилжүүлгийн арга харьцуулалт">
+          <CTable headers={remittanceComparison.headers} rows={remittanceComparison.rows} />
+        </GuideCSection>
+
+        <GuideCSection id="money-methods" no={no('money-methods')} title="Арга бүрийн дэлгэрэнгүй">
+          <CTypeCards
+            items={remittanceMethods.map((m) => ({ title: m.name, text: m.description, pros: m.pros, cons: m.cons }))}
+            prosLabel="Давуу тал" consLabel="Сул тал"
           />
-        </GuideSection>
+        </GuideCSection>
 
-        {/* Method Details */}
-        <GuideSection id="money-methods">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Арга бүрийн дэлгэрэнгүй</h2>
-          <div className="space-y-6">
-            {remittanceMethods.map((method) => (
-              <div
-                key={method.name}
-                className="p-5 rounded-lg border border-border bg-card"
-              >
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-lg font-semibold font-heading text-foreground">
-                    {method.name}
-                  </h3>
-                  {method.url && (
-                    <a
-                      href={method.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs text-gold-dark hover:text-gold flex items-center gap-1"
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                      Вэбсайт
-                    </a>
-                  )}
-                </div>
-                <p className="text-sm text-muted-foreground mb-4">{method.description}</p>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <div className="flex items-center gap-1.5 text-sm font-medium text-status-success mb-2">
-                      <ThumbsUp className="w-4 h-4" />
-                      Давуу тал
-                    </div>
-                    <ul className="space-y-1">
-                      {method.pros.map((p, i) => (
-                        <li key={i} className="text-sm text-muted-foreground">&#10003; {p}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1.5 text-sm font-medium text-status-error mb-2">
-                      <ThumbsDown className="w-4 h-4" />
-                      Сул тал
-                    </div>
-                    <ul className="space-y-1">
-                      {method.cons.map((c, i) => (
-                        <li key={i} className="text-sm text-muted-foreground">&#10007; {c}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </GuideSection>
-
-        {/* Financial Basics */}
-        <GuideSection id="money-finance">
-          <h2 className="text-title text-navy dark:text-sky mb-6">
-            <CircleDollarSign className="w-6 h-6 inline mr-2" />
-            Санхүүгийн үндсэн мэдлэг
-          </h2>
-
-          {/* Bank Account */}
-          <div className="space-y-6">
-            <div className="p-5 rounded-lg border border-border bg-card">
-              <h3 className="text-lg font-semibold font-heading text-foreground flex items-center gap-2 mb-4">
-                <Building2 className="w-5 h-5 text-navy dark:text-sky" />
-                {financeBasics.bankAccount.title}
-              </h3>
-              <div className="mb-4">
-                <p className="text-sm font-medium text-foreground mb-2">Шаардлагатай бичиг баримт:</p>
-                <ul className="space-y-1">
-                  {financeBasics.bankAccount.required.map((item, i) => (
-                    <li key={i} className="text-sm text-muted-foreground">&#8226; {item}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mb-4">
-                <p className="text-sm font-medium text-foreground mb-2">Санал болгох банкууд:</p>
-                <div className="space-y-3">
-                  {financeBasics.bankAccount.banks.map((bank) => (
-                    <div key={bank.name} className="p-3 rounded-md bg-muted/50">
-                      <p className="text-sm font-medium text-foreground">{bank.name}</p>
-                      <p className="text-sm text-muted-foreground">{bank.features}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="text-sm font-medium text-foreground mb-2">Онлайн банк:</p>
-                <div className="space-y-2">
-                  {financeBasics.bankAccount.onlineBanks.map((bank) => (
-                    <div key={bank.name} className="flex items-start gap-2 text-sm">
-                      <span className={bank.available ? 'text-status-success' : 'text-status-error'}>
-                        {bank.available ? '✓' : '✗'}
-                      </span>
-                      <div>
-                        <span className="font-medium text-foreground">{bank.name}</span>
-                        <span className="text-muted-foreground"> — {bank.note}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        <GuideCSection id="money-finance" no={no('money-finance')} title="Санхүүгийн үндсэн мэдлэг">
+          <Cols>
+            <div>
+              <SubTitle>{bankAccount.title}</SubTitle>
+              <CFine>Шаардлагатай бичиг баримт:</CFine>
+              <CList items={bankAccount.required} />
+              <SubTitle>Санал болгох банкууд</SubTitle>
+              <CMethods items={bankAccount.banks.map((b) => ({ title: b.name, text: b.features }))} />
+              <SubTitle>Онлайн банк</SubTitle>
+              <CRows rows={bankAccount.onlineBanks.map((b) => ({ name: b.name, value: `${b.available ? '✓' : '✗'} ${b.note}` }))} />
             </div>
-
-            {/* Cards */}
-            <div className="p-5 rounded-lg border border-border bg-card">
-              <h3 className="text-lg font-semibold font-heading text-foreground flex items-center gap-2 mb-4">
-                <CreditCard className="w-5 h-5 text-navy dark:text-sky" />
-                {financeBasics.cards.title}
-              </h3>
-              <div className="space-y-4">
-                {financeBasics.cards.items.map((card) => (
-                  <div key={card.type} className="p-3 rounded-md bg-muted/50">
-                    <p className="text-sm font-medium text-foreground">{card.type}</p>
-                    <p className="text-sm text-muted-foreground mb-1">{card.description}</p>
-                    <p className="text-xs text-gold-dark">&#128196; {card.condition}</p>
-                  </div>
-                ))}
-              </div>
+            <div>
+              <SubTitle>{cards.title}</SubTitle>
+              <CMethods items={cards.items.map((c) => ({ title: c.type, text: c.description, note: c.condition }))} />
+              <SubTitle>{atm.title}</SubTitle>
+              <CList items={atm.items} />
+              <CNote title="Үнэгүй ATM"><p>{atm.freeAtmTip}</p></CNote>
+              <CNote tone="warn" title={tugrikWarning.title}><CList items={tugrikWarning.items} /></CNote>
             </div>
+          </Cols>
+        </GuideCSection>
 
-            {/* ATM */}
-            <div className="p-5 rounded-lg border border-border bg-card">
-              <h3 className="text-lg font-semibold font-heading text-foreground flex items-center gap-2 mb-4">
-                <Landmark className="w-5 h-5 text-navy dark:text-sky" />
-                {financeBasics.atm.title}
-              </h3>
-              <ul className="space-y-1 mb-3">
-                {financeBasics.atm.items.map((item, i) => (
-                  <li key={i} className="text-sm text-muted-foreground">&#8226; {item}</li>
-                ))}
-              </ul>
-              <TipBox title="Үнэгүй ATM" className={styles.tip}>
-                <p className="text-sm">{financeBasics.atm.freeAtmTip}</p>
-              </TipBox>
+        <GuideCSection id="money-insurance" no={no('money-insurance')} title={insuranceInfo.title}>
+          <Lead>{insuranceInfo.subtitle}</Lead>
+          <CMethods items={insuranceInfo.items.map((ins) => ({ title: ins.name, text: ins.description, note: ins.note }))} />
+          <Cols>
+            <div>
+              <SubTitle>{refund.title}</SubTitle>
+              <CFine>{refund.description}</CFine>
+              <CSteps steps={refundSteps} />
             </div>
+            <div><CNote tone="warn" title="Анхаар!"><p>{refund.warning}</p></CNote></div>
+          </Cols>
+        </GuideCSection>
 
-            {/* Tugrik Warning */}
-            <WarningBox title={financeBasics.tugrikWarning.title} className={styles.warning}>
-              <ul className="space-y-1">
-                {financeBasics.tugrikWarning.items.map((item, i) => (
-                  <li key={i}>&#8226; {item}</li>
-                ))}
-              </ul>
-            </WarningBox>
-          </div>
-        </GuideSection>
-
-        {/* Insurance */}
-        <GuideSection id="money-insurance">
-          <h2 className="text-title text-navy dark:text-sky mb-6">
-            <ShieldCheck className="w-6 h-6 inline mr-2" />
-            {insuranceInfo.title}
-          </h2>
-          <p className="text-sm text-muted-foreground mb-6">{insuranceInfo.subtitle}</p>
-
-          <div className="grid sm:grid-cols-2 gap-4 mb-6">
-            {insuranceInfo.items.map((ins) => (
-              <div key={ins.name} className="p-4 rounded-lg border border-border bg-card">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xl">{ins.emoji}</span>
-                  <h3 className="text-sm font-semibold font-heading text-foreground">{ins.name}</h3>
-                </div>
-                <p className="text-sm text-muted-foreground mb-2">{ins.description}</p>
-                <p className="text-xs text-gold-dark">{ins.note}</p>
-              </div>
+        <GuideCSectionRow>
+          <GuideCSection id="money-warnings" no={no('money-warnings')} title="Анхааруулга">
+            {financeWarnings.map((w) => (
+              <CNote key={w.title} tone="warn" title={w.title}><CList items={w.items} /></CNote>
             ))}
-          </div>
+          </GuideCSection>
 
-          {/* Pension Refund */}
-          <div className="p-5 rounded-lg border-2 border-gold/30 bg-gold/5">
-            <h3 className="text-lg font-semibold font-heading text-foreground flex items-center gap-2 mb-3">
-              <AlertTriangle className="w-5 h-5 text-gold" />
-              {insuranceInfo.refund.title}
-            </h3>
-            <p className="text-sm text-muted-foreground mb-4">{insuranceInfo.refund.description}</p>
-            <ol className="space-y-2 mb-4">
-              {insuranceInfo.refund.steps.map((step, i) => (
-                <li key={i} className="text-sm text-muted-foreground flex gap-2">
-                  <span className="font-bold text-navy dark:text-sky shrink-0">{i + 1}.</span>
-                  {step}
-                </li>
-              ))}
-            </ol>
-            <WarningBox title="Анхаар!" className={styles.warning}>
-              <p>{insuranceInfo.refund.warning}</p>
-            </WarningBox>
-          </div>
-        </GuideSection>
+          <GuideCSection id="money-tips" no={no('money-tips')} title="Зөвлөгөө">
+            <CNote title="Ханшийн зөвлөгөө"><CList items={exchangeTips} /></CNote>
+          </GuideCSection>
 
-        {/* Warnings */}
-        <GuideSection id="money-warnings">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Анхааруулга</h2>
-          {financeWarnings.map((warning) => (
-            <WarningBox key={warning.title} title={warning.title} className={styles.warning}>
-              <ul className="space-y-1">
-                {warning.items.map((item, i) => (
-                  <li key={i}>&#8226; {item}</li>
-                ))}
-              </ul>
-            </WarningBox>
-          ))}
-        </GuideSection>
+          <GuideCSection id="money-links" no={no('money-links')} title="Хэрэгтэй линкүүд">
+            <CLinks links={moneyLinks} />
+          </GuideCSection>
+        </GuideCSectionRow>
 
-        {/* Tips */}
-        <GuideSection id="money-tips">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Зөвлөгөө</h2>
-          <TipBox title="Ханшийн зөвлөгөө" className={styles.tip}>
-            <ul className="space-y-1">
-              {exchangeTips.map((tip, i) => (
-                <li key={i}>&#8226; {tip}</li>
-              ))}
-            </ul>
-          </TipBox>
-        </GuideSection>
-
-        {/* Links */}
-        <GuideSection id="money-links">
-          <h2 className="text-title text-navy dark:text-sky mb-6">Хэрэгтэй линкүүд</h2>
-          <div className="grid sm:grid-cols-2 gap-3">
-            {moneyLinks.map((link) => (
-              <LinkCard key={link.href} {...link} />
-            ))}
-          </div>
-        </GuideSection>
-
-        <RelatedTips slugs={['send-money-to-mongolia', 'open-bank-account', 'pension-refund']} />
-
-        <ReportBanner pageUrl="/money" />
-        <DonateBanner />
-        <ShareButtons />
-        <GuideNav currentGuideId="money" />
-      </IllustratedGuideBody>
-    </main>
+        <GuideCTail>
+          <RelatedTips slugs={['send-money-to-mongolia', 'open-bank-account', 'pension-refund']} />
+          <ReportBanner pageUrl="/money" />
+          <DonateBanner />
+          <ShareButtons />
+          <GuideNav currentGuideId="money" />
+        </GuideCTail>
+      </GuideCPage>
     </>
   );
 }

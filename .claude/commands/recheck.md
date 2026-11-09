@@ -29,6 +29,7 @@ KoreaMongol은 한국 체류 몽골인 대상 정보 사이트다. 잘못된 정
 | 7 | 송금 앱 수수료 (GME ₩5,000~ / Hanpass 무료~₩5,000) — Toss는 몽골 미지원으로 2026-09 제외됨 | money.js, tips send-money-to-mongolia | 각 서비스 공식 사이트·공지 |
 | 8 | 확정일자 ₩600 / 등기부등본 열람 ₩700 | housing.js, tips housing-deposit | 정부24·인터넷등기소 |
 | 9 | E-9 장기체류 경로: 성실근로자 재입국(1개월 대기·총 9년8개월·계약 1년 잔여) / E-7-4 연간 선발계획(2026: 쿼터 33,000·연봉 ₩26,000,000·200/300점 — **매년 초 법무부 공고 확인**) | visa.js longTermPaths, tips e9-reentry·e9-to-e74·f2-f5-path | 고용노동부(moel.go.kr)·법무부 E-7-4 선발계획 공고·hikorea.go.kr |
+| 10 | 몽골 TOPIK 일정·응시료(2026: PBT 60,000₮/80,000₮, IBT 70,000₮/100,000₮ — **2027 일정이 나오면 표 교체 대상**) / 몽골 EPS-TOPIK(노동복지서비스청 방문 접수·CBT·28$·회차, 합격 하한) | topik-mongolia.js topikInMongolia·epsInMongolia, topik.js epsTopikOverview, tips eps-topik-in-mongolia | topik.mn 일정(https://topik.mn/Home/Content/3, https://topik.mn/ibt/Home/Content/3 — 첫 화면을 먼저 열어야 쿠키가 생김, 응시료는 회차 공고 이미지)·topik.go.kr 해외 시험일정·epstopik.hrdkorea.or.kr 몽골 공고 |
 
 시간·토큰이 부족하면 위 순서대로 진행하고, 못 한 항목은 마지막 요약에 "미검증"으로 명시한다.
 

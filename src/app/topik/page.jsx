@@ -1,10 +1,12 @@
 // TOPIK / EPS-TOPIK 가이드 — 홈 시안 C와 같은 틀(guide-c). 기록: docs/topik-redesign.md
-// 내용·제목(H1)·섹션 id·구조화 데이터·조회수 기록은 개편 전과 같다. 바뀐 것은 배치와 디자인뿐(폰에서 섹션이 접히지 않음).
-import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker } from '@/components/guide';
+// 제목(H1)·섹션 id·구조화 데이터·조회수 기록은 개편 전과 같다(폰에서 섹션이 접히지 않음).
+// 2026-11-09: 디자인 판정 뒤 몽골 현지 시험 섹션(#topik-mongolia) 추가 + EPS-TOPIK 본문 오류 수정.
+import Link from 'next/link';
+import { ReportBanner, DonateBanner, ShareButtons, GuideNav, GuideViewTracker, RelatedTips } from '@/components/guide';
 import { BreadcrumbJsonLd, HowToJsonLd } from '@/components/seo/JsonLd';
 import {
   GuideCPage, GuideCHero, GuideCNav, GuideCSection, GuideCTail,
-  Cols, SubTitle, Lead, CTable, CSteps, CList, CNote, CLinks, CCards, CContacts, ChoiceCards,
+  Cols, SubTitle, Lead, CFine, CTable, CSteps, CList, CNote, CLinks, CCards, CContacts, ChoiceCards,
 } from '@/components/guide-c/GuideC';
 import GuideCHeroArt from '@/components/guide-c/GuideCHeroArt';
 import { HOME_ASSET_BASE, copy as homeCopy } from '@/data/home';
@@ -18,15 +20,18 @@ import {
   studyResources, studyTips,
   topikContacts, topikLinks,
 } from '@/data/guides/topik';
+import { topikInMongolia, epsInMongolia } from '@/data/guides/topik-mongolia';
 
 const BASE_URL = 'https://koreamongol.com';
 
 const [epsLink, topikLink] = topikLinks;
+const mnLink = topikInMongolia.links[0];
 const visaCode = (cell) => cell.split(' ')[0];
 const eps = epsTopikOverview.structure.rows;
 const validity = topikVsEpsTopik.rows.find((r) => r[0] === 'Хүчинтэй хугацаа');
+const mnPbtFee = topikInMongolia.fees.rows[0][1];
 
-// 첫 화면 답 카드 — 숫자·문구는 모두 기존 데이터에서 가져온다(새 사실 없음)
+// 첫 화면 답 카드 — 숫자·문구는 모두 데이터 파일(topik.js·topik-mongolia.js)에서 가져온다
 const choices = [
   {
     for: whichTestTable.rows[0][0],
@@ -45,7 +50,7 @@ const choices = [
     title: 'TOPIK',
     facts: [
       'TOPIK I: 1~2 түвшин · TOPIK II: 3~6 түвшин',
-      `${topikOverview.fee.headers[1]}: ${topikOverview.fee.rows[0][1]}~`,
+      `Төлбөр: Монголд ${mnPbtFee}~ · Солонгост ${topikOverview.fee.rows[0][1]}~`,
       `${validity[0]}: ${validity[1]}`,
     ],
     section: 'topik-general-overview',
@@ -81,7 +86,7 @@ export default function TopikPage() {
             <GuideCHeroArt image={`${HOME_ASSET_BASE}/c6-culture.webp`} alt="" loop="loop-c6" loopNight="loop-c6-night" base={HOME_ASSET_BASE}
               labels={{ pause: homeCopy.pause, play: homeCopy.play }} />
           )}
-          links={[epsLink, topikLink]}
+          links={[epsLink, topikLink, { href: mnLink.href, title: 'topik.mn' }]}
           linksLabel="Албан ёсны сайт:"
         />
         <GuideCNav sections={topikSections} label="Агуулга" />
@@ -90,6 +95,40 @@ export default function TopikPage() {
           <ChoiceCards cards={choices} />
           <CTable headers={whichTestTable.headers} rows={whichTestTable.rows} />
           <CNote title="Чухал ялгаа"><p>{whichTestTip}</p></CNote>
+        </GuideCSection>
+
+        <GuideCSection id="topik-mongolia" no={no('topik-mongolia')} title="Монголд TOPIK, EPS-TOPIK өгөх">
+          <Lead>{topikInMongolia.lead}</Lead>
+          <SubTitle>2026 оны Монгол дахь TOPIK-ийн хуваарь</SubTitle>
+          <CTable headers={topikInMongolia.schedule.headers} rows={topikInMongolia.schedule.rows} />
+          <CFine>{topikInMongolia.scheduleNote}</CFine>
+          <Cols>
+            <div>
+              <SubTitle>topik.mn-ээр бүртгүүлэх</SubTitle>
+              <CSteps steps={topikInMongolia.registerSteps} />
+              <CList items={topikInMongolia.notes} />
+            </div>
+            <div>
+              <SubTitle>Хураамж (Монголд)</SubTitle>
+              <CTable headers={topikInMongolia.fees.headers} rows={topikInMongolia.fees.rows} />
+              <CFine>{topikInMongolia.feeNote}</CFine>
+              <CNote title="Шалгалтын өдөр"><CList items={topikInMongolia.examDay} /></CNote>
+            </div>
+          </Cols>
+          <Cols>
+            <div>
+              <SubTitle>Лавлах</SubTitle>
+              <CContacts contacts={topikInMongolia.contacts} />
+              <CLinks links={topikInMongolia.links} />
+            </div>
+            <div>
+              <CNote title="EPS-TOPIK Монголд">
+                <CList items={epsInMongolia.items} />
+                <p><Link href={epsInMongolia.tipHref}>{epsInMongolia.tipLabel} →</Link></p>
+              </CNote>
+              <CNote tone="warn" title="Залилангаас болгоомжил"><p>{epsInMongolia.scam}</p></CNote>
+            </div>
+          </Cols>
         </GuideCSection>
 
         <GuideCSection id="topik-eps-overview" no={no('topik-eps-overview')} title="EPS-TOPIK гэж юу вэ?">
@@ -174,6 +213,7 @@ export default function TopikPage() {
         </GuideCSection>
 
         <GuideCTail>
+          <RelatedTips slugs={['eps-topik-in-mongolia', 'korea-visa-in-mongolia']} />
           <ReportBanner pageUrl="/topik" />
           <DonateBanner />
           <ShareButtons />
