@@ -6,3 +6,7 @@ approvedBuilds: puppeteer
 ignoredBuiltDependencies:
   - sharp
   - unrs-resolver
+
+# Next.js 보안 공지(2026-10-14): 이미지 최적화가 쓰는 sharp 는 0.35.5 이상
+overrides:
+  sharp: ^0.35.5
